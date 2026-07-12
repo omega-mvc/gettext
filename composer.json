@@ -1,0 +1,47 @@
+{
+    "name": "omega-mvc/gettext",
+    "type": "library",
+    "description": "PHP gettext manager",
+    "keywords": ["js", "gettext", "i18n", "translation", "po", "mo"],
+    "homepage": "https://github.com/php-gettext/Gettext",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Adriano Giovannini",
+            "email": "agisoftt@gmail.com",
+            "homepage": "http://omegamvc.github.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "nikic/php-parser": "^v5.6.1",
+        "mck89/peast": "^1.16.3-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.4-dev",
+        "squizlabs/php_codesniffer": "^3.13.4",
+        "brick/varexporter": "^0.6.0",
+        "friendsofphp/php-cs-fixer": "^v3.87.2",
+        "oscarotero/php-cs-fixer-config": "^v2.0.1",
+        "phpstan/phpstan": "^2.1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gettext\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit",
+            "phpcs",
+            "phpstan"
+        ],
+        "cs-fix": "php-cs-fixer fix"
+    }
+}
