@@ -1,7 +1,8 @@
 {
     "name": "omega-mvc/gettext",
     "type": "library",
-    "description": "PHP gettext manager",
+    "description": "GNU gettext-based localization and translation support for the Omega ecosystem, providing message translation management and internationalization services.",
+    "version": "1.0.0",
     "keywords": ["js", "gettext", "i18n", "translation", "po", "mo"],
     "homepage": "https://github.com/php-gettext/Gettext",
     "license": "GPL-3.0-or-later",
