@@ -47,6 +47,8 @@ class Translator implements TranslatorInterface
 
     /**
      * Add new translations to the dictionary.
+     *
+     * @param array<string, mixed> $translations
      */
     public function addTranslations(array $translations): self
     {
@@ -164,6 +166,8 @@ class Translator implements TranslatorInterface
 
     /**
      * Search and returns a translation.
+     *
+     * @return array<array-key, mixed>|null
      */
     protected function getTranslation(?string $domain, ?string $context, string $original): ?array
     {

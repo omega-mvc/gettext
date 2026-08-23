@@ -27,7 +27,7 @@ class JsonLoaderTest extends TestCase
     {
         $loader = new JsonLoader();
 
-        $translations = $loader->loadFile(__DIR__.'/../assets/translations.json');
+        $translations = $loader->loadFile(__DIR__ . '/../assets/translations.json');
 
         $this->assertCount(2, $translations);
         $this->assertSame('testingdomain', $translations->getDomain());

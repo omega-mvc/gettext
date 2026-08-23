@@ -135,6 +135,7 @@ final class PoGenerator extends AbstractGenerator
      * Appends one or more lines for a translation entry, handling multiline strings.
      *
      * @param array  $lines  The array of lines to append to (passed by reference)
+     * @param list<string> $lines Reference to the lines accumulator
      * @param string $prefix A prefix for the line, e.g. "#~ " for disabled translations
      * @param string $name   The PO directive name, e.g. 'msgid', 'msgstr', 'msgid_plural'
      * @param string $value  The string value to encode and append
@@ -183,6 +184,6 @@ final class PoGenerator extends AbstractGenerator
                 "\n"   => '\n',
                 '"'    => '\\"',
             ]
-        ).'"';
+        ) . '"';
     }
 }

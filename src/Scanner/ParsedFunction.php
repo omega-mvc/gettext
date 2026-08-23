@@ -30,6 +30,9 @@ final class ParsedFunction
         return $this->toArray();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -63,6 +66,9 @@ final class ParsedFunction
         return $this->filename;
     }
 
+    /**
+     * @return list<mixed>
+     */
     public function getArguments(): array
     {
         return $this->arguments;
@@ -73,11 +79,17 @@ final class ParsedFunction
         return count($this->arguments);
     }
 
+    /**
+     * @return list<string>
+     */
     public function getComments(): array
     {
         return $this->comments;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getFlags(): array
     {
         return $this->flags;

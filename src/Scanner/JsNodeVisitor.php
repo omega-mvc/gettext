@@ -10,11 +10,18 @@ use Peast\Syntax\Node\Node;
 
 class JsNodeVisitor
 {
+    /** @var array<string>|null */
     protected $validFunctions;
+
     protected $filename;
+
+    /** @var list<ParsedFunction> */
     protected $functions = [];
 
-    public function __construct(string $filename, array $validFunctions = null)
+    /**
+     * @param array<string>|null $validFunctions
+     */
+    public function __construct(string $filename, ?array $validFunctions = null)
     {
         $this->filename = $filename;
         $this->validFunctions = $validFunctions;
@@ -31,6 +38,9 @@ class JsNodeVisitor
         }
     }
 
+    /**
+     * @return list<ParsedFunction>
+     */
     public function getFunctions(): array
     {
         return $this->functions;

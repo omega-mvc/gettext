@@ -32,7 +32,7 @@ class PhpScannerTest extends TestCase
 {
     public function testPhpCodeScanner()
     {
-        $file = __DIR__.'/../assets/code.php';
+        $file = __DIR__ . '/../assets/code.php';
 
         $scanner = new PhpScanner(
             Translations::create('domain1'),

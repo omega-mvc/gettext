@@ -6,6 +6,9 @@ namespace Gettext;
 
 class Formatter implements FormatterInterface
 {
+    /**
+     * @param list<mixed> $args
+     */
     public function format(string $text, array $args): string
     {
         if (empty($args)) {

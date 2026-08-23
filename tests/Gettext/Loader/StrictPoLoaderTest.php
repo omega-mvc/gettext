@@ -33,6 +33,9 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
         return new StrictPoLoader();
     }
 
+    /**
+     * @return list<array{0: string, 1: string}>
+     */
     public static function stringDecodeProvider(): array
     {
         return array_merge(BasePoLoaderTestCase::stringDecodeProvider(), [
@@ -103,6 +106,9 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
         $this->assertEquals($translation->getPreviousPlural(), 'previous plural');
     }
 
+    /**
+     * @return array<string, array<array-key, mixed>>
+     */
     public static function badFormattedPoProvider(): array
     {
         return [

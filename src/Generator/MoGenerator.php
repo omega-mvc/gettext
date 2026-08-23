@@ -102,13 +102,13 @@ final class MoGenerator extends AbstractGenerator
                 'length'         => strlen((string) $originalString),
             ];
 
-            $originalsTable     .= $originalString."\x00";
+            $originalsTable     .= $originalString . "\x00";
             $translationsIndex[] = [
                 'relativeOffset' => strlen($translationsTable),
                 'length'         => strlen($translationString),
             ];
 
-            $translationsTable .= $translationString."\x00";
+            $translationsTable .= $translationString . "\x00";
         }
 
         // Offset of table with the original strings index: right after the header (which is 7 words)

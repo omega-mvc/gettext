@@ -62,7 +62,7 @@ final class JsonGenerator extends AbstractGenerator
      * Converts the given translations into a structured array.
      *
      * @param Translations $translations The translations to convert
-     * @return array Structured array containing domain, plural forms, and messages
+     * @return array<string, mixed> Structured array containing domain, plural forms, and messages
      */
     public function generateArray(Translations $translations): array
     {

@@ -14,11 +14,16 @@ use ReturnTypeWillChange;
  * Class to manage the references of a translation.
  *
  * @phpstan-consistent-constructor
+ *
+ * @implements IteratorAggregate<string, list<int>>
  */
 class References implements JsonSerializable, Countable, IteratorAggregate
 {
     protected $references = [];
 
+    /**
+     * @param array<string, mixed> $state
+     */
     public static function __set_state(array $state): References
     {
         $references = new static();
@@ -68,6 +73,9 @@ class References implements JsonSerializable, Countable, IteratorAggregate
         }, 0);
     }
 
+    /**
+     * @return array<string, list<int>>
+     */
     public function toArray(): array
     {
         return $this->references;

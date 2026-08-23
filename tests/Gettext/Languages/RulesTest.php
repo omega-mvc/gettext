@@ -40,16 +40,38 @@ class RulesTest extends TestCase
         foreach (Category::expandExamples($numbers) as $number) {
             $numericFormula = preg_replace('/\bn\b/', (string) $number, $formula);
             $extraneousChars = preg_replace('/^[\d %!=<>&\|()?:]+$/', '', $numericFormula);
-            $this->assertSame('', $extraneousChars, "The formula '{$numericFormula}' contains extraneous characters: '{$extraneousChars}' (format: {$format})");
+            $this->assertSame(
+                '',
+                $extraneousChars,
+                "The formula '{$numericFormula}' contains extraneous characters:"
+                . " '{$extraneousChars}' (format: {$format})"
+            );
 
-            $caseIndex = @eval("return (({$numericFormula}) === true) ? 1 : ((({$numericFormula}) === false) ? 0 : ({$numericFormula}));");
+            $caseIndex = @eval(
+                "return (({$numericFormula}) === true) ? 1 :"
+                . " ((({$numericFormula}) === false) ? 0 : ({$numericFormula}));"
+            );
             $caseIndexType = gettype($caseIndex);
-            $this->assertSame('integer', $caseIndexType, "Error evaluating the numeric formula '{$numericFormula}' (format: {$format})");
+            $this->assertSame(
+                'integer',
+                $caseIndexType,
+                "Error evaluating the numeric formula '{$numericFormula}' (format: {$format})"
+            );
 
-            $this->assertArrayHasKey($caseIndex, $allCases, "The formula '{$formula}' evaluated for {$number} gave an out-of-range case index ({$caseIndex}) (format: {$format})");
+            $this->assertArrayHasKey(
+                $caseIndex,
+                $allCases,
+                "The formula '{$formula}' evaluated for {$number} gave an out-of-range case index"
+                . " ({$caseIndex}) (format: {$format})"
+            );
 
             $case = $allCases[$caseIndex];
-            $this->assertSame($expectedCase, $case, "The formula '{$formula}' evaluated for {$number} resulted in '{$case}' ({$caseIndex}) instead of '{$expectedCase}' ({$expectedCaseIndex}) (format: {$format})");
+            $this->assertSame(
+                $expectedCase,
+                $case,
+                "The formula '{$formula}' evaluated for {$number} resulted in '{$case}' ({$caseIndex}) instead"
+                . " of '{$expectedCase}' ({$expectedCaseIndex}) (format: {$format})"
+            );
         }
     }
 
@@ -75,7 +97,11 @@ class RulesTest extends TestCase
     #[DataProvider('providerTestExamplesExist')]
     public function testExamplesExist($format, $locale, $case, $examples)
     {
-        $this->assertArrayHasKey($case, $examples, "The language '{$locale}' does not have tests for the case '{$case}' (format: {$format})");
+        $this->assertArrayHasKey(
+            $case,
+            $examples,
+            "The language '{$locale}' does not have tests for the case '{$case}' (format: {$format})"
+        );
     }
 
     private static function readData($format)

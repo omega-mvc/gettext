@@ -12,14 +12,17 @@ use Gettext\Translations;
  */
 final class JsonLoader extends Loader
 {
-    public function loadString(string $string, Translations $translations = null): Translations
+    public function loadString(string $string, ?Translations $translations = null): Translations
     {
         $array = json_decode($string, true);
 
         return $this->loadArray($array, $translations);
     }
 
-    public function loadArray(array $array, Translations $translations = null): Translations
+    /**
+     * @param array<string, mixed> $array
+     */
+    public function loadArray(array $array, ?Translations $translations = null): Translations
     {
         if (!$translations) {
             $translations = $this->createTranslations();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Gettext;
@@ -13,7 +14,7 @@ abstract class TranslatorFunctions
         self::$translator = $translator;
         self::$formatter = $formatter ?: new Formatter();
 
-        include_once __DIR__.'/functions.php';
+        include_once __DIR__ . '/functions.php';
     }
 
     public static function getTranslator(): TranslatorInterface

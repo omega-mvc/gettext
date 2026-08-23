@@ -11,8 +11,13 @@ use PhpParser\ParserFactory;
 class PhpFunctionsScanner implements FunctionsScannerInterface
 {
     protected Parser $parser;
+
+    /** @var array<string>|null */
     protected ?array $validFunctions;
 
+    /**
+     * @param array<string>|null $validFunctions
+     */
     public function __construct(?array $validFunctions = null, ?Parser $parser = null)
     {
         $this->validFunctions = $validFunctions;

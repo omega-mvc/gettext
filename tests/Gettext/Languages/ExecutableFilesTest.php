@@ -31,7 +31,9 @@ class ExecutableFilesTest extends TestCase
         $output = [];
         exec('find ' . escapeshellarg(GETTEXT_LANGUAGES_TESTROOTDIR) . ' -type f -executable 2>&1', $output, $rc);
         if ($rc !== 0) {
-            $this->markTestSkipped('Failed to retrieve the list of executable files (' . trim(implode("\n", $output)) . ')');
+            $this->markTestSkipped(
+                'Failed to retrieve the list of executable files (' . trim(implode("\n", $output)) . ')'
+            );
         }
         $result = array_map(
             function ($file) {

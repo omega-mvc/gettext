@@ -50,7 +50,7 @@ Whether you are building a multilingual website, a PHP application, or a project
 ## Installation
 
 ```
-composer require omegamvc/gettext
+composer require omega-mvc/gettext
 ```
 
 ## Running Test

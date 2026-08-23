@@ -38,7 +38,7 @@ class GettextTranslator implements TranslatorInterface
         }
 
         setlocale($category, $language);
-        putenv('LANGUAGE='.$language);
+        putenv('LANGUAGE=' . $language);
 
         return $this;
     }
@@ -80,7 +80,7 @@ class GettextTranslator implements TranslatorInterface
 
     public function npgettext(string $context, string $original, string $plural, int $value): string
     {
-        $message = $context."\x04".$original;
+        $message = $context . "\x04" . $original;
         $translation = ngettext($message, $plural, $value);
 
         return ($translation === $message) ? $original : $translation;
@@ -88,7 +88,7 @@ class GettextTranslator implements TranslatorInterface
 
     public function pgettext(string $context, string $original): string
     {
-        $message = $context."\x04".$original;
+        $message = $context . "\x04" . $original;
         $translation = gettext($message);
 
         return ($translation === $message) ? $original : $translation;
@@ -101,7 +101,7 @@ class GettextTranslator implements TranslatorInterface
 
     public function dpgettext(string $domain, string $context, string $original): string
     {
-        $message = $context."\x04".$original;
+        $message = $context . "\x04" . $original;
         $translation = dgettext($domain, $message);
 
         return ($translation === $message) ? $original : $translation;
@@ -109,7 +109,7 @@ class GettextTranslator implements TranslatorInterface
 
     public function dnpgettext(string $domain, string $context, string $original, string $plural, int $value): string
     {
-        $message = $context."\x04".$original;
+        $message = $context . "\x04" . $original;
         $translation = dngettext($domain, $message, $plural, $value);
 
         return ($translation === $message) ? $original : $translation;

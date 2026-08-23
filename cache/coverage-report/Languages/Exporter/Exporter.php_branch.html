@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Coverage for /home/morpheus/gettext/src/Languages/Exporter/Exporter.php</title>
+  <link rel="stylesheet" href="../../_css/style.css?v=14.3.1">
+  <link rel="stylesheet" href="../../_css/custom.css">
+ </head>
+ <body>
+  <header class="masthead">
+   <nav aria-label="Breadcrumb">
+    <ol class="breadcrumbs">
+     <li><a href="../../index.html">/home/morpheus/gettext/src</a></li>
+     <li><a href="../index.html">Languages</a></li>
+     <li><a href="index.html">Exporter</a></li>
+     <li class="current">Exporter.php</li>
+    </ol>
+   </nav>
+   <ul class="tabs">
+    <li><a href="../../index.html" aria-current="page">Files</a></li>
+    <li><a href="../../_classes/Languages/Exporter/Exporter.html">Classes</a></li>
+   </ul>
+  </header>
+  <main>
+   <ul class="tabs">
+    <li><a href="Exporter.php.html">Line Coverage</a></li>
+    <li><a href="Exporter.php_branch.html" aria-current="page">Branch Coverage</a></li>
+    <li><a href="Exporter.php_path.html">Path Coverage</a></li>
+   </ul>
+   <div class="summary" data-coverage="{&quot;linesTotal&quot;:37,&quot;linesAll&quot;:7,&quot;methodsTotal&quot;:9,&quot;methodsAll&quot;:0,&quot;classesTotal&quot;:1,&quot;classesAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;classesSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;classesMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;classesLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;classesSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;classesSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;classesML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0,&quot;classesSML&quot;:0}">
+    <div class="metric" data-metric="lines-card" data-level="danger">
+     <span class="metric-name">Lines</span>
+     <span class="metric-percentage" data-metric="lines-percent" data-level="danger">18.91%</span>
+     <span class="metric-bar" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 18.91%"></span></span></span>
+     <span class="metric-count" data-metric="lines-number" data-level="danger">7 / 37</span>
+    </div>
+    <div class="metric" data-metric="branches-card" data-level="danger">
+     <span class="metric-name">Branches</span>
+     <span class="metric-percentage" data-metric="branches-percent" data-level="danger">26.19%</span>
+     <span class="metric-bar" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 26.19%"></span></span></span>
+     <span class="metric-count" data-metric="branches-number" data-level="danger">11 / 42</span>
+    </div>
+    <div class="metric" data-metric="paths-card" data-level="danger">
+     <span class="metric-name">Paths</span>
+     <span class="metric-percentage" data-metric="paths-percent" data-level="danger">1.38%</span>
+     <span class="metric-bar" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 1.38%"></span></span></span>
+     <span class="metric-count" data-metric="paths-number" data-level="danger">1 / 72</span>
+    </div>
+    <div class="metric" data-metric="methods-card" data-level="danger">
+     <span class="metric-name">Functions and Methods</span>
+     <span class="metric-percentage" data-metric="methods-percent" data-level="danger">0.00%</span>
+     <span class="metric-bar" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></span>
+     <span class="metric-count" data-metric="methods-number" data-level="danger">0 / 9</span>
+    </div>
+    <div class="metric" data-metric="classes-card" data-level="danger">
+     <span class="metric-name">Classes and Traits</span>
+     <span class="metric-percentage" data-metric="classes-percent" data-level="danger">0.00%</span>
+     <span class="metric-bar" data-metric="classes-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></span>
+     <span class="metric-count" data-metric="classes-number" data-level="danger">0 / 1</span>
+    </div>
+   </div>
+   <div class="table-scroll">
+    <table class="coverage">
+     <thead>
+      <tr>
+       <th scope="col" class="name">Name</th>
+       <th scope="colgroup" colspan="3">Lines</th>
+       <th scope="colgroup" colspan="3">Branches</th>
+       <th scope="colgroup" colspan="3">Paths</th>
+       <th scope="colgroup" colspan="3">Functions and Methods</th>
+       <th scope="col" class="crap"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+       <th scope="colgroup" colspan="3">Classes and Traits</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr data-coverage="{&quot;linesTotal&quot;:37,&quot;linesAll&quot;:7,&quot;methodsTotal&quot;:9,&quot;methodsAll&quot;:0,&quot;classesTotal&quot;:1,&quot;classesAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;classesSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;classesMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;classesLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;classesSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;classesSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;classesML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0,&quot;classesSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 18.91%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">18.91%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">7 / 37</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 26.19%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">26.19%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">11 / 42</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 1.38%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">1.38%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">1 / 72</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 9</td>
+       <td class="crap" data-level="danger">576.33</td>
+       <td class="bar-cell" data-metric="classes-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="classes-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="classes-number" data-level="danger">0 / 1</td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:15,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#24"><abbr title="getExporters($onlyForPublicUse)">getExporters</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 15</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 17</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 30</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">72</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:4,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#61"><abbr title="getExporterDescription($exporterHandle)">getExporterDescription</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 4</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 3</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 2</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">6</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:1,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#78"><abbr title="getExporterClassName($exporterHandle)">getExporterClassName</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">2</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:8,&quot;linesAll&quot;:7,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="warning">&nbsp;<a href="#91"><abbr title="toString($languages, $options)">toString</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="warning"><span class="bar" aria-hidden="true"><span style="width: 87.50%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="warning">87.50%</td>
+       <td class="count" data-metric="lines-number" data-level="warning">7 / 8</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="success"><span class="bar" aria-hidden="true"><span style="width: 91.66%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="success">91.66%</td>
+       <td class="count" data-metric="branches-number" data-level="success">11 / 12</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 3.12%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">3.12%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">1 / 32</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">38.73</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:3,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#115"><abbr title="toFile($languages, $filename, $options)">toFile</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 3</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 3</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 2</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">6</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:1,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#128"><abbr title="isForPublicUse()">isForPublicUse</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">2</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:1,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#138"><abbr title="supportsFormulasWithAndWithoutParenthesis()">supportsFormulasWithAndWithoutParenthesis</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">2</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:1,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#148"><abbr title="getDescription()">getDescription</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 1</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">2</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+      <tr data-coverage="{&quot;linesTotal&quot;:3,&quot;linesAll&quot;:0,&quot;methodsTotal&quot;:1,&quot;methodsAll&quot;:0,&quot;linesSmall&quot;:0,&quot;methodsSmall&quot;:0,&quot;linesMedium&quot;:0,&quot;methodsMedium&quot;:0,&quot;linesLarge&quot;:0,&quot;methodsLarge&quot;:0,&quot;linesSM&quot;:0,&quot;methodsSM&quot;:0,&quot;linesSL&quot;:0,&quot;methodsSL&quot;:0,&quot;linesML&quot;:0,&quot;methodsML&quot;:0,&quot;linesSML&quot;:0,&quot;methodsSML&quot;:0}">
+       <th scope="row" class="name" data-metric="lines-name" data-level="danger">&nbsp;<a href="#161"><abbr title="toStringDoWithOptions($languages, array $options)">toStringDoWithOptions</abbr></a></th>
+       <td class="bar-cell" data-metric="lines-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="lines-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="lines-number" data-level="danger">0 / 3</td>
+       <td class="bar-cell" data-metric="branches-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="branches-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="branches-number" data-level="danger">0 / 3</td>
+       <td class="bar-cell" data-metric="paths-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="paths-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="paths-number" data-level="danger">0 / 2</td>
+       <td class="bar-cell" data-metric="methods-bar" data-level="danger"><span class="bar" aria-hidden="true"><span style="width: 0.00%"></span></span></td>
+       <td class="percentage" data-metric="methods-percent" data-level="danger">0.00%</td>
+       <td class="count" data-metric="methods-number" data-level="danger">0 / 1</td>
+       <td class="crap" data-level="danger">6</td>
+       <td colspan="3" data-level="danger"></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <table class="source with-hit-counts">
+    <tbody>
+     <tr><td class="line-number"><a id="1" href="#1">1</a></td><td class="hit-count"></td><td class="code"><span class="default">&lt;?php</span></td></tr>
+     <tr><td class="line-number"><a id="2" href="#2">2</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="3" href="#3">3</a></td><td class="hit-count"></td><td class="code"><span class="keyword">namespace</span><span class="default">&nbsp;</span><span class="default">Gettext\Languages\Exporter</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="4" href="#4">4</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="5" href="#5">5</a></td><td class="hit-count"></td><td class="code"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">Exception</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="6" href="#6">6</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="7" href="#7">7</a></td><td class="hit-count"></td><td class="code"><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="8" href="#8">8</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;*&nbsp;Base&nbsp;class&nbsp;for&nbsp;all&nbsp;the&nbsp;exporters.</span></td></tr>
+     <tr><td class="line-number"><a id="9" href="#9">9</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;*/</span></td></tr>
+     <tr><td class="line-number"><a id="10" href="#10">10</a></td><td class="hit-count"></td><td class="code"><span class="keyword">abstract</span><span class="default">&nbsp;</span><span class="keyword">class</span><span class="default">&nbsp;</span><span class="default">Exporter</span></td></tr>
+     <tr><td class="line-number"><a id="11" href="#11">11</a></td><td class="hit-count"></td><td class="code"><span class="keyword">{</span></td></tr>
+     <tr><td class="line-number"><a id="12" href="#12">12</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="13" href="#13">13</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@var&nbsp;array</span></td></tr>
+     <tr><td class="line-number"><a id="14" href="#14">14</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr><td class="line-number"><a id="15" href="#15">15</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">private</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="default">$exporters</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="16" href="#16">16</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="17" href="#17">17</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="18" href="#18">18</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Return&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;the&nbsp;available&nbsp;exporters.&nbsp;Keys&nbsp;are&nbsp;the&nbsp;exporter&nbsp;handles,&nbsp;values&nbsp;are&nbsp;the&nbsp;exporter&nbsp;class&nbsp;names.</span></td></tr>
+     <tr><td class="line-number"><a id="19" href="#19">19</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="20" href="#20">20</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;bool&nbsp;$onlyForPublicUse&nbsp;if&nbsp;true,&nbsp;internal&nbsp;exporters&nbsp;will&nbsp;be&nbsp;omitted</span></td></tr>
+     <tr><td class="line-number"><a id="21" href="#21">21</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="22" href="#22">22</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string[]</span></td></tr>
+     <tr><td class="line-number"><a id="23" href="#23">23</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 24. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="24" href="#24">24</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">final</span><span class="default">&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getExporters</span><span class="keyword">(</span><span class="default">$onlyForPublicUse</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">false</span><span class="keyword">)</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 25. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="25" href="#25">25</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 26. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="26" href="#26">26</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">!</span><span class="keyword">isset</span><span class="keyword">(</span><span class="default">self</span><span class="default">::</span><span class="default">$exporters</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 27. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="27" href="#27">27</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$exporters</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 28. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="28" href="#28">28</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$m</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">null</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 29. These are covering 0 out of the 5 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="29" href="#29">29</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">foreach</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">scandir</span><span class="keyword">(</span><span class="default">__DIR__</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">as</span><span class="default">&nbsp;</span><span class="default">$f</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 30. These are covering 0 out of the 3 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="30" href="#30">30</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">preg_match</span><span class="keyword">(</span><span class="default">'/^(\w+)\.php$/'</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$f</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$m</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 31. These are covering 0 out of the 3 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="31" href="#31">31</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$f</span><span class="default">&nbsp;</span><span class="default">!==</span><span class="default">&nbsp;</span><span class="default">basename</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 32. These are covering 0 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="32" href="#32">32</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$exporters</span><span class="keyword">[</span><span class="default">strtolower</span><span class="keyword">(</span><span class="default">$m</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">]</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$m</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 33. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="33" href="#33">33</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 34. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="34" href="#34">34</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 35. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="35" href="#35">35</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 36. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="36" href="#36">36</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">self</span><span class="default">::</span><span class="default">$exporters</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$exporters</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 37. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="37" href="#37">37</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 38. These are covering 0 out of the 3 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="38" href="#38">38</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$onlyForPublicUse</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 39. These are covering 0 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="39" href="#39">39</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$result</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 40. These are covering 0 out of the 6 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="40" href="#40">40</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">foreach</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">self</span><span class="default">::</span><span class="default">$exporters</span><span class="default">&nbsp;</span><span class="keyword">as</span><span class="default">&nbsp;</span><span class="default">$handle</span><span class="default">&nbsp;</span><span class="default">=&gt;</span><span class="default">&nbsp;</span><span class="default">$class</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 41. These are covering 0 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="41" href="#41">41</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">self</span><span class="default">::</span><span class="default">getExporterClassName</span><span class="keyword">(</span><span class="default">$handle</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">'::isForPublicUse'</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">===</span><span class="default">&nbsp;</span><span class="default">true</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 42. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="42" href="#42">42</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$result</span><span class="keyword">[</span><span class="default">$handle</span><span class="keyword">]</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$class</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="43" href="#43">43</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="44" href="#44">44</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="45" href="#45">45</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span><span class="default">&nbsp;</span><span class="keyword">else</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 46. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="46" href="#46">46</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$result</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">self</span><span class="default">::</span><span class="default">$exporters</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 47. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="47" href="#47">47</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 48. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="48" href="#48">48</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 49. These are covering 0 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="49" href="#49">49</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">$result</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 50. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="50" href="#50">50</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="51" href="#51">51</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="52" href="#52">52</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="53" href="#53">53</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Return&nbsp;the&nbsp;description&nbsp;of&nbsp;a&nbsp;specific&nbsp;exporter.</span></td></tr>
+     <tr><td class="line-number"><a id="54" href="#54">54</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="55" href="#55">55</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$exporterHandle&nbsp;the&nbsp;handle&nbsp;of&nbsp;the&nbsp;exporter</span></td></tr>
+     <tr><td class="line-number"><a id="56" href="#56">56</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="57" href="#57">57</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@throws&nbsp;\Exception&nbsp;throws&nbsp;an&nbsp;Exception&nbsp;if&nbsp;$exporterHandle&nbsp;is&nbsp;not&nbsp;valid</span></td></tr>
+     <tr><td class="line-number"><a id="58" href="#58">58</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="59" href="#59">59</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td class="line-number"><a id="60" href="#60">60</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 61. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="61" href="#61">61</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">final</span><span class="default">&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getExporterDescription</span><span class="keyword">(</span><span class="default">$exporterHandle</span><span class="keyword">)</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 62. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="62" href="#62">62</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 63. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="63" href="#63">63</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$exporters</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">self</span><span class="default">::</span><span class="default">getExporters</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 64. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="64" href="#64">64</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">!</span><span class="keyword">isset</span><span class="keyword">(</span><span class="default">$exporters</span><span class="keyword">[</span><span class="default">$exporterHandle</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 65. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="65" href="#65">65</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">throw</span><span class="default">&nbsp;</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">Exception</span><span class="keyword">(</span><span class="string">&quot;</span><span class="string">Invalid&nbsp;exporter&nbsp;handle:&nbsp;'</span><span class="string">{</span><span class="string">$exporterHandle</span><span class="keyword">}</span><span class="string">'</span><span class="string">&quot;</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="66" href="#66">66</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="67" href="#67">67</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 68. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="68" href="#68">68</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">self</span><span class="default">::</span><span class="default">getExporterClassName</span><span class="keyword">(</span><span class="default">$exporterHandle</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">'::getDescription'</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 69. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="69" href="#69">69</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="70" href="#70">70</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="71" href="#71">71</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="72" href="#72">72</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;the&nbsp;fully&nbsp;qualified&nbsp;class&nbsp;name&nbsp;of&nbsp;a&nbsp;exporter&nbsp;given&nbsp;its&nbsp;handle.</span></td></tr>
+     <tr><td class="line-number"><a id="73" href="#73">73</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="74" href="#74">74</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$exporterHandle&nbsp;the&nbsp;exporter&nbsp;class&nbsp;handle</span></td></tr>
+     <tr><td class="line-number"><a id="75" href="#75">75</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="76" href="#76">76</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td class="line-number"><a id="77" href="#77">77</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 78. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="78" href="#78">78</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">final</span><span class="default">&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getExporterClassName</span><span class="keyword">(</span><span class="default">$exporterHandle</span><span class="keyword">)</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 79. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="79" href="#79">79</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 80. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="80" href="#80">80</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">__NAMESPACE__</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">'\\'</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">ucfirst</span><span class="keyword">(</span><span class="default">strtolower</span><span class="keyword">(</span><span class="default">$exporterHandle</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 81. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="81" href="#81">81</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="82" href="#82">82</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="83" href="#83">83</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="84" href="#84">84</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Convert&nbsp;a&nbsp;list&nbsp;of&nbsp;Language&nbsp;instances&nbsp;to&nbsp;string.</span></td></tr>
+     <tr><td class="line-number"><a id="85" href="#85">85</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="86" href="#86">86</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;\Gettext\Languages\Language[]&nbsp;$languages&nbsp;the&nbsp;Language&nbsp;instances&nbsp;to&nbsp;convert</span></td></tr>
+     <tr><td class="line-number"><a id="87" href="#87">87</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array|null&nbsp;$options</span></td></tr>
+     <tr><td class="line-number"><a id="88" href="#88">88</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="89" href="#89">89</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td class="line-number"><a id="90" href="#90">90</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 91. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="91" href="#91">91</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">final</span><span class="default">&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">toString</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">null</span><span class="keyword">)</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 92. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="92" href="#92">92</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 93. These are covering 3 out of the 3 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="93" href="#93">93</a></td><td class="hit-count"><span class="branch-hit">&bull;</span><span class="branch-hit">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">!</span><span class="keyword">isset</span><span class="keyword">(</span><span class="default">$options</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">||</span><span class="default">&nbsp;</span><span class="keyword">!</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$options</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 94. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="94" href="#94">94</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$options</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 95. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="95" href="#95">95</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="warning popin" data-popover-title="1 test covers line 96. These are covering 3 out of the 4 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="96" href="#96">96</a></td><td class="hit-count"><span class="branch-hit">&bull;</span><span class="branch-hit">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">isset</span><span class="keyword">(</span><span class="default">$options</span><span class="keyword">[</span><span class="default">'us-ascii'</span><span class="keyword">]</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">&amp;&amp;</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="keyword">[</span><span class="default">'us-ascii'</span><span class="keyword">]</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 97. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="97" href="#97">97</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$asciiList</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 98. These are covering 4 out of the 4 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="98" href="#98">98</a></td><td class="hit-count"><span class="branch-hit">&bull;</span><span class="branch-hit">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">foreach</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$languages</span><span class="default">&nbsp;</span><span class="keyword">as</span><span class="default">&nbsp;</span><span class="default">$language</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 99. These are covering 2 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="99" href="#99">99</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$asciiList</span><span class="keyword">[</span><span class="keyword">]</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$language</span><span class="default">-&gt;</span><span class="default">getUSAsciiClone</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 100. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="100" href="#100">100</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 101. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="101" href="#101">101</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$languages</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$asciiList</span><span class="keyword">;</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 102. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="102" href="#102">102</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 103. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="103" href="#103">103</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 104. These are covering 2 out of the 2 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="104" href="#104">104</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">::</span><span class="default">toStringDoWithOptions</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="success popin" data-popover-title="1 test covers line 105. These are covering 1 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;"><td class="line-number"><a id="105" href="#105">105</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="106" href="#106">106</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="107" href="#107">107</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="108" href="#108">108</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Save&nbsp;the&nbsp;Language&nbsp;instances&nbsp;to&nbsp;a&nbsp;file.</span></td></tr>
+     <tr><td class="line-number"><a id="109" href="#109">109</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="110" href="#110">110</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;\Gettext\Languages\Language[]&nbsp;$languages&nbsp;the&nbsp;Language&nbsp;instances&nbsp;to&nbsp;convert</span></td></tr>
+     <tr><td class="line-number"><a id="111" href="#111">111</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array|null&nbsp;$options</span></td></tr>
+     <tr><td class="line-number"><a id="112" href="#112">112</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="113" href="#113">113</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@throws&nbsp;\Exception</span></td></tr>
+     <tr><td class="line-number"><a id="114" href="#114">114</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 115. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="115" href="#115">115</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">final</span><span class="default">&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">toFile</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$filename</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">null</span><span class="keyword">)</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 116. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="116" href="#116">116</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 117. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="117" href="#117">117</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$data</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">self</span><span class="default">::</span><span class="default">toString</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 118. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="118" href="#118">118</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="keyword">@</span><span class="default">file_put_contents</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$data</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="default">===</span><span class="default">&nbsp;</span><span class="default">false</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 119. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="119" href="#119">119</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">throw</span><span class="default">&nbsp;</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">Exception</span><span class="keyword">(</span><span class="string">&quot;</span><span class="string">Error&nbsp;writing&nbsp;data&nbsp;to&nbsp;'</span><span class="string">{</span><span class="string">$filename</span><span class="keyword">}</span><span class="string">'</span><span class="string">&quot;</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="120" href="#120">120</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 121. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="121" href="#121">121</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="122" href="#122">122</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="123" href="#123">123</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="124" href="#124">124</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Is&nbsp;this&nbsp;exporter&nbsp;for&nbsp;public&nbsp;use?</span></td></tr>
+     <tr><td class="line-number"><a id="125" href="#125">125</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="126" href="#126">126</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;bool</span></td></tr>
+     <tr><td class="line-number"><a id="127" href="#127">127</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr><td class="line-number"><a id="128" href="#128">128</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">isForPublicUse</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
+     <tr><td class="line-number"><a id="129" href="#129">129</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 130. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="130" href="#130">130</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">true</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 131. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="131" href="#131">131</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="132" href="#132">132</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="133" href="#133">133</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="134" href="#134">134</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Does&nbsp;this&nbsp;exporter&nbsp;supports&nbsp;exporting&nbsp;formulas&nbsp;both&nbsp;with&nbsp;and&nbsp;without&nbsp;extra&nbsp;parenthesis?</span></td></tr>
+     <tr><td class="line-number"><a id="135" href="#135">135</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="136" href="#136">136</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;bool</span></td></tr>
+     <tr><td class="line-number"><a id="137" href="#137">137</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr><td class="line-number"><a id="138" href="#138">138</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">supportsFormulasWithAndWithoutParenthesis</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
+     <tr><td class="line-number"><a id="139" href="#139">139</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 140. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="140" href="#140">140</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">false</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 141. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="141" href="#141">141</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="142" href="#142">142</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="143" href="#143">143</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="144" href="#144">144</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Return&nbsp;a&nbsp;short&nbsp;description&nbsp;of&nbsp;the&nbsp;exporter.</span></td></tr>
+     <tr><td class="line-number"><a id="145" href="#145">145</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="146" href="#146">146</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td class="line-number"><a id="147" href="#147">147</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr><td class="line-number"><a id="148" href="#148">148</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getDescription</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
+     <tr><td class="line-number"><a id="149" href="#149">149</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 150. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="150" href="#150">150</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">throw</span><span class="default">&nbsp;</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">Exception</span><span class="keyword">(</span><span class="default">get_called_class</span><span class="keyword">(</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">'&nbsp;does&nbsp;not&nbsp;implement&nbsp;the&nbsp;method&nbsp;'</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">__FUNCTION__</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 151. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="151" href="#151">151</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="152" href="#152">152</a></td><td class="hit-count"></td><td class="code"></td></tr>
+     <tr><td class="line-number"><a id="153" href="#153">153</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td class="line-number"><a id="154" href="#154">154</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Convert&nbsp;a&nbsp;list&nbsp;of&nbsp;Language&nbsp;instances&nbsp;to&nbsp;string.</span></td></tr>
+     <tr><td class="line-number"><a id="155" href="#155">155</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="156" href="#156">156</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;\Gettext\Languages\Language[]&nbsp;$languages&nbsp;the&nbsp;Language&nbsp;instances&nbsp;to&nbsp;convert</span></td></tr>
+     <tr><td class="line-number"><a id="157" href="#157">157</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&nbsp;$options&nbsp;export&nbsp;options</span></td></tr>
+     <tr><td class="line-number"><a id="158" href="#158">158</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+     <tr><td class="line-number"><a id="159" href="#159">159</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td class="line-number"><a id="160" href="#160">160</a></td><td class="hit-count"></td><td class="code"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 161. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="161" href="#161">161</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">protected</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">toStringDoWithOptions</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="default">&nbsp;</span><span class="default">$options</span><span class="keyword">)</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 162. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="162" href="#162">162</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 163. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="163" href="#163">163</a></td><td class="hit-count"><span class="branch-miss">&bull;</span><span class="branch-miss">&bull;</span></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">get_called_class</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">'toStringDo'</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 164. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="164" href="#164">164</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">::</span><span class="default">toStringDo</span><span class="keyword">(</span><span class="default">$languages</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td class="line-number"><a id="165" href="#165">165</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 166. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="166" href="#166">166</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">throw</span><span class="default">&nbsp;</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">Exception</span><span class="keyword">(</span><span class="default">get_called_class</span><span class="keyword">(</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">'&nbsp;does&nbsp;not&nbsp;implement&nbsp;the&nbsp;method&nbsp;'</span><span class="default">&nbsp;</span><span class="keyword">.</span><span class="default">&nbsp;</span><span class="default">__FUNCTION__</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr class="danger popin" data-popover-title="0 tests cover line 167. These are covering 0 out of the 1 code branches." data-popover-content="&lt;ul&gt;&lt;/ul&gt;"><td class="line-number"><a id="167" href="#167">167</a></td><td class="hit-count"></td><td class="code"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td class="line-number"><a id="168" href="#168">168</a></td><td class="hit-count"></td><td class="code"><span class="keyword">}</span></td></tr>
+    </tbody>
+   </table>
+   <section class="structure">
+    <h2>Branches</h2>
+    <p>
+     Below are the source code lines that represent each code branch as identified by Xdebug. Please note a branch is not
+     necessarily coterminous with a line, a line may contain multiple branches and therefore show up more than once.
+     Please also be aware that some branches may be implicit rather than explicit, e.g. an <code>if</code> statement
+     <i>always</i> has an <code>else</code> as part of its logical flow even if you didn't write one.
+    </p>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;getExporters"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->getExporters</a> <span class="badge danger">0/17</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#24">L24</a>&ndash;<a href="#26">L26</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>2</td><td><a href="#27">L27</a>&ndash;<a href="#29">L29</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>3</td><td><a href="#29">L29</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>4</td><td><a href="#30">L30</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>5</td><td><a href="#31">L31</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>6</td><td><a href="#29">L29</a>&ndash;<a href="#32">L32</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>7</td><td><a href="#29">L29</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>8</td><td><a href="#29">L29</a>&ndash;<a href="#38">L38</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>9</td><td><a href="#38">L38</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>10</td><td><a href="#39">L39</a>&ndash;<a href="#40">L40</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>11</td><td><a href="#40">L40</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>12</td><td><a href="#40">L40</a>&ndash;<a href="#41">L41</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>13</td><td><a href="#40">L40</a>&ndash;<a href="#42">L42</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>14</td><td><a href="#40">L40</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>15</td><td><a href="#38">L38</a>&ndash;<a href="#40">L40</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>16</td><td><a href="#46">L46</a>&ndash;<a href="#49">L49</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>17</td><td><a href="#49">L49</a>&ndash;<a href="#50">L50</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;getExporterDescription"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->getExporterDescription</a> <span class="badge danger">0/3</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#61">L61</a>&ndash;<a href="#64">L64</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>2</td><td><a href="#65">L65</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>3</td><td><a href="#68">L68</a>&ndash;<a href="#69">L69</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;getExporterClassName"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->getExporterClassName</a> <span class="badge danger">0/1</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#78">L78</a>&ndash;<a href="#81">L81</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;toString"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->toString</a> <span class="badge warning">11/12</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="success"><td>1</td><td><a href="#91">L91</a>&ndash;<a href="#93">L93</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>2</td><td><a href="#93">L93</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>3</td><td><a href="#93">L93</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="danger"><td>4</td><td><a href="#94">L94</a>&ndash;<a href="#96">L96</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="success"><td>5</td><td><a href="#96">L96</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>6</td><td><a href="#96">L96</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>7</td><td><a href="#96">L96</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>8</td><td><a href="#97">L97</a>&ndash;<a href="#98">L98</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>9</td><td><a href="#98">L98</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>10</td><td><a href="#98">L98</a>&ndash;<a href="#99">L99</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>11</td><td><a href="#98">L98</a>&ndash;<a href="#104">L104</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+     <tr class="success"><td>12</td><td><a href="#104">L104</a>&ndash;<a href="#105">L105</a></td><td>Covered</td><td><button type="button" class="popin" data-popover-title="1 test" data-popover-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Gettext\Languages\USAsciiTest::testExportUSAscii&lt;/li&gt;&lt;/ul&gt;">1 test</button></td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;toFile"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->toFile</a> <span class="badge danger">0/3</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#115">L115</a>&ndash;<a href="#118">L118</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>2</td><td><a href="#119">L119</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>3</td><td><a href="#121">L121</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;isForPublicUse"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->isForPublicUse</a> <span class="badge danger">0/1</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#130">L130</a>&ndash;<a href="#131">L131</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;supportsFormulasWithAndWithoutParenthesis"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->supportsFormulasWithAndWithoutParenthesis</a> <span class="badge danger">0/1</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#140">L140</a>&ndash;<a href="#141">L141</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;getDescription"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->getDescription</a> <span class="badge danger">0/1</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#150">L150</a>&ndash;<a href="#151">L151</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   <h3 class="structure-heading"><a name="Gettext\Languages\Exporter\Exporter-&gt;toStringDoWithOptions"><abbr title="Gettext\Languages\Exporter\Exporter">Exporter</abbr>->toStringDoWithOptions</a> <span class="badge danger">0/3</span></h3>
+   <table class="structure-table">
+    <thead><tr><th>#</th><th>Lines</th><th>Status</th><th>Tests</th></tr></thead>
+    <tbody>
+     <tr class="danger"><td>1</td><td><a href="#161">L161</a>&ndash;<a href="#163">L163</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>2</td><td><a href="#164">L164</a></td><td>Not covered</td><td>&mdash;</td></tr>
+     <tr class="danger"><td>3</td><td><a href="#166">L166</a>&ndash;<a href="#167">L167</a></td><td>Not covered</td><td>&mdash;</td></tr>
+    </tbody>
+   </table>
+   </section>
+  </main>
+  <a class="to-top" href="#" title="Back to the top" hidden>
+   <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 3.5 14 11H2z"/></svg>
+   <span class="visually-hidden">Back to the top</span>
+  </a>
+  <footer>
+   <ul class="legend">
+    <li class="success">Fully covered</li>
+    <li class="warning">Partially covered</li>
+    <li class="danger">Not covered</li>
+   </ul>
+   <p class="credits">Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 14.3.1</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.24</a> and <a href="https://phpunit.de/">PHPUnit 13.3.1</a> at Sun Aug 23 11:53:17 UTC 2026.</p>
+  </footer>
+  <script src="../../_js/coverage-table.js?v=14.3.1" defer></script>
+  <script src="../../_js/source-view.js?v=14.3.1" defer></script>
+ </body>
+</html>

@@ -25,11 +25,17 @@ final class ArrayLoader extends Loader
         throw new BadMethodCallException('Arrays cannot be loaded from string. Use ArrayLoader::loadFile() instead');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private static function includeSafe($filename): array
     {
         return include $filename;
     }
 
+    /**
+     * @param array<string, mixed> $array
+     */
     public function loadArray(array $array, ?Translations $translations = null): Translations
     {
         if (!$translations) {

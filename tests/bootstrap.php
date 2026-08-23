@@ -8,7 +8,8 @@ define('GETTEXT_LANGUAGES_TESTROOTDIR', str_replace(DIRECTORY_SEPARATOR, '/', di
 define('GETTEXT_LANGUAGES_TESTDIR', str_replace(DIRECTORY_SEPARATOR, '/', __DIR__));
 
 $cmd = defined('PHP_BINARY') && PHP_BINARY ? escapeshellarg(PHP_BINARY) : 'php';
-$cmd .= ' ' . escapeshellarg(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'export-plural-rules');
+$exportPluralRules = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'export-plural-rules';
+$cmd .= ' ' . escapeshellarg($exportPluralRules);
 
 $execOutput = [];
 $rc = -1;

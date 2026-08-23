@@ -18,7 +18,7 @@ class JsFunctionsScannerTest extends TestCase
     public function testJsFunctionsExtractor()
     {
         $scanner = new JsFunctionsScanner();
-        $file = __DIR__.'/../assets/functions.js';
+        $file = __DIR__ . '/../assets/functions.js';
         $code = file_get_contents($file);
         $functions = $scanner->scan($code, $file);
 

@@ -9,5 +9,8 @@ namespace Gettext;
  */
 interface FormatterInterface
 {
+    /**
+     * @param list<mixed> $args
+     */
     public function format(string $text, array $args): string;
 }

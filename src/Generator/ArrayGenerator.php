@@ -52,7 +52,7 @@ final class ArrayGenerator extends AbstractGenerator
     /**
      * Constructs a new ArrayGenerator.
      *
-     * @param array|null $options Optional configuration:
+     * @param array<string, bool>|null $options Optional configuration:
      *   - 'includeEmpty' (bool): include empty translations, default false
      *   - 'strictTypes' (bool): add `declare(strict_types=1)`, default false
      *   - 'pretty' (bool): pretty-print the array, default false
@@ -86,7 +86,7 @@ final class ArrayGenerator extends AbstractGenerator
      * Generates an array representation of the given translations.
      *
      * @param Translations $translations The translations to convert
-     * @return array Structured array containing domain, plural forms, and messages
+     * @return array<string, mixed> Structured array containing domain, plural forms, and messages
      */
     public function generateArray(Translations $translations): array
     {
@@ -135,7 +135,7 @@ final class ArrayGenerator extends AbstractGenerator
     /**
      * Pretty-prints an array as a PHP string.
      *
-     * @param array $array The array to pretty-print
+     * @param array<array-key, mixed> $array The array to pretty-print
      * @return string PHP code string
      */
     private static function prettyExport(array $array): string
@@ -146,7 +146,7 @@ final class ArrayGenerator extends AbstractGenerator
     /**
      * Recursively pretty-prints an array with indentation.
      *
-     * @param array $array The array to pretty-print
+     * @param array<array-key, mixed> $array The array to pretty-print
      * @param int $depth Current recursion depth for indentation
      * @return string Pretty-printed PHP code
      */
@@ -191,7 +191,7 @@ final class ArrayGenerator extends AbstractGenerator
     /**
      * Checks whether an array is a list (sequential keys starting from 0).
      *
-     * @param array $value Array to check
+     * @param array<array-key, mixed> $value Array to check
      * @return bool True if the array is a list, false otherwise
      */
     private static function isList(array $value): bool

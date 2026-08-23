@@ -60,6 +60,9 @@ class Translation
         $this->extractedComments = clone $this->extractedComments;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -197,6 +200,9 @@ class Translation
         return $this;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getPluralTranslations(?int $size = null): array
     {
         if ($size === null) {

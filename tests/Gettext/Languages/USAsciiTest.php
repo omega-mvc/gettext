@@ -33,7 +33,11 @@ class USAsciiTest extends TestCase
     {
         switch (gettype($value)) {
             case 'string':
-                $this->assertSame(1, preg_match('/^[\x20-\x7F\n]*$/s', $value), "The string at {$key} does not contain only US-ASCII characters: {$value}");
+                $this->assertSame(
+                    1,
+                    preg_match('/^[\x20-\x7F\n]*$/s', $value),
+                    "The string at {$key} does not contain only US-ASCII characters: {$value}"
+                );
                 break;
             case 'array':
                 foreach ($value as $valueKey => $valueValue) {
@@ -44,7 +48,7 @@ class USAsciiTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     private function getExportedPhpArray()
     {

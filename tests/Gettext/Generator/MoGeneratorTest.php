@@ -67,7 +67,7 @@ class MoGeneratorTest extends TestCase
         $translations->add($translation);
 
         $mo = $generator->generateString($translations);
-        $expected = file_get_contents(__DIR__.'/../assets/mo-generator-result.mo');
+        $expected = file_get_contents(__DIR__ . '/../assets/mo-generator-result.mo');
 
         $this->assertSame($expected, $mo);
 

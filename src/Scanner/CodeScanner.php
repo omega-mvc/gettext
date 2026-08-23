@@ -21,7 +21,7 @@ abstract class CodeScanner extends Scanner
     protected $functions = [];
 
     /**
-     * @param array $functions [fnName => handler]
+     * @param array<string, mixed> $functions [fnName => handler]
      */
     public function setFunctions(array $functions): self
     {
@@ -31,7 +31,7 @@ abstract class CodeScanner extends Scanner
     }
 
     /**
-     * @return array [fnName => handler]
+     * @return array<string, mixed> [fnName => handler]
      */
     public function getFunctions(): array
     {

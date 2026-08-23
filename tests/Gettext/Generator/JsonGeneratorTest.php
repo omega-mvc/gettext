@@ -36,7 +36,10 @@ class JsonGeneratorTest extends TestCase
         $translations = Translations::create('testingdomain');
         $translations->setLanguage('ru');
 
-        $translation = Translation::create(null, 'Ensure this value has at least %(limit_value)d character (it has %sd).');
+        $translation = Translation::create(
+            null,
+            'Ensure this value has at least %(limit_value)d character (it has %sd).'
+        );
         $translations->add($translation);
 
         $translation = Translation::create(null, '%ss must be unique for %ss %ss.');
@@ -52,7 +55,7 @@ class JsonGeneratorTest extends TestCase
         $generator->jsonOptions(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
         $json = $generator->generateString($translations);
-        $expected = file_get_contents(__DIR__.'/../assets/translations.json');
+        $expected = file_get_contents(__DIR__ . '/../assets/translations.json');
 
         $this->assertSame($expected, $json);
     }

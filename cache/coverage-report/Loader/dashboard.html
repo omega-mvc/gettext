@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard for /home/morpheus/gettext/src/Loader</title>
+  <link rel="stylesheet" href="../_css/style.css?v=14.3.1">
+  <link rel="stylesheet" href="../_css/custom.css">
+ </head>
+ <body>
+  <header class="masthead">
+   <nav aria-label="Breadcrumb">
+    <ol class="breadcrumbs">
+     <li><a href="../index.html">/home/morpheus/gettext/src</a></li>
+     <li><a href="index.html">Loader</a></li>
+     <li class="current">Dashboard</li>
+    </ol>
+   </nav>
+   <ul class="tabs">
+    <li><a href="../index.html" aria-current="page">Files</a></li>
+    <li><a href="../_classes/dashboard.html">Classes</a></li>
+   </ul>
+  </header>
+  <main class="dashboard">
+   <section>
+    <h2>Classes</h2>
+    <div class="panel">
+     <div class="chart">
+      <p class="hint">Line coverage against cyclomatic complexity. Bubble size is the number of executable lines; hover for details, click to navigate.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+ <style>
+  .bubble-success { fill: var(--coverage-success-bar); opacity: 0.7; }
+  .bubble-warning { fill: var(--coverage-warning-bar); opacity: 0.7; }
+  .bubble-danger { fill: var(--coverage-danger-bar); opacity: 0.7; }
+  .bubble-success:hover, .bubble-warning:hover, .bubble-danger:hover { opacity: 1; stroke: var(--text); stroke-width: 1.5; }
+  .chart-grid { stroke: var(--border); stroke-width: 0.5; stroke-dasharray: 4,4; opacity: 0.5; }
+  .chart-axis { stroke: var(--border); stroke-width: 1; }
+  .chart-label { fill: var(--text); font-size: 11px; font-family: var(--font-sans); }
+  .chart-title { fill: var(--text); font-size: 12px; font-family: var(--font-sans); }
+ </style>
+ <line x1="60.0" y1="20" x2="60.0" y2="350" class="chart-grid"/>
+ <text x="60.0" y="368" text-anchor="middle" class="chart-label">0%</text>
+ <line x1="204.0" y1="20" x2="204.0" y2="350" class="chart-grid"/>
+ <text x="204.0" y="368" text-anchor="middle" class="chart-label">20%</text>
+ <line x1="348.0" y1="20" x2="348.0" y2="350" class="chart-grid"/>
+ <text x="348.0" y="368" text-anchor="middle" class="chart-label">40%</text>
+ <line x1="492.0" y1="20" x2="492.0" y2="350" class="chart-grid"/>
+ <text x="492.0" y="368" text-anchor="middle" class="chart-label">60%</text>
+ <line x1="636.0" y1="20" x2="636.0" y2="350" class="chart-grid"/>
+ <text x="636.0" y="368" text-anchor="middle" class="chart-label">80%</text>
+ <line x1="780.0" y1="20" x2="780.0" y2="350" class="chart-grid"/>
+ <text x="780.0" y="368" text-anchor="middle" class="chart-label">100%</text>
+ <line x1="60" y1="350.0" x2="780" y2="350.0" class="chart-grid"/>
+ <text x="52" y="350.0" text-anchor="end" dominant-baseline="middle" class="chart-label">0</text>
+ <line x1="60" y1="240.0" x2="780" y2="240.0" class="chart-grid"/>
+ <text x="52" y="240.0" text-anchor="end" dominant-baseline="middle" class="chart-label">50</text>
+ <line x1="60" y1="130.0" x2="780" y2="130.0" class="chart-grid"/>
+ <text x="52" y="130.0" text-anchor="end" dominant-baseline="middle" class="chart-label">100</text>
+ <line x1="60" y1="20.0" x2="780" y2="20.0" class="chart-grid"/>
+ <text x="52" y="20.0" text-anchor="end" dominant-baseline="middle" class="chart-label">150</text>
+ <line x1="60" y1="20" x2="60" y2="350" class="chart-axis"/>
+ <line x1="60" y1="350" x2="780" y2="350" class="chart-axis"/>
+ <text x="420.0" y="395" text-anchor="middle" class="chart-title">Line Coverage (%)</text>
+ <text x="15" y="185.0" text-anchor="middle" transform="rotate(-90, 15, 185.0)" class="chart-title">Cyclomatic Complexity</text>
+ <a href="StrictPoLoader.php.html#14"><circle cx="730.2" cy="134.4" r="20.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader — Coverage: 93.1% | Lines: 213 | Complexity: 98</title></circle></a>
+ <a href="PoLoader.php.html#13"><circle cx="675.0" cy="251.0" r="15.6" class="bubble-warning"><title>Gettext\Loader\PoLoader — Coverage: 85.4% | Lines: 129 | Complexity: 45</title></circle></a>
+ <a href="MoLoader.php.html#13"><circle cx="647.4" cy="308.2" r="10.4" class="bubble-warning"><title>Gettext\Loader\MoLoader — Coverage: 81.6% | Lines: 58 | Complexity: 19</title></circle></a>
+ <a href="ArrayLoader.php.html#14"><circle cx="686.1" cy="323.6" r="6.7" class="bubble-warning"><title>Gettext\Loader\ArrayLoader — Coverage: 87.0% | Lines: 24 | Complexity: 12</title></circle></a>
+ <a href="JsonLoader.php.html#13"><circle cx="745.7" cy="328.0" r="6.4" class="bubble-success"><title>Gettext\Loader\JsonLoader — Coverage: 95.2% | Lines: 22 | Complexity: 10</title></circle></a>
+ <a href="Loader.php.html#14"><circle cx="700.0" cy="332.4" r="4.7" class="bubble-warning"><title>Gettext\Loader\Loader — Coverage: 88.9% | Lines: 12 | Complexity: 8</title></circle></a>
+</svg>
+     </div>
+     <div>
+      <p class="hint">Sorted by descending <abbr title="Change Risk Anti-Patterns">CRAP</abbr> index.</p>
+      <div class="scrollbox">
+     <table class="crap">
+      <thead>
+       <tr>
+        <th scope="col">Class</th>
+        <th scope="col" class="number"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        <th scope="col" class="number">Coverage</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr><td><a href="StrictPoLoader.php.html#14">Gettext\Loader\StrictPoLoader</a></td><td class="number">101.17</td><td class="number">93.1%</td></tr>
+       <tr><td><a href="PoLoader.php.html#13">Gettext\Loader\PoLoader</a></td><td class="number">51.28</td><td class="number">85.4%</td></tr>
+       <tr><td><a href="MoLoader.php.html#13">Gettext\Loader\MoLoader</a></td><td class="number">21.26</td><td class="number">81.6%</td></tr>
+       <tr><td><a href="ArrayLoader.php.html#14">Gettext\Loader\ArrayLoader</a></td><td class="number">12.32</td><td class="number">87.0%</td></tr>
+       <tr><td><a href="JsonLoader.php.html#13">Gettext\Loader\JsonLoader</a></td><td class="number">10</td><td class="number">95.2%</td></tr>
+       <tr><td><a href="Loader.php.html#14">Gettext\Loader\Loader</a></td><td class="number">8.09</td><td class="number">88.9%</td></tr>
+      </tbody>
+     </table>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section>
+    <h2>Methods</h2>
+    <div class="panel">
+     <div class="chart">
+      <p class="hint">Line coverage against cyclomatic complexity. Bubble size is the number of executable lines; hover for details, click to navigate.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+ <style>
+  .bubble-success { fill: var(--coverage-success-bar); opacity: 0.7; }
+  .bubble-warning { fill: var(--coverage-warning-bar); opacity: 0.7; }
+  .bubble-danger { fill: var(--coverage-danger-bar); opacity: 0.7; }
+  .bubble-success:hover, .bubble-warning:hover, .bubble-danger:hover { opacity: 1; stroke: var(--text); stroke-width: 1.5; }
+  .chart-grid { stroke: var(--border); stroke-width: 0.5; stroke-dasharray: 4,4; opacity: 0.5; }
+  .chart-axis { stroke: var(--border); stroke-width: 1; }
+  .chart-label { fill: var(--text); font-size: 11px; font-family: var(--font-sans); }
+  .chart-title { fill: var(--text); font-size: 12px; font-family: var(--font-sans); }
+ </style>
+ <line x1="60.0" y1="20" x2="60.0" y2="350" class="chart-grid"/>
+ <text x="60.0" y="368" text-anchor="middle" class="chart-label">0%</text>
+ <line x1="204.0" y1="20" x2="204.0" y2="350" class="chart-grid"/>
+ <text x="204.0" y="368" text-anchor="middle" class="chart-label">20%</text>
+ <line x1="348.0" y1="20" x2="348.0" y2="350" class="chart-grid"/>
+ <text x="348.0" y="368" text-anchor="middle" class="chart-label">40%</text>
+ <line x1="492.0" y1="20" x2="492.0" y2="350" class="chart-grid"/>
+ <text x="492.0" y="368" text-anchor="middle" class="chart-label">60%</text>
+ <line x1="636.0" y1="20" x2="636.0" y2="350" class="chart-grid"/>
+ <text x="636.0" y="368" text-anchor="middle" class="chart-label">80%</text>
+ <line x1="780.0" y1="20" x2="780.0" y2="350" class="chart-grid"/>
+ <text x="780.0" y="368" text-anchor="middle" class="chart-label">100%</text>
+ <line x1="60" y1="350.0" x2="780" y2="350.0" class="chart-grid"/>
+ <text x="52" y="350.0" text-anchor="end" dominant-baseline="middle" class="chart-label">0</text>
+ <line x1="60" y1="267.5" x2="780" y2="267.5" class="chart-grid"/>
+ <text x="52" y="267.5" text-anchor="end" dominant-baseline="middle" class="chart-label">10</text>
+ <line x1="60" y1="185.0" x2="780" y2="185.0" class="chart-grid"/>
+ <text x="52" y="185.0" text-anchor="end" dominant-baseline="middle" class="chart-label">20</text>
+ <line x1="60" y1="102.5" x2="780" y2="102.5" class="chart-grid"/>
+ <text x="52" y="102.5" text-anchor="end" dominant-baseline="middle" class="chart-label">30</text>
+ <line x1="60" y1="20.0" x2="780" y2="20.0" class="chart-grid"/>
+ <text x="52" y="20.0" text-anchor="end" dominant-baseline="middle" class="chart-label">40</text>
+ <line x1="60" y1="20" x2="60" y2="350" class="chart-axis"/>
+ <line x1="60" y1="350" x2="780" y2="350" class="chart-axis"/>
+ <text x="420.0" y="395" text-anchor="middle" class="chart-title">Line Coverage (%)</text>
+ <text x="15" y="185.0" text-anchor="middle" transform="rotate(-90, 15, 185.0)" class="chart-title">Cyclomatic Complexity</text>
+ <a href="PoLoader.php.html#15"><circle cx="679.8" cy="69.5" r="20.0" class="bubble-warning"><title>Gettext\Loader\PoLoader::loadString — Coverage: 86.1% | Lines: 89 | Complexity: 34</title></circle></a>
+ <a href="MoLoader.php.html#23"><circle cx="646.7" cy="251.0" r="14.5" class="bubble-warning"><title>Gettext\Loader\MoLoader::loadString — Coverage: 81.5% | Lines: 47 | Complexity: 12</title></circle></a>
+ <a href="StrictPoLoader.php.html#249"><circle cx="723.2" cy="226.2" r="13.9" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readComment — Coverage: 92.1% | Lines: 43 | Complexity: 15</title></circle></a>
+ <a href="StrictPoLoader.php.html#43"><circle cx="780.0" cy="267.5" r="10.8" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::loadString — Coverage: 100.0% | Lines: 26 | Complexity: 10</title></circle></a>
+ <a href="StrictPoLoader.php.html#168"><circle cx="733.5" cy="234.5" r="10.8" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readQuotedString — Coverage: 93.5% | Lines: 26 | Complexity: 14</title></circle></a>
+ <a href="StrictPoLoader.php.html#378"><circle cx="724.6" cy="292.2" r="10.2" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readPluralTranslation — Coverage: 92.3% | Lines: 23 | Complexity: 7</title></circle></a>
+ <a href="ArrayLoader.php.html#39"><circle cx="708.0" cy="275.8" r="9.5" class="bubble-success"><title>Gettext\Loader\ArrayLoader::loadArray — Coverage: 90.0% | Lines: 20 | Complexity: 9</title></circle></a>
+ <a href="JsonLoader.php.html#25"><circle cx="744.0" cy="275.8" r="9.5" class="bubble-success"><title>Gettext\Loader\JsonLoader::loadArray — Coverage: 95.0% | Lines: 20 | Complexity: 9</title></circle></a>
+ <a href="PoLoader.php.html#198"><circle cx="649.1" cy="325.2" r="9.0" class="bubble-warning"><title>Gettext\Loader\PoLoader::decode — Coverage: 81.8% | Lines: 18 | Complexity: 3</title></circle></a>
+ <a href="StrictPoLoader.php.html#215"><circle cx="714.5" cy="275.8" r="9.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readEscape — Coverage: 90.9% | Lines: 18 | Complexity: 9</title></circle></a>
+ <a href="PoLoader.php.html#161"><circle cx="613.8" cy="308.8" r="8.7" class="bubble-warning"><title>Gettext\Loader\PoLoader::parseHeaders — Coverage: 76.9% | Lines: 17 | Complexity: 5</title></circle></a>
+ <a href="StrictPoLoader.php.html#444"><circle cx="690.0" cy="308.8" r="7.9" class="bubble-warning"><title>Gettext\Loader\StrictPoLoader::readHeaders — Coverage: 87.5% | Lines: 14 | Complexity: 5</title></circle></a>
+ <a href="StrictPoLoader.php.html#416"><circle cx="740.0" cy="292.2" r="7.6" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::processHeader — Coverage: 94.4% | Lines: 13 | Complexity: 7</title></circle></a>
+ <a href="StrictPoLoader.php.html#309"><circle cx="780.0" cy="325.2" r="5.6" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readIdentifier — Coverage: 100.0% | Lines: 7 | Complexity: 3</title></circle></a>
+ <a href="StrictPoLoader.php.html#492"><circle cx="660.0" cy="333.5" r="5.2" class="bubble-warning"><title>Gettext\Loader\StrictPoLoader::getErrorPosition — Coverage: 83.3% | Lines: 6 | Complexity: 2</title></circle></a>
+ <a href="PoLoader.php.html#224"><circle cx="780.0" cy="325.2" r="4.7" class="bubble-success"><title>Gettext\Loader\PoLoader::isEmpty — Coverage: 100.0% | Lines: 5 | Complexity: 3</title></circle></a>
+ <a href="StrictPoLoader.php.html#326"><circle cx="780.0" cy="333.5" r="4.7" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readContext — Coverage: 100.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#350"><circle cx="780.0" cy="333.5" r="4.7" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readPlural — Coverage: 100.0% | Lines: 5 | Complexity: 2</title></circle></a>
+ <a href="Loader.php.html#33"><circle cx="780.0" cy="333.5" r="4.2" class="bubble-success"><title>Gettext\Loader\Loader::createTranslation — Coverage: 100.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="Loader.php.html#47"><circle cx="540.0" cy="333.5" r="4.2" class="bubble-warning"><title>Gettext\Loader\Loader::readFile — Coverage: 66.7% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#103"><circle cx="780.0" cy="333.5" r="4.2" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::saveEntry — Coverage: 100.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#117"><circle cx="780.0" cy="317.0" r="4.2" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readWhitespace — Coverage: 100.0% | Lines: 4 | Complexity: 4</title></circle></a>
+ <a href="StrictPoLoader.php.html#366"><circle cx="780.0" cy="333.5" r="4.2" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readTranslation — Coverage: 100.0% | Lines: 4 | Complexity: 2</title></circle></a>
+ <a href="MoLoader.php.html#106"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\MoLoader::init — Coverage: 100.0% | Lines: 3 | Complexity: 1</title></circle></a>
+ <a href="MoLoader.php.html#113"><circle cx="600.0" cy="341.8" r="4.0" class="bubble-warning"><title>Gettext\Loader\MoLoader::read — Coverage: 75.0% | Lines: 3 | Complexity: 1</title></circle></a>
+ <a href="MoLoader.php.html#127"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\MoLoader::readInt — Coverage: 100.0% | Lines: 3 | Complexity: 1</title></circle></a>
+ <a href="StrictPoLoader.php.html#146"><circle cx="660.0" cy="333.5" r="4.0" class="bubble-warning"><title>Gettext\Loader\StrictPoLoader::readCharset — Coverage: 83.3% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#473"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::addWarning — Coverage: 100.0% | Lines: 3 | Complexity: 2</title></circle></a>
+ <a href="ArrayLoader.php.html#16"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\ArrayLoader::loadFile — Coverage: 100.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="JsonLoader.php.html#15"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\JsonLoader::loadString — Coverage: 100.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="Loader.php.html#16"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\Loader::loadFile — Coverage: 100.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StrictPoLoader.php.html#93"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::newEntry — Coverage: 100.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="StrictPoLoader.php.html#158"><circle cx="600.0" cy="341.8" r="4.0" class="bubble-warning"><title>Gettext\Loader\StrictPoLoader::readCommentString — Coverage: 75.0% | Lines: 2 | Complexity: 1</title></circle></a>
+ <a href="ArrayLoader.php.html#23"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Gettext\Loader\ArrayLoader::loadString — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="ArrayLoader.php.html#31"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\ArrayLoader::includeSafe — Coverage: 100.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="Loader.php.html#23"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\Loader::loadString — Coverage: 100.0% | Lines: 1 | Complexity: 2</title></circle></a>
+ <a href="Loader.php.html#28"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\Loader::createTranslations — Coverage: 100.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="MoLoader.php.html#122"><circle cx="600.0" cy="333.5" r="4.0" class="bubble-warning"><title>Gettext\Loader\MoLoader::seekTo — Coverage: 75.0% | Lines: 1 | Complexity: 2</title></circle></a>
+ <a href="MoLoader.php.html#139"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\MoLoader::readIntArray — Coverage: 100.0% | Lines: 1 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#85"><circle cx="60.0" cy="341.8" r="4.0" class="bubble-danger"><title>Gettext\Loader\StrictPoLoader::getWarnings — Coverage: 0.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="StrictPoLoader.php.html#130"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readString — Coverage: 100.0% | Lines: 1 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#138"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readChar — Coverage: 100.0% | Lines: 1 | Complexity: 2</title></circle></a>
+ <a href="StrictPoLoader.php.html#342"><circle cx="780.0" cy="341.8" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::readOriginal — Coverage: 100.0% | Lines: 1 | Complexity: 1</title></circle></a>
+ <a href="StrictPoLoader.php.html#484"><circle cx="780.0" cy="333.5" r="4.0" class="bubble-success"><title>Gettext\Loader\StrictPoLoader::isHeader — Coverage: 100.0% | Lines: 1 | Complexity: 2</title></circle></a>
+</svg>
+     </div>
+     <div>
+      <p class="hint">Sorted by descending <abbr title="Change Risk Anti-Patterns">CRAP</abbr> index.</p>
+      <div class="scrollbox">
+     <table class="crap">
+      <thead>
+       <tr>
+        <th scope="col">Method</th>
+        <th scope="col" class="number"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        <th scope="col" class="number">Coverage</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr><td><a href="PoLoader.php.html#15">Gettext\Loader\PoLoader::loadString</a></td><td class="number">37.11</td><td class="number">86.1%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#249">Gettext\Loader\StrictPoLoader::readComment</a></td><td class="number">15.11</td><td class="number">92.1%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#168">Gettext\Loader\StrictPoLoader::readQuotedString</a></td><td class="number">14.05</td><td class="number">93.5%</td></tr>
+       <tr><td><a href="MoLoader.php.html#23">Gettext\Loader\MoLoader::loadString</a></td><td class="number">12.91</td><td class="number">81.5%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#43">Gettext\Loader\StrictPoLoader::loadString</a></td><td class="number">10</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="ArrayLoader.php.html#39">Gettext\Loader\ArrayLoader::loadArray</a></td><td class="number">9.08</td><td class="number">90.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#215">Gettext\Loader\StrictPoLoader::readEscape</a></td><td class="number">9.06</td><td class="number">90.9%</td></tr>
+       <tr><td><a href="JsonLoader.php.html#25">Gettext\Loader\JsonLoader::loadArray</a></td><td class="number">9</td><td class="number">95.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#378">Gettext\Loader\StrictPoLoader::readPluralTranslation</a></td><td class="number">7.02</td><td class="number">92.3%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#416">Gettext\Loader\StrictPoLoader::processHeader</a></td><td class="number">7.01</td><td class="number">94.4%</td></tr>
+       <tr><td><a href="PoLoader.php.html#161">Gettext\Loader\PoLoader::parseHeaders</a></td><td class="number">5.31</td><td class="number">76.9%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#444">Gettext\Loader\StrictPoLoader::readHeaders</a></td><td class="number">5.05</td><td class="number">87.5%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#117">Gettext\Loader\StrictPoLoader::readWhitespace</a></td><td class="number">4</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="PoLoader.php.html#198">Gettext\Loader\PoLoader::decode</a></td><td class="number">3.05</td><td class="number">81.8%</td></tr>
+       <tr><td><a href="PoLoader.php.html#224">Gettext\Loader\PoLoader::isEmpty</a></td><td class="number">3</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#309">Gettext\Loader\StrictPoLoader::readIdentifier</a></td><td class="number">3</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="Loader.php.html#47">Gettext\Loader\Loader::readFile</a></td><td class="number">2.15</td><td class="number">66.7%</td></tr>
+       <tr><td><a href="MoLoader.php.html#122">Gettext\Loader\MoLoader::seekTo</a></td><td class="number">2.06</td><td class="number">75.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#146">Gettext\Loader\StrictPoLoader::readCharset</a></td><td class="number">2.02</td><td class="number">83.3%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#492">Gettext\Loader\StrictPoLoader::getErrorPosition</a></td><td class="number">2.02</td><td class="number">83.3%</td></tr>
+       <tr><td><a href="ArrayLoader.php.html#23">Gettext\Loader\ArrayLoader::loadString</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="Loader.php.html#23">Gettext\Loader\Loader::loadString</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="Loader.php.html#33">Gettext\Loader\Loader::createTranslation</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="MoLoader.php.html#139">Gettext\Loader\MoLoader::readIntArray</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#85">Gettext\Loader\StrictPoLoader::getWarnings</a></td><td class="number">2</td><td class="number">0.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#103">Gettext\Loader\StrictPoLoader::saveEntry</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#130">Gettext\Loader\StrictPoLoader::readString</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#138">Gettext\Loader\StrictPoLoader::readChar</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#326">Gettext\Loader\StrictPoLoader::readContext</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#350">Gettext\Loader\StrictPoLoader::readPlural</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#366">Gettext\Loader\StrictPoLoader::readTranslation</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#473">Gettext\Loader\StrictPoLoader::addWarning</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#484">Gettext\Loader\StrictPoLoader::isHeader</a></td><td class="number">2</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="MoLoader.php.html#113">Gettext\Loader\MoLoader::read</a></td><td class="number">1.02</td><td class="number">75.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#158">Gettext\Loader\StrictPoLoader::readCommentString</a></td><td class="number">1.02</td><td class="number">75.0%</td></tr>
+       <tr><td><a href="ArrayLoader.php.html#16">Gettext\Loader\ArrayLoader::loadFile</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="ArrayLoader.php.html#31">Gettext\Loader\ArrayLoader::includeSafe</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="JsonLoader.php.html#15">Gettext\Loader\JsonLoader::loadString</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="Loader.php.html#16">Gettext\Loader\Loader::loadFile</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="Loader.php.html#28">Gettext\Loader\Loader::createTranslations</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="MoLoader.php.html#106">Gettext\Loader\MoLoader::init</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="MoLoader.php.html#127">Gettext\Loader\MoLoader::readInt</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#93">Gettext\Loader\StrictPoLoader::newEntry</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+       <tr><td><a href="StrictPoLoader.php.html#342">Gettext\Loader\StrictPoLoader::readOriginal</a></td><td class="number">1</td><td class="number">100.0%</td></tr>
+      </tbody>
+     </table>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer>
+   <p class="credits">Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 14.3.1</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.24</a> and <a href="https://phpunit.de/">PHPUnit 13.3.1</a> at Sun Aug 23 11:53:17 UTC 2026.</p>
+  </footer>
+ </body>
+</html>

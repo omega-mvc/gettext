@@ -18,7 +18,7 @@ class PhpFunctionsScannerTest extends TestCase
     public function testScanOnEmptyCode()
     {
         $scanner = new PhpFunctionsScanner();
-        $file = __DIR__.'/../assets/functions.php';
+        $file = __DIR__ . '/../assets/functions.php';
         $functions = $scanner->scan('', $file);
 
         $this->assertSame([], $functions);
@@ -27,7 +27,7 @@ class PhpFunctionsScannerTest extends TestCase
     public function testPhpFunctionsExtractor()
     {
         $scanner = new PhpFunctionsScanner();
-        $file = __DIR__.'/../assets/functions.php';
+        $file = __DIR__ . '/../assets/functions.php';
         $code = file_get_contents($file);
         $functions = $scanner->scan($code, $file);
 

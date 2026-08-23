@@ -1,4 +1,6 @@
-<?php return [
+<?php
+
+return [
     'description' => 'This is a description',
     'headers' => [
         'Language' => 'gl_ES',

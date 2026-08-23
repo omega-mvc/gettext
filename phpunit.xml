@@ -26,4 +26,12 @@
             <directory>src</directory>
         </include>
     </source>
+    <coverage pathCoverage="true">
+        <report>
+            <html outputDirectory="cache/coverage-report"/>
+        </report>
+        <logging>
+            <testdoxHtml outputFile="cache/coverage-report/testdox.html"/>
+        </logging>
+    </coverage>
 </phpunit>

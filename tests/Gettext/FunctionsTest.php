@@ -79,10 +79,16 @@ class FunctionsTest extends TestCase
         TranslatorFunctions::register($t);
 
         $this->assertEquals('%s commentaires', dn__('messages', 'One comment', '%s comments', 3));
-        $this->assertEquals('beaucoup de commentaires', dn__('messages', 'One comment', '%s comments', 3, 'beaucoup de'));
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            dn__('messages', 'One comment', '%s comments', 3, 'beaucoup de')
+        );
         $this->assertEquals('0 commentaires', dn__('messages', 'One comment', '%s comments', 3, 0));
         $this->assertEquals(' commentaires', dn__('messages', 'One comment', '%s comments', 3, null));
-        $this->assertEquals('beaucoup de commentaires', dn__('messages', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            dn__('messages', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de'])
+        );
         $this->assertEquals('One comment', dn__('messages-2', 'One comment', '%s comments', 1, 1));
         $this->assertEquals('3 comments', dn__('messages-2', 'One comment', '%s comments', 3, 3));
     }
@@ -120,8 +126,14 @@ class FunctionsTest extends TestCase
         $this->assertEquals('%s commentaires', np__('comment', 'One comment', '%s comments', 3));
         $this->assertEquals('0 commentaires', np__('comment', 'One comment', '%s comments', 3, 0));
         $this->assertEquals(' commentaires', np__('comment', 'One comment', '%s comments', 3, null));
-        $this->assertEquals('beaucoup de commentaires', np__('comment', 'One comment', '%s comments', 3, 'beaucoup de'));
-        $this->assertEquals('beaucoup de commentaires', np__('comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            np__('comment', 'One comment', '%s comments', 3, 'beaucoup de')
+        );
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            np__('comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de'])
+        );
         $this->assertEquals('3 comments', np__('', 'One comment', '%s comments', 3, ['%s' => 3]));
     }
 
@@ -139,10 +151,22 @@ class FunctionsTest extends TestCase
         $this->assertEquals('%s commentaires', dnp__('messages', 'comment', 'One comment', '%s comments', 3));
         $this->assertEquals('0 commentaires', dnp__('messages', 'comment', 'One comment', '%s comments', 3, 0));
         $this->assertEquals(' commentaires', dnp__('messages', 'comment', 'One comment', '%s comments', 3, null));
-        $this->assertEquals('beaucoup de commentaires', dnp__('messages', 'comment', 'One comment', '%s comments', 3, 'beaucoup de'));
-        $this->assertEquals('beaucoup de commentaires', dnp__('messages', 'comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
-        $this->assertEquals('beaucoup de comments', dnp__('errors', 'comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
-        $this->assertEquals('beaucoup de comments', dnp__('messages', '', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            dnp__('messages', 'comment', 'One comment', '%s comments', 3, 'beaucoup de')
+        );
+        $this->assertEquals(
+            'beaucoup de commentaires',
+            dnp__('messages', 'comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de'])
+        );
+        $this->assertEquals(
+            'beaucoup de comments',
+            dnp__('errors', 'comment', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de'])
+        );
+        $this->assertEquals(
+            'beaucoup de comments',
+            dnp__('messages', '', 'One comment', '%s comments', 3, ['%s' => 'beaucoup de'])
+        );
     }
 
     public function testNonLoadedTranslations()

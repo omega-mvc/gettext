@@ -133,8 +133,11 @@ final class MoLoader extends Loader
         return (int) array_shift($read);
     }
 
+    /**
+     * @return array<int, int>
+     */
     private function readIntArray(string $byteOrder, int $count): array
     {
-        return unpack($byteOrder.$count, $this->read(4 * $count)) ?: [];
+        return unpack($byteOrder . $count, $this->read(4 * $count)) ?: [];
     }
 }

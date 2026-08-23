@@ -26,7 +26,7 @@ class MoLoaderTest extends TestCase
     public function testMoLoader(): void
     {
         $loader = new MoLoader();
-        $translations = $loader->loadFile(__DIR__.'/../assets/translations.mo');
+        $translations = $loader->loadFile(__DIR__ . '/../assets/translations.mo');
 
         $this->assertCount(11, $translations);
 

@@ -141,7 +141,7 @@ class MergeTest extends TestCase
 
     private function assertSnapshot(string $name, Translations $translations, bool $forceCreate = false): void
     {
-        $file = __DIR__."/snapshots/{$name}.php";
+        $file = __DIR__ . "/snapshots/{$name}.php";
         $array = $translations->toArray();
 
         if (!is_file($file) || $forceCreate) {

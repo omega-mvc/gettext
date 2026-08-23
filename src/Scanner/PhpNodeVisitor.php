@@ -15,13 +15,19 @@ use PhpParser\NodeVisitor;
 
 class PhpNodeVisitor implements NodeVisitor
 {
+    /** @var array<string>|null */
     protected ?array $validFunctions;
     protected string $filename;
+
+    /** @var list<ParsedFunction> */
     protected array $functions = [];
 
     /** @var Comment[] */
     protected array $bufferComments = [];
 
+    /**
+     * @param array<string>|null $validFunctions
+     */
     public function __construct(string $filename, ?array $validFunctions = null)
     {
         $this->filename = $filename;
@@ -70,6 +76,9 @@ class PhpNodeVisitor implements NodeVisitor
         return null;
     }
 
+    /**
+     * @return list<ParsedFunction>
+     */
     public function getFunctions(): array
     {
         return $this->functions;

@@ -36,7 +36,10 @@ class ArrayGeneratorTest extends TestCase
         $translations = Translations::create('testingdomain');
         $translations->setLanguage('ru');
 
-        $translation = Translation::create(null, 'Ensure this value has at least %(limit_value)d character (it has %sd).');
+        $translation = Translation::create(
+            null,
+            'Ensure this value has at least %(limit_value)d character (it has %sd).'
+        );
         $translations->add($translation);
 
         $translation = Translation::create(null, '%ss must be unique for %ss %ss.');
@@ -52,7 +55,8 @@ class ArrayGeneratorTest extends TestCase
 
         $expected = [
             'domain' => 'testingdomain',
-            'plural-forms' => 'nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);',
+            'plural-forms' => 'nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 :'
+                . ' ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);',
             'messages' => [
                 '' => [
                     '%ss must be unique for %ss %ss.' => '%ss mora da bude jedinstven za %ss %ss.',
@@ -98,14 +102,20 @@ class ArrayGeneratorTest extends TestCase
         $this->checkFormatting($expected, $translations, ['includeEmpty' => true]);
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     * @param array<string, mixed> $otherOptions
+     */
     private function checkFormatting(array $expected, Translations $translations, array $otherOptions = [])
     {
-        foreach ([
+        foreach (
+            [
             [],
             ['strictTypes' => true],
             ['pretty' => true],
             ['strictTypes' => true, 'pretty' => true],
-        ] as $options) {
+            ] as $options
+        ) {
             $phpCode = (new ArrayGenerator($options + $otherOptions))->generateString($translations);
             if (empty($options['strictTypes'])) {
                 $this->assertStringNotContainsString('declare(strict_types=1);', $phpCode);

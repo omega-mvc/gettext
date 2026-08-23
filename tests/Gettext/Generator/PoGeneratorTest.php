@@ -118,6 +118,9 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
+    /**
+     * @return list<array{0: string, 1: string}>
+     */
     public static function stringEncodeProvider(): array
     {
         return [

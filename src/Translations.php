@@ -15,6 +15,8 @@ use ReturnTypeWillChange;
  * Class to manage a collection of translations under the same domain.
  *
  * @phpstan-consistent-constructor
+ *
+ * @implements IteratorAggregate<string, Translation>
  */
 class Translations implements Countable, IteratorAggregate
 {
@@ -70,6 +72,9 @@ class Translations implements Countable, IteratorAggregate
         return $this->flags;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -91,6 +96,9 @@ class Translations implements Countable, IteratorAggregate
         return new ArrayIterator($this->translations);
     }
 
+    /**
+     * @return array<string, Translation>
+     */
     public function getTranslations(): array
     {
         return $this->translations;

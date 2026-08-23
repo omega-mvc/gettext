@@ -250,6 +250,9 @@ EOT
         $this->assertCount(0, $translation->getReferences());
     }
 
+    /**
+     * @return list<array{0: string, 1: string}>
+     */
     public static function stringDecodeProvider(): array
     {
         return [
@@ -295,7 +298,8 @@ EOT;
 
         $this->assertTrue($translation->isDisabled());
         $this->assertEquals(
-            "How many hours in the past can system look at finding the last agent? This parameter is only used if 'Call Last Agent' is set to 'YES'.",
+            "How many hours in the past can system look at finding the last agent?"
+            . " This parameter is only used if 'Call Last Agent' is set to 'YES'.",
             $translation->getTranslation()
         );
     }
