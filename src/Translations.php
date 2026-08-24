@@ -92,6 +92,7 @@ class Translations implements Countable, IteratorAggregate
         ];
     }
 
+    /** @return ArrayIterator<string, Translation> */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->translations);

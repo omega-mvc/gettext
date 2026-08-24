@@ -94,7 +94,7 @@ final class MoGenerator extends AbstractGenerator
                 $translationString = "{$translation->getTranslation()}\x00"
                     . implode("\x00", $translation->getPluralTranslations($pluralSize));
             } else {
-                $translationString = $translation->getTranslation();
+                $translationString = $translation->getTranslation() ?? '';
             }
 
             $originalsIndex[] = [

@@ -36,7 +36,9 @@ class Headers implements JsonSerializable, Countable, IteratorAggregate
 
         if (is_array($stateHeaders)) {
             foreach ($stateHeaders as $name => $value) {
-                $headers[(string) $name] = (string) $value;
+                if (is_string($value)) {
+                    $headers[(string) $name] = $value;
+                }
             }
         }
 
@@ -84,11 +86,13 @@ class Headers implements JsonSerializable, Countable, IteratorAggregate
         return $this;
     }
 
+    /** @return array<string, string> */
     public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
+    /** @return ArrayIterator<string, string> */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->toArray());

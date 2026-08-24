@@ -63,7 +63,7 @@ final class MoLoader extends Loader
                         continue;
                     }
 
-                    $headerChunks = preg_split('/:\s*/', $headerLine, 2);
+                    $headerChunks = preg_split('/:\s*/', $headerLine, 2) ?: [''];
                     $translations->getHeaders()->set($headerChunks[0], $headerChunks[1] ?? '');
                 }
 
@@ -133,10 +133,23 @@ final class MoLoader extends Loader
     }
 
     /**
+     * Returns the unpacked table keeping the 1-based integer keys of unpack().
+     *
      * @return array<int, int>
      */
     private function readIntArray(string $byteOrder, int $count): array
     {
-        return unpack($byteOrder . $count, $this->read(4 * $count)) ?: [];
+        $unpacked = unpack($byteOrder . $count, $this->read(4 * $count));
+        $values = [];
+
+        if (is_array($unpacked)) {
+            foreach ($unpacked as $key => $value) {
+                if (is_int($key) && is_int($value)) {
+                    $values[$key] = $value;
+                }
+            }
+        }
+
+        return $values;
     }
 }

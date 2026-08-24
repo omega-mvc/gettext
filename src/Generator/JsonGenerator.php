@@ -7,6 +7,7 @@ namespace Gettext\Generator;
 use Gettext\Headers;
 use Gettext\Translation;
 use Gettext\Translations;
+use RuntimeException;
 
 use function array_unshift;
 use function implode;
@@ -55,7 +56,13 @@ final class JsonGenerator extends AbstractGenerator
     {
         $array = $this->generateArray($translations);
 
-        return json_encode($array, $this->jsonOptions);
+        $json = json_encode($array, $this->jsonOptions);
+
+        if ($json === false) {
+            throw new RuntimeException('Cannot encode translations to JSON: ' . json_last_error_msg());
+        }
+
+        return $json;
     }
 
     /**

@@ -218,10 +218,18 @@ final class StrictPoLoader extends Loader
         $hexDigits = '0123456789abcdefABCDEF';
         switch ($char = $this->data[$this->position++] ?? "\0") {
             case strpbrk($char, $aliasMap['from']) ?: '':
-                return $aliasMap['to'][strpos($aliasMap['from'], $char)];
+                $index = strpos($aliasMap['from'], $char);
+
+                return $index === false ? "\0" : $aliasMap['to'][$index];
             case strpbrk($char, $octalDigits = '01234567'):
                 // GNU gettext fails with an octal above the signed char range
-                if (($decimal = octdec($char . $this->readCharset($octalDigits, 0, 2, 'octal'))) > 127) {
+                $decimal = octdec($char . $this->readCharset($octalDigits, 0, 2, 'octal'));
+
+                if (!is_int($decimal)) {
+                    throw new Exception("Octal value out of range [0, 0177]{$this->getErrorPosition()}");
+                }
+
+                if ($decimal > 127) {
                     throw new Exception("Octal value out of range [0, 0177]{$this->getErrorPosition()}");
                 }
 
@@ -230,15 +238,26 @@ final class StrictPoLoader extends Loader
                 $value = $this->readCharset($hexDigits, 1, PHP_INT_MAX, 'hexadecimal');
 
                 // GNU reads all valid hexadecimal chars, but only uses the last pair
-                return hex2bin(str_pad(substr($value, -2), 2, '0', STR_PAD_LEFT));
+                $bin = hex2bin(str_pad(substr($value, -2), 2, '0', STR_PAD_LEFT));
+
+                if ($bin === false) {
+                    throw new Exception("Invalid hexadecimal sequence '{$value}'{$this->getErrorPosition()}");
+                }
+
+                return $bin;
             case 'U':
             case 'u':
                 // The GNU gettext is supposed to follow the escaping sequences of C
                 // Curiously it doesn't support the unicode escape
                 $value = $this->readCharset($hexDigits, 1, $digits = $char === 'u' ? 4 : 8, 'hexadecimal');
                 $value = str_pad($value, $digits, '0', STR_PAD_LEFT);
+                $bin = hex2bin($value);
 
-                return mb_convert_encoding(hex2bin($value), 'UTF-8', 'UTF-' . ($digits * 4));
+                if ($bin === false) {
+                    throw new Exception("Invalid hexadecimal sequence '{$value}'{$this->getErrorPosition()}");
+                }
+
+                return mb_convert_encoding($bin, 'UTF-8', 'UTF-' . ($digits * 4));
         }
         throw new Exception("Invalid escaped character{$this->getErrorPosition()}");
     }
@@ -287,7 +306,7 @@ final class StrictPoLoader extends Loader
                 break;
             case ':':
                 $data = $this->readCommentString();
-                foreach (preg_split('/\s+/', trim($data)) as $value) {
+                foreach (preg_split('/\s+/', trim($data)) ?: [] as $value) {
                     if (preg_match('/^(.+)(:(\d*))?$/U', $value, $matches)) {
                         $line = isset($matches[3]) ? intval($matches[3]) : null;
                         $this->translation->getReferences()->add($matches[1], $line);
@@ -341,7 +360,13 @@ final class StrictPoLoader extends Loader
      */
     private function readOriginal(): void
     {
-        $this->translation = $this->translation->withOriginal($this->readIdentifier('msgid', true));
+        $data = $this->readIdentifier('msgid', true);
+
+        if ($data === null) {
+            throw new Exception("Missing msgid identifier{$this->getErrorPosition()}");
+        }
+
+        $this->translation = $this->translation->withOriginal($data);
     }
 
     /**
@@ -423,8 +448,10 @@ final class StrictPoLoader extends Loader
             $this->translations->getFlags()->add(...$flags);
         }
         $headers = $this->translations->getHeaders();
-        if (($header->getTranslation() ?? '') !== '') {
-            foreach (self::readHeaders($header->getTranslation()) as $name => $value) {
+        $headerTranslation = $header->getTranslation();
+
+        if (is_string($headerTranslation) && $headerTranslation !== '') {
+            foreach (self::readHeaders($headerTranslation) as $name => $value) {
                 $headers->set($name, $value);
             }
         }
@@ -493,6 +520,11 @@ final class StrictPoLoader extends Loader
     {
         if ($this->displayErrorLine) {
             $pieces = preg_split('/\\r\\n|\\n\\r|\\n|\\r/', substr($this->data, 0, $this->position));
+
+            if ($pieces === false || $pieces === []) {
+                return " at byte {$this->position}";
+            }
+
             $line = count($pieces);
             $column = strlen(end($pieces));
 
