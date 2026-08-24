@@ -8,8 +8,6 @@ use Gettext\Translation;
 
 /**
  * Trait with common gettext function handlers
- *
- * @phpstan-ignore trait.unused
  */
 trait FunctionsHandlersTrait
 {
@@ -18,7 +16,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 1)) {
             return null;
         }
-        [$original] = $function->getArguments();
+        [$original] = $function->getStringArguments(1);
 
         $translation = $this->addComments(
             $function,
@@ -33,7 +31,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 2)) {
             return null;
         }
-        [$original, $plural] = $function->getArguments();
+        [$original, $plural] = $function->getStringArguments(2);
 
         $translation = $this->addComments(
             $function,
@@ -48,7 +46,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 2)) {
             return null;
         }
-        [$context, $original] = $function->getArguments();
+        [$context, $original] = $function->getStringArguments(2);
 
         $translation = $this->addComments(
             $function,
@@ -63,7 +61,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 2)) {
             return null;
         }
-        [$domain, $original] = $function->getArguments();
+        [$domain, $original] = $function->getStringArguments(2);
 
         $translation = $this->addComments(
             $function,
@@ -78,7 +76,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 3)) {
             return null;
         }
-        [$domain, $context, $original] = $function->getArguments();
+        [$domain, $context, $original] = $function->getStringArguments(3);
 
         $translation = $this->addComments(
             $function,
@@ -93,7 +91,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 3)) {
             return null;
         }
-        [$context, $original, $plural] = $function->getArguments();
+        [$context, $original, $plural] = $function->getStringArguments(3);
 
         $translation = $this->addComments(
             $function,
@@ -108,7 +106,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 3)) {
             return null;
         }
-        [$domain, $original, $plural] = $function->getArguments();
+        [$domain, $original, $plural] = $function->getStringArguments(3);
 
         $translation = $this->addComments(
             $function,
@@ -123,7 +121,7 @@ trait FunctionsHandlersTrait
         if (!$this->checkFunction($function, 4)) {
             return null;
         }
-        [$domain, $context, $original, $plural] = $function->getArguments();
+        [$domain, $context, $original, $plural] = $function->getStringArguments(4);
 
         $translation = $this->addComments(
             $function,

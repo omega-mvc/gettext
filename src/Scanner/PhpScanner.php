@@ -13,7 +13,8 @@ class PhpScanner extends CodeScanner
 {
     use FunctionsHandlersTrait;
 
-    protected $functions = [
+    /** @var array<string, string> */
+    protected array $functions = [
         'gettext' => 'gettext',
         '_' => 'gettext',
         '__' => 'gettext',

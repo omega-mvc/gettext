@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Gettext\Scanner;
 
 use Peast\Peast;
+use Peast\Syntax\Parser;
 use Peast\Traverser;
 
 class JsFunctionsScanner implements FunctionsScannerInterface
 {
-    protected $validFunctions;
-    protected $parser;
+    /** @var array<string>|null */
+    protected ?array $validFunctions;
+
+    /** @var array{string, array<string, bool>} */
+    protected array $parser;
 
     /**
      * @param array<string>|null $validFunctions
@@ -33,9 +37,15 @@ class JsFunctionsScanner implements FunctionsScannerInterface
 
     public function scan(string $code, string $filename): array
     {
-        list($version, $options) = $this->parser;
+        [$version, $options] = $this->parser;
 
-        $ast = Peast::$version($code, $options)->parse();
+        $parser = Peast::$version($code, $options);
+
+        if (!$parser instanceof Parser) {
+            return [];
+        }
+
+        $ast = $parser->parse();
 
         $traverser = new Traverser();
         $visitor = new JsNodeVisitor($filename, $this->validFunctions);
