@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(FormulaConverter::class)]
 class FormulaConverterTest extends TestCase
 {
-    public function testConvertFormulaWithInvalidFormula()
+    public function testConvertFormulaWithInvalidFormula(): void
     {
         $this->expectException(Exception::class);
         FormulaConverter::convertFormula('()');
     }
 
-    public function testConvertAtomWithInvalidFormulaChunk()
+    public function testConvertAtomWithInvalidFormulaChunk(): void
     {
         $this->expectException(Exception::class);
         FormulaConverter::convertFormula('f ==== empty');

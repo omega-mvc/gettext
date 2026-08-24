@@ -2,10 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-error_reporting(E_ALL);
+require_once __DIR__ . '/constants.php';
 
-define('GETTEXT_LANGUAGES_TESTROOTDIR', str_replace(DIRECTORY_SEPARATOR, '/', dirname(__DIR__)));
-define('GETTEXT_LANGUAGES_TESTDIR', str_replace(DIRECTORY_SEPARATOR, '/', __DIR__));
+error_reporting(E_ALL);
 
 $cmd = PHP_BINARY ? escapeshellarg(PHP_BINARY) : 'php';
 $exportPluralRules = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'export-plural-rules';

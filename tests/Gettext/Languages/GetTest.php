@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Language::class)]
 class GetTest extends TestCase
 {
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $list = Language::getAll();
         $count = count($list);
@@ -25,7 +25,7 @@ class GetTest extends TestCase
         $this->assertLessThan(10000, $count, 'The number of all languages is too big');
     }
 
-    public function testGetById()
+    public function testGetById(): void
     {
         $this->assertNull(Language::getById('root'), 'The root language is found!');
 
@@ -53,6 +53,7 @@ class GetTest extends TestCase
         $this->assertSame($language1->baseLanguage, $language2->name);
 
         $language = Language::getById('it');
+        $this->assertNotNull($language);
         $this->assertNull($language->script);
         $language = Language::getById('it_Xxxxx');
         $this->assertNull($language);
@@ -61,24 +62,28 @@ class GetTest extends TestCase
         $this->assertNotNull($language->script);
     }
 
-    public function testPortuguese()
+    public function testPortuguese(): void
     {
         $pt = Language::getById('pt');
+        $this->assertNotNull($pt, "The language 'pt' has not been found");
         $this->assertSame('Portuguese', $pt->name);
         $this->assertCount(3, $pt->categories);
         $this->assertSame('one', $pt->categories[0]->id);
 
         $ptPT = Language::getById('pt-PT');
+        $this->assertNotNull($ptPT, "The language 'pt-PT' has not been found");
         $this->assertSame('European Portuguese', $ptPT->name);
         $this->assertCount(3, $ptPT->categories);
         $this->assertSame('one', $ptPT->categories[0]->id);
 
         $ptBR = Language::getById('pt-BR');
+        $this->assertNotNull($ptBR, "The language 'pt-BR' has not been found");
         $this->assertSame('Brazilian Portuguese', $ptBR->name);
         $this->assertCount(3, $ptBR->categories);
         $this->assertSame('one', $ptBR->categories[0]->id);
 
         $ptCV = Language::getById('pt-CV');
+        $this->assertNotNull($ptCV, "The language 'pt-CV' has not been found");
         $this->assertSame('Portuguese (Cape Verde)', $ptCV->name);
         $this->assertCount(3, $ptCV->categories);
         $this->assertSame('one', $ptCV->categories[0]->id);

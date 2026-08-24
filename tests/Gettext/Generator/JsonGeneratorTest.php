@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Translations::class)]
 class JsonGeneratorTest extends TestCase
 {
-    public function testJsonGenerator()
+    public function testJsonGenerator(): void
     {
         $translations = Translations::create('testingdomain');
         $translations->setLanguage('ru');

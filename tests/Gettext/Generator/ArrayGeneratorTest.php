@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Translations::class)]
 class ArrayGeneratorTest extends TestCase
 {
-    public function testArrayGenerator()
+    public function testArrayGenerator(): void
     {
         $translations = Translations::create('testingdomain');
         $translations->setLanguage('ru');
@@ -72,7 +72,7 @@ class ArrayGeneratorTest extends TestCase
         $this->checkFormatting($expected, $translations);
     }
 
-    public function testArrayGeneratorWithEmptyTranslations()
+    public function testArrayGeneratorWithEmptyTranslations(): void
     {
         $translations = Translations::create('testingdomain');
         $translations->setLanguage('en');
@@ -104,9 +104,9 @@ class ArrayGeneratorTest extends TestCase
 
     /**
      * @param array<string, mixed> $expected
-     * @param array<string, mixed> $otherOptions
+     * @param array<string, bool> $otherOptions
      */
-    private function checkFormatting(array $expected, Translations $translations, array $otherOptions = [])
+    private function checkFormatting(array $expected, Translations $translations, array $otherOptions = []): void
     {
         foreach (
             [

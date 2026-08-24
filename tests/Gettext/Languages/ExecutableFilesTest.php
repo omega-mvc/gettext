@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversNothing]
 class ExecutableFilesTest extends TestCase
 {
-    public function testExecutableFiles()
+    public function testExecutableFiles(): void
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             $this->markTestSkipped('Testing executable files requires a Posix environment');

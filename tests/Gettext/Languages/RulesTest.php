@@ -13,20 +13,27 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Category::class)]
 class RulesTest extends TestCase
 {
-    public static function providerTestRules()
+    /** @var array<string, array<string, array{formula: string, cases: list<string>, examples: array<string, string>}>> */
+    private static array $dataCache = [];
+
+    /**
+     * @return array<array{string, string, string, list<string>, string, string}>
+     */
+    public static function providerTestRules(): array
     {
-        $testData = array();
+        $testData = [];
+
         foreach (array('php', 'json') as $format) {
-            foreach (static::readData($format) as $locale => $info) {
+            foreach (self::readData($format) as $locale => $info) {
                 foreach ($info['examples'] as $rule => $numbers) {
-                    $testData[] = array(
+                    $testData[] = [
                         $format,
                         $locale,
                         $info['formula'],
                         $info['cases'],
                         $numbers,
                         $rule,
-                    );
+                    ];
                 }
             }
         }
@@ -34,13 +41,33 @@ class RulesTest extends TestCase
         return $testData;
     }
 
+    /**
+     * @param list<string> $allCases
+     */
     #[DataProvider('providerTestRules')]
-    public function testRules($format, $locale, $formula, $allCases, $numbers, $expectedCase)
-    {
-        $expectedCaseIndex = in_array($expectedCase, $allCases);
+    public function testRules(
+        string $format,
+        string $locale,
+        string $formula,
+        array $allCases,
+        string $numbers,
+        string $expectedCase
+    ): void {
+        $expectedCaseIndex = in_array($expectedCase, $allCases, true);
+
         foreach (Category::expandExamples($numbers) as $number) {
             $numericFormula = preg_replace('/\bn\b/', (string) $number, $formula);
+
+            if ($numericFormula === null) {
+                throw new Exception("Failed to build the numeric formula for {$number}");
+            }
+
             $extraneousChars = preg_replace('/^[\d %!=<>&\|()?:]+$/', '', $numericFormula);
+
+            if ($extraneousChars === null) {
+                throw new Exception("Failed to validate the numeric formula '{$numericFormula}'");
+            }
+
             $this->assertSame(
                 '',
                 $extraneousChars,
@@ -52,10 +79,8 @@ class RulesTest extends TestCase
                 "return (({$numericFormula}) === true) ? 1 :"
                 . " ((({$numericFormula}) === false) ? 0 : ({$numericFormula}));"
             );
-            $caseIndexType = gettype($caseIndex);
-            $this->assertSame(
-                'integer',
-                $caseIndexType,
+            $this->assertIsInt(
+                $caseIndex,
                 "Error evaluating the numeric formula '{$numericFormula}' (format: {$format})"
             );
 
@@ -71,23 +96,27 @@ class RulesTest extends TestCase
                 $expectedCase,
                 $case,
                 "The formula '{$formula}' evaluated for {$number} resulted in '{$case}' ({$caseIndex}) instead"
-                . " of '{$expectedCase}' ({$expectedCaseIndex}) (format: {$format})"
+                . " of '{$expectedCase}' (" . var_export($expectedCaseIndex, true) . ") (format: {$format})"
             );
         }
     }
 
-    public static function providerTestExamplesExist()
+    /**
+     * @return array<array{string, string, string, array<string, string>}>
+     */
+    public static function providerTestExamplesExist(): array
     {
-        $testData = array();
+        $testData = [];
+
         foreach (array('php', 'json') as $format) {
-            foreach (static::readData($format) as $locale => $info) {
+            foreach (self::readData($format) as $locale => $info) {
                 foreach ($info['cases'] as $case) {
-                    $testData[] = array(
+                    $testData[] = [
                         $format,
                         $locale,
                         $case,
                         $info['examples'],
-                    );
+                    ];
                 }
             }
         }
@@ -95,8 +124,11 @@ class RulesTest extends TestCase
         return $testData;
     }
 
+    /**
+     * @param array<string, string> $examples
+     */
     #[DataProvider('providerTestExamplesExist')]
-    public function testExamplesExist($format, $locale, $case, $examples)
+    public function testExamplesExist(string $format, string $locale, string $case, array $examples): void
     {
         $this->assertArrayHasKey(
             $case,
@@ -105,18 +137,75 @@ class RulesTest extends TestCase
         );
     }
 
-    private static function readData($format)
+    /**
+     * Loads and validates the CLDR test data for the given format.
+     *
+     * @return array<string, array{formula: string, cases: list<string>, examples: array<string, string>}>
+     */
+    private static function readData(string $format): array
     {
-        static $data = array();
-        if (!isset($data[$format])) {
-            $filename = GETTEXT_LANGUAGES_TESTDIR . '/data.' . $format;
-            $data[$format] = match ($format) {
-                'php' => require $filename,
-                'json' => json_decode(file_get_contents($filename), true),
-                default => throw new Exception("Unhandled format: {$format}"),
-            };
+        if (!array_key_exists($format, self::$dataCache)) {
+            self::$dataCache[$format] = self::loadData($format);
         }
 
-        return $data[$format];
+        return self::$dataCache[$format];
+    }
+
+    /**
+     * Loads and validates the CLDR test data for the given format.
+     *
+     * @return array<string, array{formula: string, cases: list<string>, examples: array<string, string>}>
+     */
+    private static function loadData(string $format): array
+    {
+        $filename = GETTEXT_LANGUAGES_TESTDIR . '/data.' . $format;
+
+        $loaded = match ($format) {
+            'php' => require $filename,
+            'json' => json_decode((string) file_get_contents($filename), true),
+            default => throw new Exception("Unhandled format: {$format}"),
+        };
+
+        if (!is_array($loaded)) {
+            throw new Exception("Invalid test data for format: {$format}");
+        }
+
+        $validated = [];
+
+        foreach ($loaded as $localeKey => $info) {
+            if (!is_array($info)) {
+                continue;
+            }
+
+            $formula = $info['formula'] ?? null;
+            $rawCases = $info['cases'] ?? null;
+            $rawExamples = $info['examples'] ?? null;
+
+            if (!is_string($formula) || !is_array($rawCases) || !is_array($rawExamples)) {
+                continue;
+            }
+
+            $cases = [];
+            foreach ($rawCases as $case) {
+                if (is_string($case)) {
+                    $cases[] = $case;
+                }
+            }
+
+            $examples = [];
+            foreach ($rawExamples as $ruleKey => $numbers) {
+                if (is_string($numbers)) {
+                    $examples[(string) $ruleKey] = $numbers;
+                }
+            }
+
+            $validated[(string) $localeKey] = [
+                'formula' => $formula,
+                'cases' => $cases,
+                'examples' => $examples,
+            ];
+        }
+
+        return $validated;
     }
 }
