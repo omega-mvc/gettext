@@ -8,7 +8,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use ReturnTypeWillChange;
 
 /**
  * Class to manage the references of a translation.
@@ -19,7 +18,8 @@ use ReturnTypeWillChange;
  */
 class References implements JsonSerializable, Countable, IteratorAggregate
 {
-    protected $references = [];
+    /** @var array<string, list<int>> */
+    protected array $references = [];
 
     /**
      * @param array<string, mixed> $state
@@ -27,7 +27,26 @@ class References implements JsonSerializable, Countable, IteratorAggregate
     public static function __set_state(array $state): References
     {
         $references = new static();
-        $references->references = $state['references'];
+        $stateReferences = $state['references'] ?? [];
+
+        if (is_array($stateReferences)) {
+            foreach ($stateReferences as $filename => $lines) {
+                if (!is_array($lines)) {
+                    continue;
+                }
+
+                $name = (string) $filename;
+
+                if ($lines === []) {
+                    $references->add($name);
+                    continue;
+                }
+
+                foreach ($lines as $line) {
+                    $references->add($name, is_int($line) ? $line : null);
+                }
+            }
+        }
 
         return $references;
     }
@@ -54,22 +73,20 @@ class References implements JsonSerializable, Countable, IteratorAggregate
         return $this;
     }
 
-    #[ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->references);
     }
 
     public function count(): int
     {
-        return array_reduce($this->references, function ($carry, $item) {
-            return $carry + (count($item) ?: 1);
+        return array_reduce($this->references, static function (int $carry, array $lines): int {
+            return $carry + (count($lines) ?: 1);
         }, 0);
     }
 

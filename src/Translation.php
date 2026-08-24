@@ -11,20 +11,23 @@ namespace Gettext;
  */
 class Translation
 {
-    protected $id;
-    protected $context;
-    protected $original;
-    protected $plural;
-    protected $translation;
-    protected $pluralTranslations = [];
-    protected $disabled = false;
-    protected $references;
-    protected $flags;
-    protected $comments;
-    protected $extractedComments;
-    protected $previousContext;
-    protected $previousOriginal;
-    protected $previousPlural;
+    protected string $id;
+    protected ?string $context;
+    protected string $original;
+    protected ?string $plural = null;
+    protected ?string $translation = null;
+
+    /** @var list<string> */
+    protected array $pluralTranslations = [];
+
+    protected bool $disabled = false;
+    protected References $references;
+    protected Flags $flags;
+    protected Comments $comments;
+    protected Comments $extractedComments;
+    protected ?string $previousContext = null;
+    protected ?string $previousOriginal = null;
+    protected ?string $previousPlural = null;
 
     public static function create(?string $context, string $original, ?string $plural = null): Translation
     {
