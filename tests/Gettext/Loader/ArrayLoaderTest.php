@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ArrayLoader::class)]
 class ArrayLoaderTest extends TestCase
 {
-    public function testArrayLoader()
+    public function testArrayLoader(): void
     {
         $loader = new ArrayLoader();
 

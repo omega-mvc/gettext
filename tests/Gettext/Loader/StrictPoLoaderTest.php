@@ -55,8 +55,10 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
     {
         $po = "#   comment\nmsgctxt\"ctx\"msgid\"original\"msgstr\"trans\"\"lation\"";
         $translations = $this->createPoLoader()->loadString($po);
-        $this->assertEquals($translations->find('ctx', 'original')->getTranslation(), 'translation');
-        $this->assertEquals($translations->find('ctx', 'original')->getComments()->toArray()[0], '  comment');
+        $translation = $translations->find('ctx', 'original');
+        $this->assertNotNull($translation);
+        $this->assertEquals($translation->getTranslation(), 'translation');
+        $this->assertEquals($translation->getComments()->toArray()[0], '  comment');
     }
 
     public function testPreviousTranslation(): void

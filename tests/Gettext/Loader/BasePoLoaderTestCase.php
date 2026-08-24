@@ -26,6 +26,20 @@ abstract class BasePoLoaderTestCase extends TestCase
 {
     abstract protected function createPoLoader(): Loader;
 
+    /**
+     * Shifts a translation off the array, asserting its presence.
+     *
+     * @param array<string, Translation> $translations
+     */
+    private function shiftTranslation(array &$translations): Translation
+    {
+        $translation = array_shift($translations);
+        $this->assertNotNull($translation);
+
+        return $translation;
+    }
+
+
     public function testPoLoader(): void
     {
         $loader       = $this->createPoLoader();
@@ -49,20 +63,20 @@ EOT
 
         $array = $translations->getTranslations();
 
-        $this->translation1(array_shift($array));
-        $this->translation2(array_shift($array));
-        $this->translation3(array_shift($array));
-        $this->translation4(array_shift($array));
-        $this->translation5(array_shift($array));
-        $this->translation6(array_shift($array));
-        $this->translation7(array_shift($array));
-        $this->translation8(array_shift($array));
-        $this->translation9(array_shift($array));
-        $this->translation10(array_shift($array));
-        $this->translation11(array_shift($array));
-        $this->translation12(array_shift($array));
-        $this->translation13(array_shift($array));
-        $this->translation14(array_shift($array));
+        $this->translation1($this->shiftTranslation($array));
+        $this->translation2($this->shiftTranslation($array));
+        $this->translation3($this->shiftTranslation($array));
+        $this->translation4($this->shiftTranslation($array));
+        $this->translation5($this->shiftTranslation($array));
+        $this->translation6($this->shiftTranslation($array));
+        $this->translation7($this->shiftTranslation($array));
+        $this->translation8($this->shiftTranslation($array));
+        $this->translation9($this->shiftTranslation($array));
+        $this->translation10($this->shiftTranslation($array));
+        $this->translation11($this->shiftTranslation($array));
+        $this->translation12($this->shiftTranslation($array));
+        $this->translation13($this->shiftTranslation($array));
+        $this->translation14($this->shiftTranslation($array));
 
         $headers = $translations->getHeaders()->toArray();
 
@@ -281,7 +295,9 @@ msgid "source"
 msgstr {$source}
 EOT;
         $translations = $this->createPoLoader()->loadString($po);
-        $this->assertSame($decoded, $translations->find(null, 'source')->getTranslation());
+        $translation = $translations->find(null, 'source');
+        $this->assertNotNull($translation);
+        $this->assertSame($decoded, $translation->getTranslation());
     }
 
     public function testMultilineDisabledTranslations(): void
@@ -295,6 +311,7 @@ EOT;
         $loader       = $this->createPoLoader();
         $translations = $loader->loadString($po);
         $translation  = $translations->find(null, 'Last agent hours-description');
+        $this->assertNotNull($translation);
 
         $this->assertTrue($translation->isDisabled());
         $this->assertEquals(
