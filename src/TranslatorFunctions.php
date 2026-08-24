@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Gettext;
 
+use LogicException;
+
 abstract class TranslatorFunctions
 {
-    private static $translator;
-    private static $formatter;
+    private static ?TranslatorInterface $translator = null;
+    private static ?FormatterInterface $formatter = null;
 
     public static function register(TranslatorInterface $translator, ?FormatterInterface $formatter = null): void
     {
@@ -19,11 +21,19 @@ abstract class TranslatorFunctions
 
     public static function getTranslator(): TranslatorInterface
     {
+        if (self::$translator === null) {
+            throw new LogicException('No translator registered, call TranslatorFunctions::register() first');
+        }
+
         return self::$translator;
     }
 
     public static function getFormatter(): FormatterInterface
     {
+        if (self::$formatter === null) {
+            throw new LogicException('No formatter registered, call TranslatorFunctions::register() first');
+        }
+
         return self::$formatter;
     }
 }
