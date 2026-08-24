@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gettext\Loader;
 
-use Gettext\Headers;
+use Exception;
 use Gettext\Translations;
 
 /**
@@ -16,11 +16,15 @@ final class JsonLoader extends Loader
     {
         $array = json_decode($string, true);
 
+        if (!is_array($array)) {
+            throw new Exception('Invalid translations file: it must contain a JSON object');
+        }
+
         return $this->loadArray($array, $translations);
     }
 
     /**
-     * @param array<string, mixed> $array
+     * @param array<array-key, mixed> $array
      */
     public function loadArray(array $array, ?Translations $translations = null): Translations
     {
@@ -28,37 +32,7 @@ final class JsonLoader extends Loader
             $translations = $this->createTranslations();
         }
 
-        $messages = $array['messages'] ?? [];
-
-        foreach ($messages as $context => $contextTranslations) {
-            if ($context === '') {
-                $context = null;
-            }
-
-            foreach ($contextTranslations as $original => $value) {
-                if ($original === '') {
-                    continue;
-                }
-
-                $translation = $this->createTranslation($context, $original);
-                $translations->add($translation);
-
-                if (is_array($value)) {
-                    $translation->translate(array_shift($value));
-                    $translation->translatePlural(...$value);
-                } else {
-                    $translation->translate($value);
-                }
-            }
-        }
-
-        if (!empty($array['domain'])) {
-            $translations->setDomain($array['domain']);
-        }
-
-        if (!empty($array['plural-forms'])) {
-            $translations->getHeaders()->set(Headers::HEADER_PLURAL, $array['plural-forms']);
-        }
+        $this->loadArrayData($array, $translations);
 
         return $translations;
     }

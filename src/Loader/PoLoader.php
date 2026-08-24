@@ -54,14 +54,14 @@ final class PoLoader extends Loader
                 continue;
             }
 
-            $splitLine = preg_split('/\s+/', $line, 2);
+            $splitLine = preg_split('/\s+/', $line, 2) ?: [''];
             $key = $splitLine[0];
             $data = $splitLine[1] ?? '';
 
             if ($key === '#~') {
                 $translation->disable();
 
-                $splitLine = preg_split('/\s+/', $data, 2);
+                $splitLine = preg_split('/\s+/', $data, 2) ?: [''];
                 $key = $splitLine[0];
                 $data = $splitLine[1] ?? '';
             }
@@ -84,7 +84,7 @@ final class PoLoader extends Loader
                     }
                     break;
                 case '#:':
-                    foreach (preg_split('/\s+/', trim($data)) as $value) {
+                    foreach (preg_split('/\s+/', trim($data)) ?: [] as $value) {
                         if (preg_match('/^(.+)(:(\d*))?$/U', $value, $matches)) {
                             $line = isset($matches[3]) ? intval($matches[3]) : null;
                             $translation->getReferences()->add($matches[1], $line);

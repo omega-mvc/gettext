@@ -73,11 +73,13 @@ class References implements JsonSerializable, Countable, IteratorAggregate
         return $this;
     }
 
+    /** @return array<string, list<int>> */
     public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
+    /** @return ArrayIterator<string, list<int>> */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->references);
@@ -85,9 +87,13 @@ class References implements JsonSerializable, Countable, IteratorAggregate
 
     public function count(): int
     {
-        return array_reduce($this->references, static function (int $carry, array $lines): int {
-            return $carry + (count($lines) ?: 1);
-        }, 0);
+        $total = 0;
+
+        foreach ($this->references as $lines) {
+            $total += count($lines) ?: 1;
+        }
+
+        return $total;
     }
 
     /**

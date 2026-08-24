@@ -28,9 +28,17 @@ class Flags implements JsonSerializable, Countable, IteratorAggregate
     {
         $stateFlags = $state['flags'] ?? [];
 
-        return new static(
-            ...(is_array($stateFlags) ? array_values(array_map('strval', $stateFlags)) : [])
-        );
+        $flags = [];
+
+        if (is_array($stateFlags)) {
+            foreach ($stateFlags as $item) {
+                if (is_string($item)) {
+                    $flags[] = $item;
+                }
+            }
+        }
+
+        return new static(...$flags);
     }
 
     public function __construct(string ...$flags)
@@ -76,11 +84,13 @@ class Flags implements JsonSerializable, Countable, IteratorAggregate
         return in_array($flag, $this->flags, true);
     }
 
+    /** @return list<string> */
     public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
+    /** @return ArrayIterator<int, string> */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->flags);

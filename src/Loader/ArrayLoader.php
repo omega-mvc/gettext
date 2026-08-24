@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Gettext\Loader;
 
 use BadMethodCallException;
-use Gettext\Headers;
+use Exception;
 use Gettext\Translations;
 
 /**
@@ -26,15 +26,21 @@ final class ArrayLoader extends Loader
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
-    private static function includeSafe($filename): array
+    private static function includeSafe(string $filename): array
     {
-        return include $filename;
+        $array = include $filename;
+
+        if (!is_array($array)) {
+            throw new Exception("Invalid translations file '$filename': it must return an array");
+        }
+
+        return $array;
     }
 
     /**
-     * @param array<string, mixed> $array
+     * @param array<array-key, mixed> $array
      */
     public function loadArray(array $array, ?Translations $translations = null): Translations
     {
@@ -42,37 +48,7 @@ final class ArrayLoader extends Loader
             $translations = $this->createTranslations();
         }
 
-        $messages = $array['messages'] ?? [];
-
-        foreach ($messages as $context => $contextTranslations) {
-            if ($context === '') {
-                $context = null;
-            }
-
-            foreach ($contextTranslations as $original => $value) {
-                if ($original === '') {
-                    continue;
-                }
-
-                $translation = $this->createTranslation($context, $original);
-                $translations->add($translation);
-
-                if (is_array($value)) {
-                    $translation->translate(array_shift($value));
-                    $translation->translatePlural(...$value);
-                } else {
-                    $translation->translate($value);
-                }
-            }
-        }
-
-        if (!empty($array['domain'])) {
-            $translations->setDomain($array['domain']);
-        }
-
-        if (!empty($array['plural-forms'])) {
-            $translations->getHeaders()->set(Headers::HEADER_PLURAL, $array['plural-forms']);
-        }
+        $this->loadArrayData($array, $translations);
 
         return $translations;
     }
