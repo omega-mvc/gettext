@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Gettext\Languages;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\TestCase;
 
 #[CoversNothing]
 class ExecutableFilesTest extends TestCase

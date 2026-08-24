@@ -196,4 +196,17 @@ class PhpFunctionsScannerTest extends TestCase
         $this->assertSame($file, $function->getFilename());
         $this->assertCount(0, $function->getComments());
     }
+
+    public function testFirstClassCallableSyntax()
+    {
+        $scanner = new PhpFunctionsScanner();
+        $functions = $scanner->scan("<?php \$fn = __(...);", 'foo.php');
+
+        $this->assertCount(1, $functions);
+
+        $function = array_shift($functions);
+        $this->assertSame('__', $function->getName());
+        $this->assertSame(1, $function->countArguments());
+        $this->assertSame([null], $function->getArguments());
+    }
 }

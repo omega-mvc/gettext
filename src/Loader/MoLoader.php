@@ -12,9 +12,9 @@ use Gettext\Translations;
  */
 final class MoLoader extends Loader
 {
-    private $string;
-    private $position;
-    private $length;
+    private string $string;
+    private int $position = 0;
+    private int $length = 0;
 
     private const MAGIC1 = -1794895138;
     private const MAGIC2 = -569244523;
@@ -126,11 +126,10 @@ final class MoLoader extends Loader
 
     private function readInt(string $byteOrder): int
     {
-        $read = $this->read(4);
+        $unpacked = unpack($byteOrder, $this->read(4));
+        $value = $unpacked === false ? null : array_shift($unpacked);
 
-        $read = (array) unpack($byteOrder, $read);
-
-        return (int) array_shift($read);
+        return is_int($value) ? $value : 0;
     }
 
     /**

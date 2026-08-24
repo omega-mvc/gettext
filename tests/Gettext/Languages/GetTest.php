@@ -9,6 +9,7 @@ use Gettext\Languages\CldrData;
 use Gettext\Languages\FormulaConverter;
 use Gettext\Languages\Language;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Category::class)]
 #[CoversClass(CldrData::class)]

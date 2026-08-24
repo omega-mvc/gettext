@@ -1,48 +1,33 @@
 # AGENTS.md
 
-PHP ^8.4 library providing gettext-based i18n/translation support (`omega-mvc/gettext`, fork of php-gettext/Gettext v5). PSR-4: `Gettext\` → `src/`, `Tests\` → `tests/`. License GPL-3.0-or-later.
+PHP 8.4 library (`omega-mvc/gettext`) for i18n/l10n: load, edit, merge, and generate gettext translations (PO/MO/JSON/PHP array) and scan PHP/JS sources for translatable strings.
 
-## Verification commands
+## Commands
 
-- Full gate: `composer test` = `phpunit` + `phpcs` + `phpstan`.
-- PHPUnit is the hard safety net: `vendor/bin/phpunit` (~2k tests, ~50k+ assertions), green after every change.
-- Single file / single test: `vendor/bin/phpunit tests/Gettext/MergeTest.php` or add `--filter testName`.
-- QA configs live at the root (`phpcs.xml.dist` = full PSR-12, `phpstan.neon.dist` = level 10, `.php-cs-fixer.dist.php`). If any is missing, recreate it — templates are in `.opencode/skills/run-php-tests/SKILL.md`. `src/Languages/` is excluded from phpcs/phpstan.
-- While the 8.4 refactor is mid-flight: a large phpstan level-10 backlog (~743 errors, was 939 at baseline; fixtures excluded) is expected and must only shrink; `src/` and `tests/` are phpcs-clean.
-- `composer cs-fix` runs php-cs-fixer (`@auto` rules).
+```sh
+composer test                                  # phpunit -> phpcs -> phpstan
+XDEBUG_MODE=off vendor/bin/phpunit --no-coverage   # fast full suite (~25s)
+vendor/bin/phpunit --no-coverage --filter testName # single test
+vendor/bin/phpcs                               # PSR-12 lint (src + tests)
+vendor/bin/phpcbf                              # auto-fix style
+```
 
-## Unexpected working-tree changes
+- Plain `vendor/bin/phpunit` generates an HTML **path coverage** report via Xdebug (`pathCoverage="true"` in phpunit.xml.dist) — takes many minutes even for a few tests. Always pass `--no-coverage` (+ `XDEBUG_MODE=off`).
+- phpstan runs at **level 10** with hundreds of pre-existing violations and no baseline, so `composer test` always exits non-zero at the phpstan step. Use phpstan to check files you touched; don't attempt mass fixes.
+- Only composer script is `test`. CONTRIBUTING.md mentions `composer check-style`, which does not exist.
+- Every phpunit run executes `tests/bootstrap.php`, which shells out to `bin/export-plural-rules` and regenerates `tests/data.php` and `tests/data.json` — expect a few seconds of startup even for a single test.
 
-- If you find modified/new files you did NOT change in this session (e.g., the user ran `phpcbf`, `composer update`, or edited code outside OpenCode), stop and ASK before treating them as stale, reverting them, or building on stale baselines.
-- On confirmation, re-verify current state (`vendor/bin/phpunit`, fresh phpcs/phpstan runs) but treat the user's changes as legitimate: never undo them silently. Instead update baselines, counts, and doc claims to match reality.
+## Do-not-touch zones
 
-## Tooling notes
+- `tests/Gettext/assets/*` — scanner fixtures whose exact line numbers and comment shapes are asserted by tests. Never reformat, restyle, or analyse them (already excluded from phpcs/phpstan).
+- `src/Languages/*` — vendored `gettext/languages` subpackage with its own autoloader; deprecation fixes only, never restyled. Its data comes from CLDR via `bin/import-cldr-data`; plural-rule exports come from `bin/export-plural-rules`.
+- `tests/data.php` / `tests/data.json` — machine-generated on every test run; never hand-edit.
 
-- `rg` (ripgrep) and `tig` are installed and available in PATH; prefer `rg` for content search and `tig` for git history inspection.
+## Layout
 
-## Test quirks
+- `src/` is PSR-4 `Gettext\`: `Loader\` (Po/Mo/Json/Array + strict GNU `StrictPoLoader`), `Generator\` (same formats), `Scanner\` (PhpScanner uses nikic/php-parser, JsScanner uses mck89/peast), `Translator`/`GettextTranslator`, merge strategy constants in `Merge`.
+- Tests are PSR-4 `Tests\` mirroring `src/` under `tests/Gettext/`; `MergeTest` compares output against committed files in `tests/Gettext/snapshots/`.
 
-- **Never reformat or edit** `tests/Gettext/assets/**` (scanner fixtures: tests assert exact line numbers and extracted-comment shapes) and `tests/data.php` (regenerated every run). Both are excluded from phpcs; if you find them modified, restore from git.
-- `tests/bootstrap.php` regenerates `tests/data.php` and `tests/data.json` on every run by executing `bin/export-plural-rules`; if that subprocess fails, the whole suite aborts before any test runs.
-- `tests/Gettext/MergeTest.php` uses snapshot files in `tests/Gettext/snapshots/*.php` (exported via brick/varexporter). To update a snapshot, pass `$forceCreate = true` to `assertSnapshot()` and commit the regenerated file.
-- `phpunit.xml` is strict: `failOnWarning`, `failOnRisky`, `beStrictAboutOutputDuringTests` — any echo/output from tests or risky assertions fail the run.
+## Config notes
 
-## Structure notes
-
-- `src/Languages/` is an embedded standalone sub-package (gettext/languages) with its **own** SPL autoloader (`src/Languages/autoloader.php`) — its classes are NOT autoloaded through Composer. The `bin/export-plural-rules` and `bin/import-cldr-data` CLI scripts require this autoloader directly. CLDR source data lives in `src/Languages/cldr-data/`.
-- `src/functions.php` defines global helper functions (`__()`, `n__()`, etc.) but has no `"files"` entry in composer.json — nothing loads it automatically. Do NOT add that entry: global `__()` would collide with consumer projects.
-- `composer validate` may warn about schema-level details (e.g., the hardcoded `version` field); the lockfile is in sync.
-
-## PHP 8.4 refactoring project
-
-`REFACTORING.md` (repo root) is the active plan for modernizing this codebase to idiomatic PHP 8.4. Read it before any refactor work. Key rules:
-
-- One change category per commit; run `vendor/bin/phpunit` after every file touched.
-- ~~Phase 1 target~~ DONE: all 4 implicit nullable params fixed (zero deprecations in suite). Next: Phase 2 native types.
-- Never convert `Merge` bitflag constants to an enum (they're combined with `|`).
-- Don't restyle `src/Languages/` beyond deprecation fixes — vendored subpackage.
-
-## OpenCode assets
-
-- Skills: `.opencode/skills/php84-modernize` (refactor workflow), `.opencode/skills/run-php-tests` (verification commands).
-- Subagent: `.opencode/agents/php84-auditor.md` — read-only audit of legacy constructs/deprecations; use via `@php84-auditor`.
+- Tracked configs are the `.dist` files (`phpunit.xml.dist`, `phpcs.xml.dist`, `phpstan.neon.dist`). Local un-suffixed copies are gitignored; keep them in sync if you must change behavior.

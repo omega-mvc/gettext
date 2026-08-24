@@ -23,8 +23,6 @@
         "phpunit/phpunit": "^13.3",
         "squizlabs/php_codesniffer": "^4.0.4",
         "brick/varexporter": "^0.6.0",
-        "friendsofphp/php-cs-fixer": "^v3.87.2",
-        "oscarotero/php-cs-fixer-config": "^v2.0.1",
         "phpstan/phpstan": "^2.2"
     },
     "autoload": {
@@ -42,7 +40,6 @@
             "phpunit",
             "phpcs",
             "phpstan"
-        ],
-        "cs-fix": "php-cs-fixer fix"
+        ]
     }
 }

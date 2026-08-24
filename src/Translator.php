@@ -7,6 +7,9 @@ namespace Gettext;
 use Gettext\Generator\ArrayGenerator;
 use InvalidArgumentException;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Translator implements TranslatorInterface
 {
     protected $domain;
@@ -72,7 +75,7 @@ class Translator implements TranslatorInterface
             // Slap on a return keyword and semicolon at the end.
             $this->plurals[$domain] = [
                 'count' => (int) str_replace('nplurals=', '', $count),
-                'code' => 'return ' . static::fixTerseIfs(rtrim(str_replace('plural=', '', $code), ';')) . ';',
+                'code' => 'return ' . self::fixTerseIfs(rtrim(str_replace('plural=', '', $code), ';')) . ';',
             ];
         }
 

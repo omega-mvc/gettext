@@ -26,13 +26,17 @@ class Translation
     protected $previousOriginal;
     protected $previousPlural;
 
-    public static function create(?string $context, string $original): Translation
+    public static function create(?string $context, string $original, ?string $plural = null): Translation
     {
         $id = static::generateId($context, $original);
 
         $translation = new static($id);
         $translation->context = $context;
         $translation->original = $original;
+
+        if (isset($plural)) {
+            $translation->setPlural($plural);
+        }
 
         return $translation;
     }

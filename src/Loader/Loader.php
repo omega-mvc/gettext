@@ -30,7 +30,7 @@ abstract class Loader implements LoaderInterface
         return Translations::create();
     }
 
-    protected function createTranslation(?string $context, string $original, ?string $plural = null): ?Translation
+    protected function createTranslation(?string $context, string $original, ?string $plural = null): Translation
     {
         $translation = Translation::create($context, $original);
 

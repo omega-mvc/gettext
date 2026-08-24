@@ -62,6 +62,20 @@ class TranslationTest extends TestCase
         $this->assertNotSame($translation->getReferences(), $clone->getReferences());
     }
 
+    public function testCreateWithPlural(): void
+    {
+        $translation = Translation::create('comments', 'One comment', '%s comments');
+
+        $this->assertSame('comments', $translation->getContext());
+        $this->assertSame('One comment', $translation->getOriginal());
+        $this->assertSame('%s comments', $translation->getPlural());
+        $this->assertSame("comments\004One comment", $translation->getId());
+
+        $translation = Translation::create(null, 'Original');
+
+        $this->assertNull($translation->getPlural());
+    }
+
     public function testMergeTranslation(): void
     {
         $translation1 = Translation::create('context', 'Original');

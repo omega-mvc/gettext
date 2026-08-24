@@ -6,7 +6,12 @@ namespace Gettext\Scanner;
 
 use Peast\Syntax\Node\CallExpression;
 use Peast\Syntax\Node\Comment;
+use Peast\Syntax\Node\Identifier;
+use Peast\Syntax\Node\Literal;
+use Peast\Syntax\Node\MemberExpression;
 use Peast\Syntax\Node\Node;
+use Peast\Syntax\Node\SpreadElement;
+use Peast\Syntax\Node\TemplateLiteral;
 
 class JsNodeVisitor
 {
@@ -66,25 +71,34 @@ class JsNodeVisitor
         static::addComments($function, $node->getCallee());
 
         foreach ($node->getArguments() as $argument) {
-            switch ($argument->getType()) {
-                case 'Literal':
-                    $function->addArgument($argument->getValue());
-                    static::addComments($function, $argument);
-                    break;
-                case 'TemplateLiteral':
-                    if ($argument->getExpressions()) {
-                        $function->addArgument();
-                        break;
-                    }
-
-                    $quasis = $argument->getQuasis();
-                    $quasis = array_shift($quasis);
-                    $function->addArgument($quasis->getValue());
-                    static::addComments($function, $argument);
-                    break;
-                default:
-                    $function->addArgument();
+            if ($argument instanceof SpreadElement) {
+                $function->addArgument();
+                continue;
             }
+
+            if ($argument instanceof Literal) {
+                $function->addArgument($argument->getValue());
+                static::addComments($function, $argument);
+                continue;
+            }
+
+            if ($argument instanceof TemplateLiteral) {
+                if ($argument->getExpressions()) {
+                    $function->addArgument();
+                    continue;
+                }
+
+                $quasis = $argument->getQuasis();
+                $quasi = array_shift($quasis);
+
+                if ($quasi !== null) {
+                    $function->addArgument($quasi->getValue());
+                    static::addComments($function, $argument);
+                    continue;
+                }
+            }
+
+            $function->addArgument();
         }
 
         return $function;
@@ -94,19 +108,17 @@ class JsNodeVisitor
     {
         $callee = $node->getCallee();
 
-        switch ($callee->getType()) {
-            case 'Identifier':
-                return $callee->getName();
-            case 'MemberExpression':
-                $property = $callee->getProperty();
-
-                if ($property->getType() === 'Identifier') {
-                    return $property->getName();
-                }
-                return null;
-            default:
-                return null;
+        if ($callee instanceof Identifier) {
+            return $callee->getName();
         }
+
+        if ($callee instanceof MemberExpression) {
+            $property = $callee->getProperty();
+
+            return $property instanceof Identifier ? $property->getName() : null;
+        }
+
+        return null;
     }
 
     protected static function addComments(ParsedFunction $function, Node $node): void

@@ -8,6 +8,7 @@ use Exception;
 use Gettext\Languages\Category;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Category::class)]
 class RulesTest extends TestCase

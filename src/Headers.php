@@ -24,7 +24,7 @@ class Headers implements JsonSerializable, Countable, IteratorAggregate
     public const HEADER_PLURAL = 'Plural-Forms';
     public const HEADER_DOMAIN = 'X-Domain';
 
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * @param array<string, mixed> $state

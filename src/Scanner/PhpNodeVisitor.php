@@ -6,6 +6,7 @@ namespace Gettext\Scanner;
 
 use PhpParser\Comment;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
@@ -22,7 +23,7 @@ class PhpNodeVisitor implements NodeVisitor
     /** @var list<ParsedFunction> */
     protected array $functions = [];
 
-    /** @var Comment[] */
+    /** @var list<Node> */
     protected array $bufferComments = [];
 
     /**
@@ -113,13 +114,15 @@ class PhpNodeVisitor implements NodeVisitor
         $this->bufferComments = [];
 
         foreach ($node->args as $argument) {
-            $value = $argument->value;
-
             foreach ($argument->getComments() as $comment) {
                 $function->addComment(static::getComment($comment));
             }
 
-            $function->addArgument(static::getValue($value));
+            if ($argument instanceof Arg) {
+                $function->addArgument(static::getValue($argument->value));
+            } else {
+                $function->addArgument();
+            }
         }
 
         return $function;
