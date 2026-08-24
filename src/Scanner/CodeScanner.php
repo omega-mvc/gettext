@@ -12,16 +12,18 @@ use Gettext\Translation;
  */
 abstract class CodeScanner extends Scanner
 {
-    protected $ignoreInvalidFunctions = false;
+    protected bool $ignoreInvalidFunctions = false;
 
-    protected $addReferences = true;
+    protected bool $addReferences = true;
 
-    protected $commentsPrefixes = [];
+    /** @var list<string> */
+    protected array $commentsPrefixes = [];
 
-    protected $functions = [];
+    /** @var array<string, string> */
+    protected array $functions = [];
 
     /**
-     * @param array<string, mixed> $functions [fnName => handler]
+     * @param array<string, string> $functions [fnName => handler]
      */
     public function setFunctions(array $functions): self
     {
@@ -31,21 +33,21 @@ abstract class CodeScanner extends Scanner
     }
 
     /**
-     * @return array<string, mixed> [fnName => handler]
+     * @return array<string, string> [fnName => handler]
      */
     public function getFunctions(): array
     {
         return $this->functions;
     }
 
-    public function ignoreInvalidFunctions($ignore = true): self
+    public function ignoreInvalidFunctions(bool $ignore = true): self
     {
         $this->ignoreInvalidFunctions = $ignore;
 
         return $this;
     }
 
-    public function addReferences($enabled = true): self
+    public function addReferences(bool $enabled = true): self
     {
         $this->addReferences = $enabled;
 
@@ -54,7 +56,7 @@ abstract class CodeScanner extends Scanner
 
     public function extractCommentsStartingWith(string ...$prefixes): self
     {
-        $this->commentsPrefixes = $prefixes;
+        $this->commentsPrefixes = array_values($prefixes);
 
         return $this;
     }
@@ -71,7 +73,7 @@ abstract class CodeScanner extends Scanner
 
     abstract public function getFunctionsScanner(): FunctionsScannerInterface;
 
-    protected function handleFunction(ParsedFunction $function)
+    protected function handleFunction(ParsedFunction $function): void
     {
         $handler = $this->getFunctionHandler($function);
 
@@ -81,7 +83,7 @@ abstract class CodeScanner extends Scanner
 
         $translation = call_user_func($handler, $function);
 
-        if ($translation && $this->addReferences) {
+        if ($translation instanceof Translation && $this->addReferences) {
             $translation->getReferences()->add($function->getFilename(), $function->getLine());
         }
     }
@@ -91,7 +93,13 @@ abstract class CodeScanner extends Scanner
         $name = $function->getName();
         $handler = $this->functions[$name] ?? null;
 
-        return is_null($handler) ? null : [$this, $handler];
+        if ($handler === null) {
+            return null;
+        }
+
+        $callback = [$this, $handler];
+
+        return is_callable($callback) ? $callback : null;
     }
 
     protected function addComments(ParsedFunction $function, ?Translation $translation): ?Translation
@@ -141,18 +149,20 @@ abstract class CodeScanner extends Scanner
 
         $arguments = array_slice($function->getArguments(), 0, $minLength);
 
-        if (in_array(null, $arguments, true)) {
-            if ($this->ignoreInvalidFunctions) {
-                return false;
-            }
+        foreach ($arguments as $argument) {
+            if (!is_string($argument)) {
+                if ($this->ignoreInvalidFunctions) {
+                    return false;
+                }
 
-            throw new Exception(
-                sprintf(
-                    'Invalid gettext function in %s:%d. Some required arguments are not valid',
-                    $function->getFilename(),
-                    $function->getLine()
-                )
-            );
+                throw new Exception(
+                    sprintf(
+                        'Invalid gettext function in %s:%d. Some required arguments are not valid',
+                        $function->getFilename(),
+                        $function->getLine()
+                    )
+                );
+            }
         }
 
         return true;

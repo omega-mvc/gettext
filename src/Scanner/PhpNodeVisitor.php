@@ -8,10 +8,21 @@ use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Print_;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\Float_;
+use PhpParser\Node\Scalar\Int_;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Echo_;
+use PhpParser\Node\Stmt\Expression;
+use PhpParser\Node\Stmt\Return_;
 use PhpParser\NodeVisitor;
 
 class PhpNodeVisitor implements NodeVisitor
@@ -42,26 +53,26 @@ class PhpNodeVisitor implements NodeVisitor
 
     public function enterNode(Node $node)
     {
-        switch ($node->getType()) {
-            case 'Expr_MethodCall':
-            case 'Expr_FuncCall':
-            case 'Expr_StaticCall':
-                $name = static::getName($node);
+        if ($node instanceof FuncCall || $node instanceof MethodCall || $node instanceof StaticCall) {
+            $name = static::getName($node);
 
-                if ($name && ($this->validFunctions === null || in_array($name, $this->validFunctions))) {
-                    $this->functions[] = $this->createFunction($node);
-                } elseif ($node->getComments()) {
-                    $this->bufferComments[] = $node;
-                }
-                break;
-
-            case 'Stmt_Expression':
-            case 'Stmt_Echo':
-            case 'Stmt_Return':
-            case 'Expr_Print':
-            case 'Expr_Assign':
+            if ($name && ($this->validFunctions === null || in_array($name, $this->validFunctions))) {
+                $this->functions[] = $this->createFunction($node);
+            } elseif ($node->getComments()) {
                 $this->bufferComments[] = $node;
-                break;
+            }
+
+            return null;
+        }
+
+        if (
+            $node instanceof Expression
+            || $node instanceof Echo_
+            || $node instanceof Return_
+            || $node instanceof Print_
+            || $node instanceof Assign
+        ) {
+            $this->bufferComments[] = $node;
         }
 
         return null;
@@ -86,12 +97,12 @@ class PhpNodeVisitor implements NodeVisitor
     }
 
     /**
-     * @param FuncCall|MethodCall $node
+     * @param FuncCall|MethodCall|StaticCall $node
      */
     protected function createFunction(Expr $node): ParsedFunction
     {
         $function = new ParsedFunction(
-            static::getName($node),
+            static::getName($node) ?? '',
             $this->filename,
             $node->getStartLine(),
             $node->getEndLine()
@@ -143,6 +154,10 @@ class PhpNodeVisitor implements NodeVisitor
 
     protected static function getName(Node $node): ?string
     {
+        if (!$node instanceof FuncCall && !$node instanceof MethodCall && !$node instanceof StaticCall) {
+            return null;
+        }
+
         $name = $node->name;
 
         if ($name instanceof Name) {
@@ -156,36 +171,55 @@ class PhpNodeVisitor implements NodeVisitor
         return null;
     }
 
-    protected static function getValue(Expr $value)
+    protected static function getValue(Expr $value): mixed
     {
-        $type = $value->getType();
-
-        switch ($type) {
-            case 'Scalar_String':
-            case 'Scalar_Int':
-            case 'Scalar_Float':
-                return $value->value;
-            case 'Expr_BinaryOp_Concat':
-                $values = [];
-                foreach ($value->getSubNodeNames() as $name) {
-                    $values[] = static::getValue($value->$name);
-                }
-                return implode('', $values);
-            case 'Expr_Array':
-                $arr = [];
-
-                foreach ($value->items as $item) {
-                    $value = static::getValue($item->value);
-
-                    if ($item->key === null) {
-                        $arr[] = $value;
-                    } else {
-                        $key = static::getValue($item->key);
-                        $arr[$key] = $value;
-                    }
-                }
-
-                return $arr;
+        if ($value instanceof String_ || $value instanceof Int_ || $value instanceof Float_) {
+            return $value->value;
         }
+
+        if ($value instanceof Concat) {
+            $values = [];
+
+            foreach ($value->getSubNodeNames() as $subName) {
+                $subValue = $value->$subName;
+
+                if (!$subValue instanceof Expr) {
+                    continue;
+                }
+
+                $part = static::getValue($subValue);
+
+                if (is_scalar($part)) {
+                    $values[] = (string) $part;
+                }
+            }
+
+            return implode('', $values);
+        }
+
+        if ($value instanceof Array_) {
+            $arr = [];
+
+            foreach ($value->items as $item) {
+                $itemValue = static::getValue($item->value);
+
+                if ($item->key === null) {
+                    $arr[] = $itemValue;
+                    continue;
+                }
+
+                $key = static::getValue($item->key);
+
+                if (is_int($key) || is_string($key)) {
+                    $arr[$key] = $itemValue;
+                } else {
+                    $arr[] = $itemValue;
+                }
+            }
+
+            return $arr;
+        }
+
+        return null;
     }
 }

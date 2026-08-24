@@ -13,13 +13,15 @@ use Gettext\Translations;
  */
 abstract class Scanner implements ScannerInterface
 {
-    protected $translations;
-    protected $defaultDomain;
+    /** @var array<string, Translations> */
+    protected array $translations = [];
+
+    protected string $defaultDomain = '';
 
     public function __construct(Translations ...$allTranslations)
     {
         foreach ($allTranslations as $translations) {
-            $domain = $translations->getDomain();
+            $domain = $translations->getDomain() ?? '';
             $this->translations[$domain] = $translations;
         }
     }
@@ -34,6 +36,9 @@ abstract class Scanner implements ScannerInterface
         return $this->defaultDomain;
     }
 
+    /**
+     * @return array<string, Translations>
+     */
     public function getTranslations(): array
     {
         return $this->translations;

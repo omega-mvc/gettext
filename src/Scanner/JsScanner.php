@@ -13,7 +13,8 @@ class JsScanner extends CodeScanner
 {
     use FunctionsHandlersTrait;
 
-    protected $functions = [
+    /** @var array<string, string> */
+    protected array $functions = [
         'gettext' => 'gettext',
         '__' => 'gettext',
         'ngettext' => 'ngettext',

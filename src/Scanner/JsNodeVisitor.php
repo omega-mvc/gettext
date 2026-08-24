@@ -16,9 +16,9 @@ use Peast\Syntax\Node\TemplateLiteral;
 class JsNodeVisitor
 {
     /** @var array<string>|null */
-    protected $validFunctions;
+    protected ?array $validFunctions;
 
-    protected $filename;
+    protected string $filename;
 
     /** @var list<ParsedFunction> */
     protected $functions = [];
@@ -32,12 +32,12 @@ class JsNodeVisitor
         $this->validFunctions = $validFunctions;
     }
 
-    public function __invoke(Node $node)
+    public function __invoke(Node $node): void
     {
-        if ($node->getType() === 'CallExpression') {
+        if ($node instanceof CallExpression) {
             $function = $this->createFunction($node);
 
-            if ($function) {
+            if ($function !== null) {
                 $this->functions[] = $function;
             }
         }
@@ -68,7 +68,11 @@ class JsNodeVisitor
             $position->getEnd()->getLine()
         );
 
-        static::addComments($function, $node->getCallee());
+        $callee = $node->getCallee();
+
+        if ($callee instanceof Node) {
+            static::addComments($function, $callee);
+        }
 
         foreach ($node->getArguments() as $argument) {
             if ($argument instanceof SpreadElement) {
