@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Translations::class)]
 class PhpScannerTest extends TestCase
 {
-    public function testPhpCodeScanner()
+    public function testPhpCodeScanner(): void
     {
         $file = __DIR__ . '/../assets/code.php';
 
@@ -77,19 +77,15 @@ class PhpScannerTest extends TestCase
         $this->assertSame(['php-format'], $translation->getFlags()->toArray());
     }
 
-    public function testInvalidFunction()
+    public function testInvalidFunction(): void
     {
         $this->expectException(Exception::class);
 
         $scanner = new PhpScanner(Translations::create('messages'));
         $scanner->scanString('<?php __(ucfirst("invalid function"));', 'file.php');
-
-        list('messages' => $translations) = array_values($scanner->getTranslations());
-
-        $this->assertCount(0, $translations);
     }
 
-    public function testIgnoredInvalidFunction()
+    public function testIgnoredInvalidFunction(): void
     {
         $scanner = new PhpScanner(Translations::create('messages'));
         $scanner->ignoreInvalidFunctions();

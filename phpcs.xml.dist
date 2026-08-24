@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="omega-mvc-gettext">
     <description>Full PSR-12 coding standard for omega-mvc/gettext.</description>
-    <args name="cache" value="cache/phpcs/phpcs.json"/>
+    <arg name="cache" value="cache/phpcs/phpcs.json"/>
+    <arg name="parallel" value="4"/>
+
     <rule ref="PSR12"/>
 
     <file>src</file>
