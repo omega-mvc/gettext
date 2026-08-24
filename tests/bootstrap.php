@@ -6,7 +6,7 @@ require_once __DIR__ . '/constants.php';
 
 error_reporting(E_ALL);
 
-$cmd = PHP_BINARY ? escapeshellarg(PHP_BINARY) : 'php';
+$cmd = escapeshellarg(PHP_BINARY);
 $exportPluralRules = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'export-plural-rules';
 $cmd .= ' ' . escapeshellarg($exportPluralRules);
 
