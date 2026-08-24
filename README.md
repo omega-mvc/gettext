@@ -12,7 +12,12 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/tests.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/tests.yml/badge.svg" alt="CI"></a>
+</p>
+<p align="center">
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/tests.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/tests.yml/badge.svg?label=PHPUnit" alt="PHPUnit"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/coding-standard.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/coding-standard.yml/badge.svg?label=PHPCS" alt="PHPCS"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/static-analysis.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/static-analysis.yml/badge.svg?label=PHPStan" alt="PHPStan"></a>
 </p>
 
 # Gettext
