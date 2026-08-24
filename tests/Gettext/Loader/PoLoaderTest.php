@@ -30,12 +30,8 @@ class PoLoaderTest extends BasePoLoaderTestCase
         return new PoLoader();
     }
 
-    /**
-     * @param mixed $source
-     * @param mixed $decoded
-     */
     #[DataProvider('stringDecodeProvider')]
-    public function testStringDecode($source, $decoded): void
+    public function testStringDecode(string $source, string $decoded): void
     {
         $this->assertSame($decoded, PoLoader::decode($source));
     }

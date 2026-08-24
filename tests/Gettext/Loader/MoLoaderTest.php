@@ -23,6 +23,19 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Translations::class)]
 class MoLoaderTest extends TestCase
 {
+    /**
+     * Shifts a translation off the array, asserting its presence.
+     *
+     * @param array<string, Translation> $translations
+     */
+    private function shiftTranslation(array &$translations): Translation
+    {
+        $translation = array_shift($translations);
+        $this->assertNotNull($translation);
+
+        return $translation;
+    }
+
     public function testMoLoader(): void
     {
         $loader = new MoLoader();
@@ -32,17 +45,17 @@ class MoLoaderTest extends TestCase
 
         $array = $translations->getTranslations();
 
-        $this->translation0(array_shift($array));
-        $this->translation1(array_shift($array));
-        $this->translation2(array_shift($array));
-        $this->translation3(array_shift($array));
-        $this->translation4(array_shift($array));
-        $this->translation5(array_shift($array));
-        $this->translation6(array_shift($array));
-        $this->translation7(array_shift($array));
-        $this->translation8(array_shift($array));
-        $this->translation9(array_shift($array));
-        $this->translation10(array_shift($array));
+        $this->translation0($this->shiftTranslation($array));
+        $this->translation1($this->shiftTranslation($array));
+        $this->translation2($this->shiftTranslation($array));
+        $this->translation3($this->shiftTranslation($array));
+        $this->translation4($this->shiftTranslation($array));
+        $this->translation5($this->shiftTranslation($array));
+        $this->translation6($this->shiftTranslation($array));
+        $this->translation7($this->shiftTranslation($array));
+        $this->translation8($this->shiftTranslation($array));
+        $this->translation9($this->shiftTranslation($array));
+        $this->translation10($this->shiftTranslation($array));
 
         $headers = $translations->getHeaders()->toArray();
 

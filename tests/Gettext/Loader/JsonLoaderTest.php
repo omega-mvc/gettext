@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(JsonLoader::class)]
 class JsonLoaderTest extends TestCase
 {
-    public function testJsonLoader()
+    public function testJsonLoader(): void
     {
         $loader = new JsonLoader();
 
