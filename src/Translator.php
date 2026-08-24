@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace Gettext;
 
+use Closure;
 use Gettext\Generator\ArrayGenerator;
 use InvalidArgumentException;
+
+use function get_debug_type;
+use function sprintf;
 
 /**
  * @phpstan-consistent-constructor
  */
 class Translator implements TranslatorInterface
 {
-    protected $domain;
-    protected $dictionary = [];
-    protected $plurals = [];
+    protected ?string $domain = null;
+
+    /** @var array<string, array<string, array<string, list<string>|string>>> */
+    protected array $dictionary = [];
+
+    /** @var array<string, array{count: int, code: string, function?: Closure}> */
+    protected array $plurals = [];
 
     public static function createFromTranslations(Translations ...$allTranslations): Translator
     {
@@ -51,25 +59,41 @@ class Translator implements TranslatorInterface
     /**
      * Add new translations to the dictionary.
      *
-     * @param array<string, mixed> $translations
+     * @param array<array-key, mixed> $translations
      */
     public function addTranslations(array $translations): self
     {
         $domain = $translations['domain'] ?? '';
+
+        if (!is_string($domain)) {
+            $domain = '';
+        }
 
         //Set the first domain loaded as default domain
         if ($this->domain === null) {
             $this->domain = $domain;
         }
 
+        $messages = $translations['messages'] ?? [];
+
+        if (!is_array($messages)) {
+            $messages = [];
+        }
+
         if (isset($this->dictionary[$domain])) {
-            $this->dictionary[$domain] = array_replace_recursive($this->dictionary[$domain], $translations['messages']);
+            $merged = array_replace_recursive($this->dictionary[$domain], self::normalizeMessages($messages));
+
+            $this->dictionary[$domain] = self::normalizeMessages($merged);
 
             return $this;
         }
 
-        if (!empty($translations['plural-forms'])) {
-            list($count, $code) = array_map('trim', explode(';', $translations['plural-forms'], 2));
+        $pluralForms = $translations['plural-forms'] ?? null;
+
+        if (is_string($pluralForms) && $pluralForms !== '') {
+            $chunks = explode(';', $pluralForms, 2);
+            $count = trim($chunks[0]);
+            $code = trim($chunks[1] ?? '');
 
             // extract just the expression turn 'n' into a php variable '$n'.
             // Slap on a return keyword and semicolon at the end.
@@ -79,9 +103,58 @@ class Translator implements TranslatorInterface
             ];
         }
 
-        $this->dictionary[$domain] = $translations['messages'];
+        $this->dictionary[$domain] = self::normalizeMessages($messages);
 
         return $this;
+    }
+
+    /**
+     * Keeps only the well-formed entries of a messages structure:
+     * context => original => (string translation | list<string> plural translations).
+     *
+     * @param array<array-key, mixed> $messages
+     * @return array<string, array<string, list<string>|string>>
+     */
+    private static function normalizeMessages(array $messages): array
+    {
+        $normalized = [];
+
+        foreach ($messages as $contextKey => $contextTranslations) {
+            if (!is_array($contextTranslations)) {
+                continue;
+            }
+
+            $context = [];
+
+            foreach ($contextTranslations as $originalKey => $value) {
+                if (is_string($value)) {
+                    $context[(string) $originalKey] = $value;
+                    continue;
+                }
+
+                if (!is_array($value)) {
+                    continue;
+                }
+
+                $plurals = [];
+
+                foreach ($value as $pluralValue) {
+                    if (is_string($pluralValue)) {
+                        $plurals[] = $pluralValue;
+                    }
+                }
+
+                if ($plurals !== []) {
+                    $context[(string) $originalKey] = $plurals;
+                }
+            }
+
+            if ($context !== []) {
+                $normalized[(string) $contextKey] = $context;
+            }
+        }
+
+        return $normalized;
     }
 
     /**
@@ -170,21 +243,25 @@ class Translator implements TranslatorInterface
     /**
      * Search and returns a translation.
      *
-     * @return array<array-key, mixed>|null
+     * @return list<string>|null
      */
     protected function getTranslation(?string $domain, ?string $context, string $original): ?array
     {
         if ($domain === null) {
-            $domain = $this->domain;
+            $domain = $this->domain ?? '';
         }
 
         if ($context === null) {
             $context = '';
         }
 
-        $translation = $this->dictionary[$domain][$context][$original] ?? null;
+        $value = $this->dictionary[$domain][$context][$original] ?? null;
 
-        return $translation === null ? $translation : (array) $translation;
+        if ($value === null) {
+            return null;
+        }
+
+        return is_array($value) ? $value : [$value];
     }
 
     /**
@@ -194,24 +271,38 @@ class Translator implements TranslatorInterface
     protected function getPluralIndex(?string $domain, int $n, bool $fallback): int
     {
         if ($domain === null) {
-            $domain = $this->domain;
+            $domain = $this->domain ?? '';
         }
 
         //Not loaded domain or translation, use a fallback
-        if (!isset($this->plurals[$domain]) || $fallback === true) {
+        if (!isset($this->plurals[$domain]) || $fallback) {
             return $n == 1 ? 0 : 1;
         }
 
         if (!isset($this->plurals[$domain]['function'])) {
-            $code = $this->plurals[$domain]['code'];
-            $this->plurals[$domain]['function'] = eval("return function (\$n) { $code };");
+            $function = eval("return function (\$n) { {$this->plurals[$domain]['code']} };");
+
+            if (!$function instanceof Closure) {
+                throw new InvalidArgumentException('Invalid plural form expression');
+            }
+
+            $this->plurals[$domain]['function'] = $function;
         }
 
-        if ($this->plurals[$domain]['count'] <= 2) {
-            return call_user_func($this->plurals[$domain]['function'], $n) ? 1 : 0;
+        $result = ($this->plurals[$domain]['function'])($n);
+
+        if (is_bool($result)) {
+            return $result ? 1 : 0;
         }
 
-        return call_user_func($this->plurals[$domain]['function'], $n);
+        if (is_int($result)) {
+            return $result;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'The plural form expression must return an integer index, %s returned',
+            get_debug_type($result)
+        ));
     }
 
     /**

@@ -52,5 +52,5 @@ interface TranslatorInterface
     /**
      * Gets a translation checking the domain, the context and the plural form.
      */
-    public function dnpgettext(string $domain, string $context, string $original, string $plural, int $value);
+    public function dnpgettext(string $domain, string $context, string $original, string $plural, int $value): string;
 }
