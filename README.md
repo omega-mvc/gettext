@@ -11,6 +11,10 @@
     <a href="https://github.com/omega-mvc/gettext/blob/main/LICENSE">License</a>
 </p>
 
+<p align="center">
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml"><img src="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+</p>
+
 # Gettext
 
 Gettext is a PHP 8.4+ library for working with internationalization (i18n) and localization (l10n).  
