@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversNothing]
 class FunctionsTest extends TestCase
 {
-    public function testPluralFunction()
+    public function testPluralFunction(): void
     {
         $translations = Translations::create()->add(
             Translation::create(null, 'One comment', '%s comments')
@@ -32,7 +32,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('beaucoup de commentaires', n__('One comment', '%s comments', 3, ['%s' => 'beaucoup de']));
     }
 
-    public function testContextFunction()
+    public function testContextFunction(): void
     {
         $translations = Translations::create()
             ->add(Translation::create('daytime', 'Hello %s')->translate('Bonjour %s'))
@@ -50,7 +50,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Bonsoir John', p__('nightime', 'Hello %s', ['%s' => 'John']));
     }
 
-    public function testDomainFunction()
+    public function testDomainFunction(): void
     {
         $translations = Translations::create('messages')
             ->add(Translation::create(null, 'Hello %s')->translate('Bonjour %s'));
@@ -67,7 +67,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Hello John', d__('errors', 'Hello %s', ['%s' => 'John']));
     }
 
-    public function testDomainPluralFunction()
+    public function testDomainPluralFunction(): void
     {
         $translations = Translations::create('messages')->add(
             Translation::create(null, 'One comment', '%s comments')
@@ -93,7 +93,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('3 comments', dn__('messages-2', 'One comment', '%s comments', 3, 3));
     }
 
-    public function testDomainAndContextFunction()
+    public function testDomainAndContextFunction(): void
     {
         $translations = Translations::create('messages')
             ->add(Translation::create('daytime', 'Hello %s')->translate('Bonjour %s'))
@@ -112,7 +112,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Hello John', dp__('errors', 'daytime', 'Hello %s', ['%s' => 'John']));
     }
 
-    public function testPluralAndContextFunction()
+    public function testPluralAndContextFunction(): void
     {
         $translations = Translations::create()->add(
             Translation::create('comment', 'One comment', '%s comments')
@@ -137,7 +137,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('3 comments', np__('', 'One comment', '%s comments', 3, ['%s' => 3]));
     }
 
-    public function testPluralAndContextAndDomainFunction()
+    public function testPluralAndContextAndDomainFunction(): void
     {
         $translations = Translations::create('messages')->add(
             Translation::create('comment', 'One comment', '%s comments')
@@ -169,7 +169,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    public function testNonLoadedTranslations()
+    public function testNonLoadedTranslations(): void
     {
         $t = new Translator();
         $this->assertEquals('hello', $t->gettext('hello'));
