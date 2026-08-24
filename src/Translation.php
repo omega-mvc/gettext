@@ -202,7 +202,7 @@ class Translation
 
     public function translatePlural(string ...$translations): self
     {
-        $this->pluralTranslations = $translations;
+        $this->pluralTranslations = array_values($translations);
 
         return $this;
     }
