@@ -19,42 +19,42 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Language::class)]
 class USAsciiTest extends TestCase
 {
-    public function testExportUSAscii()
+    public function testExportUSAscii(): void
     {
         $array = $this->getExportedPhpArray();
         foreach ($array as $localeID => $localeData) {
-            $this->assertUSAscii($localeID, $localeData);
+            $this->assertUSAscii((string) $localeID, $localeData);
         }
     }
 
-    /**
-     * @param string $key
-     */
-    private function assertUSAscii($key, $value)
+    private function assertUSAscii(string $key, mixed $value): void
     {
-        switch (gettype($value)) {
-            case 'string':
-                $this->assertSame(
-                    1,
-                    preg_match('/^[\x20-\x7F\n]*$/s', $value),
-                    "The string at {$key} does not contain only US-ASCII characters: {$value}"
-                );
-                break;
-            case 'array':
-                foreach ($value as $valueKey => $valueValue) {
-                    $this->assertUSAscii("{$key}.{$valueKey}", $valueValue);
-                }
-                break;
+        if (is_string($value)) {
+            $this->assertSame(
+                1,
+                preg_match('/^[\x20-\x7F\n]*$/s', $value),
+                "The string at {$key} does not contain only US-ASCII characters: {$value}"
+            );
+
+            return;
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $valueKey => $valueValue) {
+                $this->assertUSAscii("{$key}.{$valueKey}", $valueValue);
+            }
         }
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
-    private function getExportedPhpArray()
+    private function getExportedPhpArray(): array
     {
         $phpCode = Php::toString(Language::getAll(), array('us-ascii' => true));
+        $stripped = preg_replace('/^<\?php\n/', '', $phpCode);
+        $exported = is_string($stripped) ? eval($stripped) : null;
 
-        return eval(preg_replace('/^<\?php\n/', '', $phpCode));
+        return is_array($exported) ? $exported : [];
     }
 }

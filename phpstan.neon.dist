@@ -1,6 +1,8 @@
 parameters:
     level: 10
     tmpDir: cache/phpstan
+    bootstrapFiles:
+        - tests/constants.php
     paths:
         - src
         - tests
