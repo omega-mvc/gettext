@@ -9,7 +9,6 @@ use Countable;
 use Gettext\Languages\Language;
 use InvalidArgumentException;
 use IteratorAggregate;
-use ReturnTypeWillChange;
 
 /**
  * Class to manage a collection of translations under the same domain.
@@ -20,10 +19,13 @@ use ReturnTypeWillChange;
  */
 class Translations implements Countable, IteratorAggregate
 {
-    protected $description;
-    protected $translations = [];
-    protected $headers;
-    protected $flags;
+    protected ?string $description = null;
+
+    /** @var array<string, Translation> */
+    protected array $translations = [];
+
+    protected Headers $headers;
+    protected Flags $flags;
 
     public static function create(?string $domain = null, ?string $language = null): Translations
     {
@@ -90,8 +92,7 @@ class Translations implements Countable, IteratorAggregate
         ];
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->translations);
     }

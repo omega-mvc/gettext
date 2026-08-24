@@ -8,7 +8,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use ReturnTypeWillChange;
 
 /**
  * Class to manage the flags of a translation.
@@ -19,14 +18,19 @@ use ReturnTypeWillChange;
  */
 class Flags implements JsonSerializable, Countable, IteratorAggregate
 {
-    protected $flags = [];
+    /** @var list<string> */
+    protected array $flags = [];
 
     /**
      * @param array<string, mixed> $state
      */
     public static function __set_state(array $state): Flags
     {
-        return new static(...$state['flags']);
+        $stateFlags = $state['flags'] ?? [];
+
+        return new static(
+            ...(is_array($stateFlags) ? array_values(array_map('strval', $stateFlags)) : [])
+        );
     }
 
     public function __construct(string ...$flags)
@@ -72,14 +76,12 @@ class Flags implements JsonSerializable, Countable, IteratorAggregate
         return in_array($flag, $this->flags, true);
     }
 
-    #[ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->flags);
     }

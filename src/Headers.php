@@ -9,7 +9,6 @@ use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
-use ReturnTypeWillChange;
 
 /**
  * Class to manage the headers of translations.
@@ -20,10 +19,11 @@ use ReturnTypeWillChange;
  */
 class Headers implements JsonSerializable, Countable, IteratorAggregate
 {
-    public const HEADER_LANGUAGE = 'Language';
-    public const HEADER_PLURAL = 'Plural-Forms';
-    public const HEADER_DOMAIN = 'X-Domain';
+    public const string HEADER_LANGUAGE = 'Language';
+    public const string HEADER_PLURAL = 'Plural-Forms';
+    public const string HEADER_DOMAIN = 'X-Domain';
 
+    /** @var array<string, string> */
     protected array $headers = [];
 
     /**
@@ -31,7 +31,16 @@ class Headers implements JsonSerializable, Countable, IteratorAggregate
      */
     public static function __set_state(array $state): Headers
     {
-        return new static($state['headers']);
+        $stateHeaders = $state['headers'] ?? [];
+        $headers = [];
+
+        if (is_array($stateHeaders)) {
+            foreach ($stateHeaders as $name => $value) {
+                $headers[(string) $name] = (string) $value;
+            }
+        }
+
+        return new static($headers);
     }
 
     /**
@@ -75,14 +84,12 @@ class Headers implements JsonSerializable, Countable, IteratorAggregate
         return $this;
     }
 
-    #[ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->toArray());
     }

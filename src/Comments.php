@@ -8,7 +8,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use ReturnTypeWillChange;
 
 /**
  * Class to manage the comments of a translation.
@@ -19,14 +18,19 @@ use ReturnTypeWillChange;
  */
 class Comments implements JsonSerializable, Countable, IteratorAggregate
 {
-    protected $comments = [];
+    /** @var list<string> */
+    protected array $comments = [];
 
     /**
      * @param array<string, mixed> $state
      */
     public static function __set_state(array $state): Comments
     {
-        return new static(...$state['comments']);
+        $stateComments = $state['comments'] ?? [];
+
+        return new static(
+            ...(is_array($stateComments) ? array_values(array_map('strval', $stateComments)) : [])
+        );
     }
 
     public function __construct(string ...$comments)
@@ -65,14 +69,12 @@ class Comments implements JsonSerializable, Countable, IteratorAggregate
         return $this;
     }
 
-    #[ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->comments);
     }
