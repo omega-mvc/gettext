@@ -66,6 +66,13 @@ Tracked configs are `phpunit.xml.dist`, `phpcs.xml.dist`, `phpstan.neon.dist`. A
 
 PHPStan uses `tests/constants.php` as a bootstrap file (`phpstan.neon.dist:5`), so constants defined there are available during static analysis.
 
+## Available tools
+
+- `gh` — GitHub CLI (PRs, issues, releases, checks)
+- `rg` — ripgrep (fast content search)
+- `tig` — text-mode interface for git
+- `phpdbg` — PHPDBG debugger (coverage without Xdebug)
+
 ## CI
 
 GitHub Actions runs three checks on push to `main` and PRs: PHPCS, PHPStan, PHPUnit (PHP 8.4). Each is in `.github/workflows/` as separate callable workflows invoked by `ci.yml`. Tests in CI always run with `--no-coverage` (no Xdebug driver installed).
