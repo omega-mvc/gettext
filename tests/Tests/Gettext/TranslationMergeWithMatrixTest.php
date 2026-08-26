@@ -29,8 +29,6 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Translation::class)]
 class TranslationMergeWithMatrixTest extends TestCase
 {
-    private const FIELDS = ['translation', 'plural', 'previousContext', 'previousOriginal', 'previousPlural', 'pluralTranslations'];
-
     /**
      * Builds every combination of family arms (union/theirs/ours) crossed
      * with the override flag, every field-presence outcome vector and the

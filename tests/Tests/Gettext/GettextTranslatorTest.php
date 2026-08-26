@@ -127,6 +127,11 @@ class GettextTranslatorTest extends TestCase
 
         $previousLocale = setlocale(LC_ALL, '0');
 
+        if (setlocale(LC_ALL, 'it_IT.UTF-8') === false) {
+            setlocale(LC_ALL, $previousLocale ?: 'C');
+            self::markTestSkipped('the it_IT.UTF-8 locale is not available on this system');
+        }
+
         try {
             $translator = new GettextTranslator('it_IT.UTF-8');
             $translator->loadDomain('testdom', $baseDir);
