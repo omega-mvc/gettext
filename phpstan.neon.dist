@@ -8,7 +8,7 @@ parameters:
         - tests
     excludePaths:
         # Vendored gettext/languages subpackage: out of scope for static analysis.
-        - src/Languages
+        - src/Omega/Gettext/Languages
         # Scanner fixtures: intentionally unstyled code whose line numbers and
         # comment shapes are asserted by tests. Never analyse or restyle.
-        - tests/Gettext/assets
+        - tests/Tests/Gettext/assets

@@ -30,7 +30,13 @@ If you encounter any issues or have ideas for improvements, please create an iss
 
 ## Code Style
 
-Please follow the existing code style and conventions. Run `composer check-style` to ensure your code adheres to the standards.
+Please follow the existing code style and conventions:
+
+```php
+composer phpcs    # PSR-12 over src/ and tests/
+composer phpstan  # PHPStan level 10 static analysis over src/ and tests/
+
+Both must pass before submitting a pull request.
 
 ## License
 

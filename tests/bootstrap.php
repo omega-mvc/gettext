@@ -21,5 +21,3 @@ exec($cmd . ' json ' . escapeshellarg('--output=' . GETTEXT_LANGUAGES_TESTDIR . 
 if ($rc !== 0) {
     throw new Exception(implode("\n", $execOutput));
 }
-
-require_once dirname(__DIR__) . '/src/Languages/autoloader.php';

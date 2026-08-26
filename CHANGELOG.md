@@ -38,6 +38,14 @@ This project follows Semantic Versioning.
 - `MoLoader` preserves the 1-based keys produced by `unpack()` when reading
   the offsets tables.
 
+### Removed
+
+- The global helper functions (`__()`, `n__()`, `p__()`, `d__()`,
+  `dp__()`, `dn__()`, `np__()`, `dnp__()`, `noop__()`) previously loaded
+  as a side effect of `TranslatorFunctions::register()`. Applications
+  should call the translator directly or build their own helpers on top
+  of `TranslatorFunctions::getTranslator()`.
+
 ---
 
 ## [1.0.0] - 2026-07-16

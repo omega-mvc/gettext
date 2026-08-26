@@ -1,8 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-use Gettext\Languages\Exporter\Exporter;
-use Gettext\Languages\Language;
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+use Omega\Gettext\Languages\Exporter\Exporter;
+use Omega\Gettext\Languages\Language;
 
 // Let's start by imposing that we don't accept any error or warning.
 // This is a really life-saving approach.
@@ -11,8 +13,6 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     fwrite(STDERR, "{$errstr}\nFile: {$errfile}\nLine: {$errline}\nCode: {$errno}\n");
     exit(5);
 });
-
-require_once dirname(__DIR__) . '/src/Languages/autoloader.php';
 
 /**
  * Helper class to handle command line options.

@@ -39,7 +39,7 @@ Whether you are building a multilingual website, a PHP application, or a project
     - [Translations](#translations)
     - [Translator](#translator)
     - [GettextTranslator](#gettexttranslator)
-    - [Translator Functions](#translator-functions)
+    - [TranslatorFunctions](#translatorfunctions)
 - [Loaders](#loaders)
     - [ArrayLoader](#arrayloader)
     - [JsonLoader](#jsonloader)
@@ -65,7 +65,11 @@ composer require omega-mvc/gettext
 ## Running Test
 
 ```sh
-vendor/bin/phpunit
+// Test without coverage
+composer test-no-coverage
+
+// Test with coverage
+composer test
 ```
 
 ## Classes and functions
@@ -184,29 +188,26 @@ $t->loadDomain('messages', 'project/Locale');
 echo $t->gettext('apple');
 ```
 
-### Translator functions
+### TranslatorFunctions
 
-To ease the use of translations in your php templates, you can use the provided functions:
+The `TranslatorFunctions` class is a static registry that binds a translator
+and a formatter instance, so they can be reached from anywhere in the
+application:
 
 ```php
 use Gettext\TranslatorFunctions;
 
-//Register the translator to use the global functions
+//Register the translator (a default Formatter is used if none is provided)
 TranslatorFunctions::register($t);
 
-echo __('apple'); // it's the same as $t->gettext('apple');
+$translator = TranslatorFunctions::getTranslator();
+echo $translator->gettext('apple'); // same as $t->gettext('apple');
 ```
 
-You can scan the php files containing these functions and extract the values with the PhpCode extractor:
-
-```html
-<!-- index.php -->
-<html lang="en">
-    <body>
-        <?= __('Hello world'); ?>
-    </body>
-</html>
-```
+Applications willing to expose global helper functions (like `__()`) can build
+them on top of this registry. The PhpScanner recognizes the standard gettext
+function names (`__`, `n__`, `p__`, `d__`...) when extracting translatable
+strings.
 
 ## Loaders
 
@@ -564,13 +565,7 @@ To use the languages data generated from this tool you can use the `bin/export-p
 
 #### With Composer
 You can use [Composer](https://getcomposer.org/) to include this tool in your project.
-Simply launch `composer require gettext/languages` or add `"gettext/languages": "*"` to the `"require"` section of your `composer.json` file.
-
-#### Without Composer
-If you don't use composer in your project, you can download this package in a directory of your project and include the autoloader file:
-```php
-require_once 'path/to/src/autoloader.php';
-```
+Simply launch `composer require omega-mvc/gettext` or add `"omega-mvc/gettext": "*"` to the `"require"` section of your `composer.json` file.
 
 #### Main methods
 The most useful functions of these tools are the following

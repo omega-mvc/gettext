@@ -27,19 +27,19 @@
     },
     "autoload": {
         "psr-4": {
-            "Gettext\\": "src"
+            "Omega\\Gettext\\": "src/Omega/Gettext"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\Tests\\": "tests/Tests"
         }
     },
     "scripts": {
-        "test": [
-            "phpunit",
-            "phpcs",
-            "phpstan"
-        ]
+        "phpcs": "XDEBUG_MODE=off php vendor/bin/phpcs",
+        "phpcbf": "XDEBUG_MODE=off php vendor/bin/phpcbf --standard=PSR12",
+        "phpstan": "XDEBUG_MODE=off php vendor/bin/phpstan analyze -vvv",
+        "test-no-coverage": "XDEBUG_MODE=off php vendor/bin/phpunit --no-coverage",
+        "test": "XDEBUG_MODE=coverage php vendor/bin/phpunit"
     }
 }

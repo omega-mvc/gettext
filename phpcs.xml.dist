@@ -10,13 +10,13 @@
     <file>tests</file>
 
     <!-- Vendored gettext/languages subpackage: deprecation fixes only, never restyled. -->
-    <exclude-pattern>src/Languages/*</exclude-pattern>
+    <exclude-pattern>src/Omega/Gettext/Languages/*</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
 
     <!-- NEVER reformat: scanner fixtures assert exact line numbers and comment
          shapes; data.php is regenerated on every test run (machine output,
          never a lint target). -->
-    <exclude-pattern>tests/Gettext/assets/*</exclude-pattern>
+    <exclude-pattern>tests/Tests/Gettext/assets/*</exclude-pattern>
     <exclude-pattern>tests/data.php</exclude-pattern>
     <exclude-pattern>tests/data.json</exclude-pattern>
     <rule ref="PSR1.Files.SideEffects">
