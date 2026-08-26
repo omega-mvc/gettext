@@ -47,6 +47,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      - name: Generate locales
+        run: |
+          sudo sed -i 's/^# \(.*UTF-8\)/\1/' /etc/locale.gen
+          sudo locale-gen
+
       - name: Run PHPUnit
         # tests/bootstrap.php regenerates tests/data.php / tests/data.json via
         # bin/export-plural-rules on every run; the checkout is writable, so no
