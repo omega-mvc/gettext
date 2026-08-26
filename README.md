@@ -12,9 +12,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/ci.yml?job=tests&label=Pest" alt="Pest"></a>
-    <a href="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/ci.yml?job=coding-standard&label=PHPCS" alt="PHPCS"></a>
-    <a href="https://github.com/omega-mvc/gettext/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/ci.yml?job=static-analysis&label=PHPStan" alt="PHPStan"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/tests.yml?label=PHPUnit" alt="PHPUnit"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/coding-standard.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/coding-standard.yml?label=PHPCS" alt="PHPCS"></a>
+    <a href="https://github.com/omega-mvc/gettext/actions/workflows/static-analysis.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/static-analysis.yml?label=PHPStan" alt="PHPStan"></a>
     <a href="https://packagist.org/packages/omega-mvc/gettext"><img src="https://img.shields.io/packagist/v/omega-mvc/gettext.svg" alt="Packagist Version"></a>
 </p>
 

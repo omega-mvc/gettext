@@ -13,6 +13,12 @@
     <exclude-pattern>src/Omega/Gettext/Languages/*</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
 
+    <!-- PHP 8.4 property hooks: PHPCS 4.x cannot tokenize hook syntax. -->
+    <rule ref="PSR2.Classes.PropertyDeclaration">
+        <exclude-pattern>src/Omega/Gettext/Translation.php</exclude-pattern>
+        <exclude-pattern>src/Omega/Gettext/Translations.php</exclude-pattern>
+    </rule>
+
     <!-- NEVER reformat: scanner fixtures assert exact line numbers and comment
          shapes; data.php is regenerated on every test run (machine output,
          never a lint target). -->
