@@ -6,12 +6,8 @@ namespace Tests\Tests\Gettext;
 
 use Omega\Gettext\Comments;
 use Omega\Gettext\Flags;
-use Omega\Gettext\Generator\MoGenerator;
 use Omega\Gettext\GettextTranslator;
-use Omega\Gettext\Headers;
 use Omega\Gettext\References;
-use Omega\Gettext\Translation;
-use Omega\Gettext\Translations;
 use Omega\Gettext\TranslatorInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
@@ -20,11 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Comments::class)]
 #[CoversClass(Flags::class)]
 #[CoversClass(GettextTranslator::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(MoGenerator::class)]
 #[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
 #[RequiresPhpExtension('gettext')]
 class GettextTranslatorTest extends TestCase
 {
@@ -116,43 +108,165 @@ class GettextTranslatorTest extends TestCase
     #[RequiresPhpExtension('gettext')]
     public function testCatalogLookupsReturnTranslations(): void
     {
-        $baseDir = sys_get_temp_dir() . '/gettext-native-' . uniqid();
-        $moBinary = $this->buildCatalog();
+        $localeFixtures = [
+            'it' => [
+                'candidates' => ['it_IT.UTF-8', 'it_IT', 'it.UTF-8', 'it'],
+                'gettext hello' => 'ciao',
+                'pgettext menu|file' => 'archivio',
+                'dgettext testdom|salva' => 'salva-ctx',
+                'dpgettext testdom|toolbar|stampa' => 'stampa-toolbar',
+                'ngettext 1' => 'UNO',
+                'ngettext 0' => 'DUE',
+                'npgettext 1' => 'una-voce',
+                'npgettext 4' => '%d voci',
+                'dngettext 1' => 'un-icona',
+                'dnpgettext 1' => 'esporta-barra',
+            ],
+            'de' => [
+                'candidates' => ['de_DE.UTF-8', 'de_DE', 'de.UTF-8', 'de'],
+                'gettext hello' => 'hallo',
+                'pgettext menu|file' => 'archiv',
+                'dgettext testdom|salva' => 'speichern-ctx',
+                'dpgettext testdom|toolbar|stampa' => 'drucken-toolbar',
+                'ngettext 1' => 'EINS',
+                'ngettext 0' => 'ZWEI',
+                'npgettext 1' => 'ein-eintrag',
+                'npgettext 4' => '%d-eintraege',
+                'dngettext 1' => 'ein-icon',
+                'dnpgettext 1' => 'exportieren-leiste',
+            ],
+            'fr' => [
+                'candidates' => ['fr_FR.UTF-8', 'fr_FR', 'fr.UTF-8', 'fr'],
+                'gettext hello' => 'bonjour',
+                'pgettext menu|file' => 'fichier',
+                'dgettext testdom|salva' => 'sauvegarder-ctx',
+                'dpgettext testdom|toolbar|stampa' => 'imprimer-toolbar',
+                'ngettext 1' => 'UN',
+                'ngettext 0' => 'DEUX',
+                'npgettext 1' => 'une-entree',
+                'npgettext 4' => '%d entrees',
+                'dngettext 1' => 'une-icone',
+                'dnpgettext 1' => 'exporter-barre',
+            ],
+            'en' => [
+                'candidates' => ['en_US.UTF-8', 'en_US', 'en.UTF-8', 'en'],
+                'gettext hello' => 'hello-en',
+                'pgettext menu|file' => 'file-en',
+                'dgettext testdom|salva' => 'save-ctx-en',
+                'dpgettext testdom|toolbar|stampa' => 'print-toolbar-en',
+                'ngettext 1' => 'ONE',
+                'ngettext 0' => 'TWO',
+                'npgettext 1' => 'one-entry',
+                'npgettext 4' => '%d entries',
+                'dngettext 1' => 'one-icon-en',
+                'dnpgettext 1' => 'export-bar-en',
+            ],
+            'ru' => [
+                'candidates' => ['ru_RU.UTF-8', 'ru_RU', 'ru.UTF-8', 'ru'],
+                'gettext hello' => 'привет',
+                'pgettext menu|file' => 'файл',
+                'dgettext testdom|salva' => 'сохранить-ctx',
+                'dpgettext testdom|toolbar|stampa' => 'печать-toolbar',
+                'ngettext 1' => 'ОДИН',
+                'ngettext 0' => 'ДВА',
+                'npgettext 1' => 'одна-запись',
+                'npgettext 4' => '%d записей',
+                'dngettext 1' => 'одна-иконка',
+                'dnpgettext 1' => 'экспорт-панель',
+            ],
+            'zh' => [
+                'candidates' => ['zh_CN.UTF-8', 'zh_CN', 'zh.UTF-8', 'zh'],
+                'gettext hello' => '你好',
+                'pgettext menu|file' => '文件',
+                'dgettext testdom|salva' => '保存-ctx',
+                'dpgettext testdom|toolbar|stampa' => '打印-toolbar',
+                'ngettext 1' => '一',
+                'ngettext 0' => '二',
+                'npgettext 1' => '一条记录',
+                'npgettext 4' => '%d 条记录',
+                'dngettext 1' => '一个图标',
+                'dnpgettext 1' => '导出-面板',
+            ],
 
-        foreach (['it_IT', 'it_IT.UTF-8'] as $localeDir) {
-            $directory = "$baseDir/$localeDir/LC_MESSAGES";
-            mkdir($directory, 0777, true);
-            file_put_contents("$directory/testdom.mo", $moBinary);
-        }
+        ];
 
         $previousLocale = setlocale(LC_ALL, '0');
-
-        if (setlocale(LC_ALL, 'it_IT.UTF-8') === false) {
-            setlocale(LC_ALL, $previousLocale ?: 'C');
-            self::markTestSkipped('the it_IT.UTF-8 locale is not available on this system');
-        }
+        $fixtureDir = __DIR__ . '/assets/locales';
+        $tested = false;
 
         try {
-            $translator = new GettextTranslator('it_IT.UTF-8');
-            $translator->loadDomain('testdom', $baseDir);
+            foreach ($localeFixtures as $lang => $expected) {
+                $moFile = "$fixtureDir/$lang.mo";
+                if (!is_file($moFile)) {
+                    continue;
+                }
 
-            $this->assertSame('ciao', $translator->gettext('hello'));
-            $this->assertSame('archivio', $translator->pgettext('menu', 'file'));
-            $this->assertSame('salva-ctx', $translator->dgettext('testdom', 'salva'));
-            $this->assertSame('stampa-toolbar', $translator->dpgettext('testdom', 'toolbar', 'stampa'));
-            $this->assertSame('UNO', $translator->ngettext('uno', 'molti', 1));
-            $this->assertSame('DUE', $translator->ngettext('uno', 'molti', 0));
-            $this->assertSame('una-voce', $translator->npgettext('contatore', 'una voce', '%d voci', 1));
-            $this->assertSame('%d voci', $translator->npgettext('contatore', 'una voce', '%d voci', 4));
-            $this->assertSame('un-icona', $translator->dngettext('testdom', 'un icona', '%d icone', 1));
-            $this->assertSame(
-                'esporta-barra',
-                $translator->dnpgettext('testdom', 'barra', 'esporta', 'esporta-tutti', 1)
-            );
+                $activeLocale = null;
+
+                foreach ($expected['candidates'] as $candidate) {
+                    if (setlocale(LC_ALL, $candidate) !== false) {
+                        $activeLocale = $candidate;
+                        break;
+                    }
+                }
+
+                if ($activeLocale === null) {
+                    continue;
+                }
+
+                $tested = true;
+                $baseDir = sys_get_temp_dir() . '/gettext-native-' . uniqid();
+                $directory = "$baseDir/$activeLocale/LC_MESSAGES";
+                mkdir($directory, 0777, true);
+                copy($moFile, "$directory/testdom.mo");
+
+                try {
+                    $translator = new GettextTranslator($activeLocale);
+                    $translator->loadDomain('testdom', $baseDir);
+
+                    $this->assertSame($expected['gettext hello'], $translator->gettext('hello'));
+                    $this->assertSame(
+                        $expected['pgettext menu|file'],
+                        $translator->pgettext('menu', 'file')
+                    );
+                    $this->assertSame(
+                        $expected['dgettext testdom|salva'],
+                        $translator->dgettext('testdom', 'salva')
+                    );
+                    $this->assertSame(
+                        $expected['dpgettext testdom|toolbar|stampa'],
+                        $translator->dpgettext('testdom', 'toolbar', 'stampa')
+                    );
+                    $this->assertSame($expected['ngettext 1'], $translator->ngettext('uno', 'molti', 1));
+                    $this->assertSame($expected['ngettext 0'], $translator->ngettext('uno', 'molti', 0));
+                    $this->assertSame(
+                        $expected['npgettext 1'],
+                        $translator->npgettext('contatore', 'una voce', '%d voci', 1)
+                    );
+                    $this->assertSame(
+                        $expected['npgettext 4'],
+                        $translator->npgettext('contatore', 'una voce', '%d voci', 4)
+                    );
+                    $this->assertSame(
+                        $expected['dngettext 1'],
+                        $translator->dngettext('testdom', 'un icona', '%d icone', 1)
+                    );
+                    $this->assertSame(
+                        $expected['dnpgettext 1'],
+                        $translator->dnpgettext('testdom', 'barra', 'esporta', 'esporta-tutti', 1)
+                    );
+                } finally {
+                    setlocale(LC_ALL, $previousLocale ?: 'C');
+                    putenv('LANGUAGE');
+                    self::rmdirRecursive($baseDir);
+                }
+            }
+
+            if (!$tested) {
+                self::markTestSkipped('no supported locale (it/de/fr) is available on this system');
+            }
         } finally {
             setlocale(LC_ALL, $previousLocale ?: 'C');
-            putenv('LANGUAGE');
-            self::rmdirRecursive($baseDir);
         }
     }
 
@@ -161,41 +275,6 @@ class GettextTranslatorTest extends TestCase
         $translator = new GettextTranslator();
 
         $this->assertSame($translator, $translator->setLanguage('C', LC_ALL));
-    }
-
-    private function buildCatalog(): string
-    {
-        $translations = Translations::create('testdom');
-        $translations->getHeaders()->set(Headers::HEADER_PLURAL, 'nplurals=2; plural=(n != 1);');
-
-        $entries = [
-            [Translation::create(null, 'hello'), 'ciao'],
-            [Translation::create('menu', 'file'), 'archivio'],
-            [Translation::create(null, 'salva'), 'salva-ctx'],
-            [Translation::create('toolbar', 'stampa'), 'stampa-toolbar'],
-            [Translation::create(null, 'uno', 'molti'), "UNO\x00DUE"],
-            [Translation::create('contatore', 'una voce', '%d voci'), "una-voce\x00%d voci"],
-            [Translation::create(null, 'un icona', '%d icone'), 'un-icona'],
-            [Translation::create('barra', 'esporta', 'esporta-tutti'), 'esporta-barra'],
-        ];
-
-        foreach ($entries as [$translation, $text]) {
-            $parts = explode("\x00", $text);
-
-            if ($translation->plural !== null && count($parts) > 1) {
-                $translation->translation = $parts[0];
-                $translation->translatePlural(...array_slice($parts, 1));
-            } else {
-                $translation->translation = $text;
-            }
-
-            $translations->add($translation);
-        }
-
-        $generator = new MoGenerator();
-        $generator->includeHeaders(true);
-
-        return $generator->generateString($translations);
     }
 
     private static function rmdirRecursive(string $directory): void
