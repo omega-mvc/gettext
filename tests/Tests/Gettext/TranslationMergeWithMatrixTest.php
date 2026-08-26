@@ -33,7 +33,8 @@ class TranslationMergeWithMatrixTest extends TestCase
 
     /**
      * Builds every combination of family arms (union/theirs/ours) crossed
-     * with every field-presence outcome vector.
+     * with the override flag, every field-presence outcome vector and the
+     * disabled propagation.
      *
      * @return list<array{int, int, bool}>
      */
@@ -66,7 +67,11 @@ class TranslationMergeWithMatrixTest extends TestCase
                         // merge takes theirs exactly where the bit is set.
                         foreach ([0, 0x2A, 0x15, 0x3F] as $theirsMask) {
                             foreach ([false, true] as $theirsDisabled) {
-                                $rows[] = [$strategy, $theirsMask, $theirsDisabled];
+                                // Override on/off completes the field rules:
+                                // theirs wins only where present AND override.
+                                foreach ([0, Merge::TRANSLATIONS_OVERRIDE] as $overrideBit) {
+                                    $rows[] = [$strategy | $overrideBit, $theirsMask, $theirsDisabled];
+                                }
                             }
                         }
                     }
