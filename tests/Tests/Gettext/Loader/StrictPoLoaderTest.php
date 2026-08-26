@@ -57,7 +57,7 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
         $translations = $this->createPoLoader()->loadString($po);
         $translation = $translations->find('ctx', 'original');
         $this->assertNotNull($translation);
-        $this->assertEquals($translation->getTranslation(), 'translation');
+        $this->assertEquals($translation->translation, 'translation');
         $this->assertEquals($translation->getComments()->toArray()[0], '  comment');
     }
 
@@ -76,12 +76,12 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
         $this->assertNotNull($translation);
         $this->assertEquals($translation->getContext(), 'ctx');
         $this->assertEquals($translation->getOriginal(), 'original');
-        $this->assertEquals($translation->getPlural(), 'plural');
-        $this->assertEquals($translation->getTranslation(), 'translation');
+        $this->assertEquals($translation->plural, 'plural');
+        $this->assertEquals($translation->translation, 'translation');
 
-        $this->assertEquals($translation->getPreviousContext(), 'previous ctx');
-        $this->assertEquals($translation->getPreviousOriginal(), 'previous original');
-        $this->assertEquals($translation->getPreviousPlural(), 'previous plural');
+        $this->assertEquals($translation->previousContext, 'previous ctx');
+        $this->assertEquals($translation->previousOriginal, 'previous original');
+        $this->assertEquals($translation->previousPlural, 'previous plural');
     }
 
     public function testDisabledWithPreviousTranslation(): void
@@ -97,15 +97,15 @@ class StrictPoLoaderTest extends BasePoLoaderTestCase
 
         $translation = $translations->find('ctx', 'original');
         $this->assertNotNull($translation);
-        $this->assertTrue($translation->isDisabled());
+        $this->assertTrue($translation->disabled);
         $this->assertEquals($translation->getContext(), 'ctx');
         $this->assertEquals($translation->getOriginal(), 'original');
-        $this->assertEquals($translation->getPlural(), 'plural');
-        $this->assertEquals($translation->getTranslation(), 'translation');
+        $this->assertEquals($translation->plural, 'plural');
+        $this->assertEquals($translation->translation, 'translation');
 
-        $this->assertEquals($translation->getPreviousContext(), 'previous ctx');
-        $this->assertEquals($translation->getPreviousOriginal(), 'previous original');
-        $this->assertEquals($translation->getPreviousPlural(), 'previous plural');
+        $this->assertEquals($translation->previousContext, 'previous ctx');
+        $this->assertEquals($translation->previousOriginal, 'previous original');
+        $this->assertEquals($translation->previousPlural, 'previous plural');
     }
 
     /**

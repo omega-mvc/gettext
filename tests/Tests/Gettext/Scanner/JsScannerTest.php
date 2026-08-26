@@ -67,7 +67,7 @@ JS;
 
         $apple = $domain1->find(null, 'One apple');
         $this->assertNotNull($apple);
-        $this->assertSame('%d apples', $apple->getPlural());
+        $this->assertSame('%d apples', $apple->plural);
         $this->assertSame(['virtual.js' => [2]], $apple->getReferences()->toArray());
 
         $menu = $domain1->find('menu', 'File');
@@ -111,19 +111,19 @@ JS;
 
         $file = $dom->find(null, 'One file');
         $this->assertNotNull($file);
-        $this->assertSame('%d files', $file->getPlural());
+        $this->assertSame('%d files', $file->plural);
 
         $print = $dom->find('bar', 'Print');
         $this->assertNotNull($print);
 
         $icon = $dom->find('bar', 'One icon');
         $this->assertNotNull($icon);
-        $this->assertSame('%d icons', $icon->getPlural());
+        $this->assertSame('%d icons', $icon->plural);
 
         $this->assertNotNull($default->find(null, 'plain'));
         $item = $default->find('ctx', 'One item');
         $this->assertNotNull($item);
-        $this->assertSame('%d items', $item->getPlural());
+        $this->assertSame('%d items', $item->plural);
     }
 
     public function testUnknownFunctionsAreIgnored(): void

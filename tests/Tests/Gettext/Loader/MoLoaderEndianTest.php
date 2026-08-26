@@ -37,7 +37,7 @@ class MoLoaderEndianTest extends TestCase
         $translation = $translations->find(null, 'Hello');
 
         $this->assertNotNull($translation);
-        $this->assertSame('Ciao', $translation->getTranslation());
+        $this->assertSame('Ciao', $translation->translation);
     }
 
     public function testEntriesWithEmptyTranslationsAreKeptUntranslated(): void
@@ -50,7 +50,7 @@ class MoLoaderEndianTest extends TestCase
         $translation = $translations->find(null, 'Solo');
 
         $this->assertNotNull($translation);
-        $this->assertNull($translation->getTranslation());
+        $this->assertNull($translation->translation);
     }
 
     public function testPluralEntriesAreSplitOnNulBytes(): void
@@ -63,8 +63,8 @@ class MoLoaderEndianTest extends TestCase
         $translation = $translations->find(null, 'One');
 
         $this->assertNotNull($translation);
-        $this->assertSame('Many', $translation->getPlural());
-        $this->assertSame('UNO', $translation->getTranslation());
+        $this->assertSame('Many', $translation->plural);
+        $this->assertSame('UNO', $translation->translation);
         $this->assertSame(['DUE'], $translation->getPluralTranslations());
     }
 

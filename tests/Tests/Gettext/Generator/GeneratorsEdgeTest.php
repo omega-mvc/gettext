@@ -66,7 +66,7 @@ class GeneratorsEdgeTest extends TestCase
     {
         $translations = Translations::create('json');
         $translation = Translation::create(null, "bad-\xB1-utf8");
-        $translation->translate('ok');
+        $translation->translation = 'ok';
         $translations->add($translation);
 
         $generator = new JsonGenerator();
@@ -83,13 +83,13 @@ class GeneratorsEdgeTest extends TestCase
         $translations->getHeaders()->set(Headers::HEADER_PLURAL, 'nplurals=2; plural=(n != 1);');
 
         $pluralEntry = Translation::create(null, 'One apple', '%d apples');
-        $pluralEntry->translate('Una mela');
+        $pluralEntry->translation = 'Una mela';
         $pluralEntry->translatePlural('%d mele');
         $translations->add($pluralEntry);
 
         $barePlural = Translation::create(null, 'Solo');
-        $barePlural->translate('S');
-        $barePlural->setPlural('Soloplural');
+        $barePlural->translation = 'S';
+        $barePlural->plural = 'Soloplural';
         $translations->add($barePlural);
 
         $binary = (new MoGenerator())->generateString($translations);
@@ -98,14 +98,14 @@ class GeneratorsEdgeTest extends TestCase
         $apple = $loaded->find(null, 'One apple');
 
         $this->assertNotNull($apple);
-        $this->assertSame('%d apples', $apple->getPlural());
-        $this->assertSame('Una mela', $apple->getTranslation());
+        $this->assertSame('%d apples', $apple->plural);
+        $this->assertSame('Una mela', $apple->translation);
         $this->assertSame(['%d mele'], $apple->getPluralTranslations());
 
         $solo = $loaded->find(null, 'Solo');
 
         $this->assertNotNull($solo);
-        $this->assertSame('S', $solo->getTranslation());
+        $this->assertSame('S', $solo->translation);
     }
 
     public function testMoGeneratorWorksWithoutPluralFormsHeader(): void
@@ -113,7 +113,7 @@ class GeneratorsEdgeTest extends TestCase
         $translations = Translations::create('noheader');
 
         $entry = Translation::create(null, 'One apple', '%d apples');
-        $entry->translate('Una mela');
+        $entry->translation = 'Una mela';
         $entry->translatePlural('%d mele');
         $translations->add($entry);
 
@@ -128,7 +128,7 @@ class GeneratorsEdgeTest extends TestCase
     private function translatedEntry(): Translation
     {
         $translation = Translation::create(null, 'Hello');
-        $translation->translate('Ciao');
+        $translation->translation = 'Ciao';
 
         return $translation;
     }

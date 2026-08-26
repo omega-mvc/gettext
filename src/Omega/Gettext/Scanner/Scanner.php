@@ -75,7 +75,7 @@ abstract class Scanner implements ScannerInterface
         );
 
         if (isset($plural)) {
-            $translation->setPlural($plural);
+            $translation->plural = $plural;
         }
 
         return $translation;

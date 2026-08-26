@@ -43,7 +43,7 @@ class MergeTest extends TestCase
         $translations->add($translation);
 
         $translation = Translation::create(null, 'one comment');
-        $translation->setPlural('%s comments');
+        $translation->plural = '%s comments';
         $translation->getReferences()->add('template.php', 5);
         $translation->getExtractedComments()->add('Number of comments of the article');
         $translations->add($translation);
@@ -69,32 +69,32 @@ class MergeTest extends TestCase
             ->set('Language-Team', 'My Team')
             ->set('X-Foo', 'bar')
             ->set('Language', 'gl_ES');
-        $translations->setDescription('This is a description');
+        $translations->description = 'This is a description';
 
         $translation = Translation::create(null, 'title');
         $translation->getReferences()
             ->add('template.php', 2)
             ->add('other-template.php', 2);
-        $translation->translate('Título');
+        $translation->translation = 'Título';
         $translations->add($translation);
 
         $translation = Translation::create(null, 'subtitle');
         $translation->getReferences()->add('template.php', 2);
-        $translation->translate('Subtítulo');
+        $translation->translation = 'Subtítulo';
         $translations->add($translation);
 
         $translation = Translation::create(null, 'intro');
         $translation->getReferences()->add('template.php', 4);
         $translation->getComments()->add('Disabled comment');
-        $translation->translate('Intro');
-        $translation->disable();
+        $translation->translation = 'Intro';
+        $translation->disabled = true;
         $translations->add($translation);
 
         $translation = Translation::create(null, 'one comment');
-        $translation->setPlural('%s comments');
+        $translation->plural = '%s comments';
         $translation->getReferences()->add('template.php', 6);
         $translation->getExtractedComments()->add('Number of comments of the article');
-        $translation->translate('Un comentario');
+        $translation->translation = 'Un comentario';
         $translation->translatePlural('%s comentarios');
         $translations->add($translation);
 

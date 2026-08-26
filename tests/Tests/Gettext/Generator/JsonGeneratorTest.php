@@ -43,11 +43,11 @@ class JsonGeneratorTest extends TestCase
         $translations->add($translation);
 
         $translation = Translation::create(null, '%ss must be unique for %ss %ss.');
-        $translation->translate('%ss mora da bude jedinstven za %ss %ss.');
+        $translation->translation = '%ss mora da bude jedinstven za %ss %ss.';
         $translations->add($translation);
 
         $translation = Translation::create('other-context', '日本人は日本で話される言語です！');
-        $translation->translate('singular');
+        $translation->translation = 'singular';
         $translation->translatePlural('plural1', 'plural2', 'plural3');
         $translations->add($translation);
 

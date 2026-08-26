@@ -45,8 +45,8 @@ final class PoGenerator extends AbstractGenerator
         $lines = [];
 
         //Description and flags
-        if ($translations->getDescription()) {
-            $description = explode("\n", $translations->getDescription());
+        if ($translations->description) {
+            $description = explode("\n", $translations->description);
 
             foreach ($description as $line) {
                 $lines[] = sprintf('# %s', $line);
@@ -94,17 +94,17 @@ final class PoGenerator extends AbstractGenerator
                 $lines[] = sprintf('#, %s', implode(',', $translation->getFlags()->toArray()));
             }
 
-            $prefix = $translation->isDisabled() ? '#~ ' : '';
+            $prefix = $translation->disabled ? '#~ ' : '';
 
-            if ($context = $translation->getPreviousContext()) {
+            if ($context = $translation->previousContext) {
                 $lines[] = sprintf('%s#| msgctxt %s', $prefix, self::encode($context));
             }
 
-            if ($original = $translation->getPreviousOriginal()) {
+            if ($original = $translation->previousOriginal) {
                 $lines[] = sprintf('%s#| msgid %s', $prefix, self::encode($original));
             }
 
-            if ($plural = $translation->getPreviousPlural()) {
+            if ($plural = $translation->previousPlural) {
                 $lines[] = sprintf('%s#| msgid_plural %s', $prefix, self::encode($plural));
             }
 
@@ -114,15 +114,15 @@ final class PoGenerator extends AbstractGenerator
 
             self::appendLines($lines, $prefix, 'msgid', $translation->getOriginal());
 
-            if ($plural = $translation->getPlural()) {
+            if ($plural = $translation->plural) {
                 self::appendLines($lines, $prefix, 'msgid_plural', $plural);
-                self::appendLines($lines, $prefix, 'msgstr[0]', $translation->getTranslation() ?: '');
+                self::appendLines($lines, $prefix, 'msgstr[0]', $translation->translation ?: '');
 
                 foreach ($translation->getPluralTranslations($pluralSize) as $k => $v) {
                     self::appendLines($lines, $prefix, sprintf('msgstr[%d]', $k + 1), $v);
                 }
             } else {
-                self::appendLines($lines, $prefix, 'msgstr', $translation->getTranslation() ?: '');
+                self::appendLines($lines, $prefix, 'msgstr', $translation->translation ?: '');
             }
 
             $lines[] = '';

@@ -83,7 +83,7 @@ final class JsonGenerator extends AbstractGenerator
         $messages   = [];
 
         foreach ($translations as $translation) {
-            if (!$translation->getTranslation() || $translation->isDisabled()) {
+            if (!$translation->translation || $translation->disabled) {
                 continue;
             }
 
@@ -96,9 +96,9 @@ final class JsonGenerator extends AbstractGenerator
 
             if (self::hasPluralTranslations($translation)) {
                 $messages[$context][$original] = $translation->getPluralTranslations($pluralSize);
-                array_unshift($messages[$context][$original], $translation->getTranslation());
+                array_unshift($messages[$context][$original], $translation->translation);
             } else {
-                $messages[$context][$original] = $translation->getTranslation();
+                $messages[$context][$original] = $translation->translation;
             }
         }
 

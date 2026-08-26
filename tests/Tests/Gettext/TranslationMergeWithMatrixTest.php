@@ -86,11 +86,11 @@ class TranslationMergeWithMatrixTest extends TestCase
         $override = (bool) ($strategy & Merge::TRANSLATIONS_OVERRIDE);
 
         $ours = Translation::create('ctx-ours', 'original-ours');
-        $ours->translate('translation-ours');
-        $ours->setPlural('plural-ours');
-        $ours->setPreviousContext('prevctx-ours');
-        $ours->setPreviousOriginal('prevorig-ours');
-        $ours->setPreviousPlural('prevplur-ours');
+        $ours->translation = 'translation-ours';
+        $ours->plural = 'plural-ours';
+        $ours->previousContext = 'prevctx-ours';
+        $ours->previousOriginal = 'prevorig-ours';
+        $ours->previousPlural = 'prevplur-ours';
         $ours->translatePlural('ptrans-ours');
         $ours->getComments()->add('comment-ours');
         $ours->getExtractedComments()->add('extracted-ours');
@@ -98,22 +98,22 @@ class TranslationMergeWithMatrixTest extends TestCase
         $ours->getFlags()->add('flag-ours');
 
         $theirs = Translation::create(null, 'original-theirs');
-        $theirs->setPlural('plural-theirs');
+        $theirs->plural = 'plural-theirs';
 
         if (($theirsMask & 0x01) !== 0) {
-            $theirs->translate('translation-theirs');
+            $theirs->translation = 'translation-theirs';
         }
 
         if (($theirsMask & 0x02) !== 0) {
-            $theirs->setPreviousContext('prevctx-theirs');
+            $theirs->previousContext = 'prevctx-theirs';
         }
 
         if (($theirsMask & 0x04) !== 0) {
-            $theirs->setPreviousOriginal('prevorig-theirs');
+            $theirs->previousOriginal = 'prevorig-theirs';
         }
 
         if (($theirsMask & 0x08) !== 0) {
-            $theirs->setPreviousPlural('prevplur-theirs');
+            $theirs->previousPlural = 'prevplur-theirs';
         }
 
         if (($theirsMask & 0x10) !== 0) {
@@ -124,7 +124,7 @@ class TranslationMergeWithMatrixTest extends TestCase
         $theirs->getExtractedComments()->add('extracted-theirs');
         $theirs->getReferences()->add('theirs.php', 2);
         $theirs->getFlags()->add('flag-theirs');
-        $theirs->disable($theirsDisabled);
+        $theirs->disabled = $theirsDisabled;
 
         // Ours keeps the complementary presence bits: where the theirs mask
         // is unset and override is off, the local value must survive.
@@ -164,30 +164,30 @@ class TranslationMergeWithMatrixTest extends TestCase
         $takeTranslation = $expectTheirs(true, ($theirsMask & 0x01) !== 0);
         $this->assertSame(
             $takeTranslation ? 'translation-theirs' : 'translation-ours',
-            $merged->getTranslation()
+            $merged->translation
         );
 
         $takePlural = $expectTheirs(true, true);
-        $this->assertSame($takePlural ? 'plural-theirs' : 'plural-ours', $merged->getPlural());
+        $this->assertSame($takePlural ? 'plural-theirs' : 'plural-ours', $merged->plural);
 
         $this->assertSame(
             $expectTheirs(true, ($theirsMask & 0x02) !== 0) ? 'prevctx-theirs' : 'prevctx-ours',
-            $merged->getPreviousContext()
+            $merged->previousContext
         );
         $this->assertSame(
             $expectTheirs(true, ($theirsMask & 0x04) !== 0) ? 'prevorig-theirs' : 'prevorig-ours',
-            $merged->getPreviousOriginal()
+            $merged->previousOriginal
         );
         $this->assertSame(
             $expectTheirs(true, ($theirsMask & 0x08) !== 0) ? 'prevplur-theirs' : 'prevplur-ours',
-            $merged->getPreviousPlural()
+            $merged->previousPlural
         );
         $this->assertSame(
             $expectTheirs(true, ($theirsMask & 0x10) !== 0) ? ['ptrans-theirs'] : ['ptrans-ours'],
             $merged->getPluralTranslations()
         );
 
-        $this->assertSame($theirsDisabled, $merged->isDisabled());
+        $this->assertSame($theirsDisabled, $merged->disabled);
     }
 
     /**

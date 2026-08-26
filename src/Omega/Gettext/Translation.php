@@ -33,17 +33,25 @@ class Translation
 
     /** @var string The source string to be translated (msgid). */
     protected string $original;
-    /** @var string|null The source plural string (msgid_plural), if any. */
-    protected ?string $plural = null;
 
-    /** @var string|null The translated text (msgstr); empty means untranslated. */
-    protected ?string $translation = null;
+    public ?string $plural = null {
+        get => $this->plural;
+        set { $this->plural = $value; }
+    }
+
+    public ?string $translation = null {
+        get => $this->translation;
+        set { $this->translation = $value; }
+    }
 
     /** @var list<string> Translations of each plural form (msgstr[1], msgstr[2]...). */
     protected array $pluralTranslations = [];
 
-    /** @var bool True when the entry is obsolete and rendered as `#~`. */
-    protected bool $disabled = false;
+    public bool $disabled = false {
+        get => $this->disabled;
+        set { $this->disabled = $value; }
+    }
+
     /** @var References Source code occurrences of this string. */
     protected References $references;
     /** @var Flags Gettext flags such as `fuzzy` or `php-format`. */
@@ -54,14 +62,21 @@ class Translation
 
     /** @var Comments Notes extracted from the source code (#. comments). */
     protected Comments $extractedComments;
-    /** @var string|null Previous context, recorded when the context has changed (#| msgctxt). */
-    protected ?string $previousContext = null;
 
-    /** @var string|null Previous original string, recorded after a source change (#| msgid). */
-    protected ?string $previousOriginal = null;
+    public ?string $previousContext = null {
+        get => $this->previousContext;
+        set { $this->previousContext = $value; }
+    }
 
-    /** @var string|null Previous plural string, recorded after a source change (#| msgid_plural). */
-    protected ?string $previousPlural = null;
+    public ?string $previousOriginal = null {
+        get => $this->previousOriginal;
+        set { $this->previousOriginal = $value; }
+    }
+
+    public ?string $previousPlural = null {
+        get => $this->previousPlural;
+        set { $this->previousPlural = $value; }
+    }
 
     /**
      * Creates a new translation.
@@ -81,7 +96,7 @@ class Translation
         $translation->original = $original;
 
         if (isset($plural)) {
-            $translation->setPlural($plural);
+            $translation->plural = $plural;
         }
 
         return $translation;
@@ -211,152 +226,6 @@ class Translation
         $clone->id = static::generateId($clone->getContext(), $clone->getOriginal());
 
         return $clone;
-    }
-
-    /**
-     * Sets the source plural string.
-     *
-     * @param string $plural Source plural text (msgid_plural).
-     *
-     * @return self This object, for method chaining.
-     */
-    public function setPlural(string $plural): self
-    {
-        $this->plural = $plural;
-
-        return $this;
-    }
-
-    /**
-     * Returns the source plural string.
-     *
-     * @return string|null The plural text (msgid_plural), or null if not defined.
-     */
-    public function getPlural(): ?string
-    {
-        return $this->plural;
-    }
-
-    /**
-     * Sets the previous original, recorded when the source has changed.
-     *
-     * @param string|null $previousOriginal Previous value rendered as `#| msgid`, or null to clear it.
-     *
-     * @return self This object, for method chaining.
-     */
-    public function setPreviousOriginal(?string $previousOriginal): self
-    {
-        $this->previousOriginal = $previousOriginal;
-
-        return $this;
-    }
-
-    /**
-     * Returns the previous original.
-     *
-     * @return string|null The previous value rendered as `#| msgid`, or null if none.
-     */
-    public function getPreviousOriginal(): ?string
-    {
-        return $this->previousOriginal;
-    }
-
-    /**
-     * Sets the previous context, recorded when the source has changed.
-     *
-     * @param string|null $previousContext Previous value rendered as `#| msgctxt`, or null to clear it.
-     *
-     * @return self This object, for method chaining.
-     */
-    public function setPreviousContext(?string $previousContext): self
-    {
-        $this->previousContext = $previousContext;
-
-        return $this;
-    }
-
-    /**
-     * Returns the previous context.
-     *
-     * @return string|null The previous value rendered as `#| msgctxt`, or null if none.
-     */
-    public function getPreviousContext(): ?string
-    {
-        return $this->previousContext;
-    }
-
-    /**
-     * Sets the previous plural, recorded when the source has changed.
-     *
-     * @param string|null $previousPlural Previous value rendered as `#| msgid_plural`, or null to clear it.
-     *
-     * @return self This object, for method chaining.
-     */
-    public function setPreviousPlural(?string $previousPlural): self
-    {
-        $this->previousPlural = $previousPlural;
-
-        return $this;
-    }
-
-    /**
-     * Returns the previous plural.
-     *
-     * @return string|null The previous value rendered as `#| msgid_plural`, or null if none.
-     */
-    public function getPreviousPlural(): ?string
-    {
-        return $this->previousPlural;
-    }
-
-    /**
-     * Marks the entry as obsolete (`#~`) or restores it.
-     *
-     * @param bool $disabled True to disable the entry, false to restore it.
-     *
-     * @return self This object, for method chaining.
-     */
-    public function disable(bool $disabled = true): self
-    {
-        $this->disabled = $disabled;
-
-        return $this;
-    }
-
-    /**
-     * Checks whether the entry is obsolete.
-     *
-     * @return bool True when the entry renders as `#~`.
-     */
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
-    }
-
-    /**
-     * Sets the translated text.
-     *
-     * An empty string marks the entry as untranslated.
-     *
-     * @param string $translation Translated text (msgstr).
-     *
-     * @return self This object, for method chaining.
-     */
-    public function translate(string $translation): self
-    {
-        $this->translation = $translation;
-
-        return $this;
-    }
-
-    /**
-     * Returns the translated text.
-     *
-     * @return string|null The translated text (msgstr), or null if untranslated.
-     */
-    public function getTranslation(): ?string
-    {
-        return $this->translation;
     }
 
     /**
@@ -517,7 +386,7 @@ class Translation
             $merged->pluralTranslations = $translation->pluralTranslations;
         }
 
-        $merged->disable($translation->isDisabled());
+        $merged->disabled = $translation->disabled;
 
         return $merged;
     }

@@ -84,88 +84,88 @@ class MoLoaderTest extends TestCase
     private function translation0(Translation $translation): void
     {
         $this->assertSame('%s has been added to your cart.', $translation->getOriginal());
-        $this->assertSame('%s have been added to your cart.', $translation->getPlural());
-        $this->assertSame('%s has been added to your cart.', $translation->getTranslation());
+        $this->assertSame('%s have been added to your cart.', $translation->plural);
+        $this->assertSame('%s has been added to your cart.', $translation->translation);
         $this->assertCount(1, $translation->getPluralTranslations());
     }
 
     private function translation1(Translation $translation): void
     {
         $this->assertSame('%ss must be unique for %ss %ss.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation2(Translation $translation): void
     {
         $this->assertSame('Field of type: %ss', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Polje tipa: %ss', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Polje tipa: %ss', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation3(Translation $translation): void
     {
         $this->assertSame('Integer', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Cijeo broj', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Cijeo broj', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation4(Translation $translation): void
     {
         $this->assertSame('Multibyte test', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('日本人は日本で話される言語です！', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('日本人は日本で話される言語です！', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation5(Translation $translation): void
     {
         $this->assertSame('Tabulation test', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("FIELD\tFIELD", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("FIELD\tFIELD", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation6(Translation $translation): void
     {
         $this->assertSame('This field cannot be blank.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Ovo polje ne može biti prazno.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Ovo polje ne može biti prazno.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation7(Translation $translation): void
     {
         $this->assertSame('This field cannot be null.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Ovo polje ne može ostati prazno.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Ovo polje ne može ostati prazno.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation8(Translation $translation): void
     {
         $this->assertSame('and', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('i', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('i', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation9(Translation $translation): void
     {
         $this->assertSame('{test1}', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation10(Translation $translation): void
     {
         $this->assertSame('{test2}', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 }
