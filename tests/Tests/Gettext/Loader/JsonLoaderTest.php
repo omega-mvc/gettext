@@ -35,13 +35,13 @@ class JsonLoaderTest extends TestCase
         $translation = $translations->find(null, '%ss must be unique for %ss %ss.');
 
         $this->assertNotNull($translation);
-        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->getTranslation());
+        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
 
         $translation = $translations->find('other-context', '日本人は日本で話される言語です！');
 
         $this->assertNotNull($translation);
-        $this->assertSame('singular', $translation->getTranslation());
+        $this->assertSame('singular', $translation->translation);
         $this->assertCount(2, $translation->getPluralTranslations());
         $this->assertSame(['plural1', 'plural2'], $translation->getPluralTranslations());
     }

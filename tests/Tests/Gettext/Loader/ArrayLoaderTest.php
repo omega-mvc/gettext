@@ -40,7 +40,7 @@ class ArrayLoaderTest extends TestCase
         $translation = $translations->find(null, 'Integer');
 
         $this->assertNotNull($translation);
-        $this->assertSame('Cijeo broj', $translation->getTranslation());
+        $this->assertSame('Cijeo broj', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 }

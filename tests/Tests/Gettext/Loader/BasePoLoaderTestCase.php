@@ -45,7 +45,7 @@ abstract class BasePoLoaderTestCase extends TestCase
         $loader       = $this->createPoLoader();
         $translations = $loader->loadFile(__DIR__ . '/../assets/translations.po');
 
-        $description = $translations->getDescription();
+        $description = $translations->description;
         $this->assertSame(
             <<<'EOT'
 SOME DESCRIPTIVE TITLE
@@ -110,9 +110,9 @@ EOT
         );
         $this->assertSame(
             'Ensure this value has at least %(limit_value)d characters (it has %sd).',
-            $translation->getPlural()
+            $translation->plural
         );
-        $this->assertSame('', $translation->getTranslation());
+        $this->assertSame('', $translation->translation);
         $this->assertSame(['', ''], $translation->getPluralTranslations());
     }
 
@@ -124,25 +124,25 @@ EOT
         );
         $this->assertSame(
             'Ensure this value has at most %(limit_value)d characters (it has %sd).',
-            $translation->getPlural()
+            $translation->plural
         );
-        $this->assertSame('', $translation->getTranslation());
+        $this->assertSame('', $translation->translation);
         $this->assertSame(['', ''], $translation->getPluralTranslations());
     }
 
     private function translation3(Translation $translation): void
     {
         $this->assertSame('%ss must be unique for %ss %ss.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
     }
 
     private function translation4(Translation $translation): void
     {
         $this->assertSame('and', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('i', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('i', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertSame(['c-format'], $translation->getFlags()->toArray());
     }
@@ -150,8 +150,8 @@ EOT
     private function translation5(Translation $translation): void
     {
         $this->assertSame('Value %sr is not a valid choice.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertSame(['This is a extracted comment'], $translation->getExtractedComments()->toArray());
     }
@@ -159,8 +159,8 @@ EOT
     private function translation6(Translation $translation): void
     {
         $this->assertSame('This field cannot be null.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Ovo polje ne može ostati prazno.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Ovo polje ne može ostati prazno.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(1, $translation->getReferences());
         $this->assertSame(['C:/Users/Me/Documents/foo2.php' => [1]], $translation->getReferences()->toArray());
@@ -169,8 +169,8 @@ EOT
     private function translation7(Translation $translation): void
     {
         $this->assertSame('This field cannot be blank.', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Ovo polje ne može biti prazno.', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Ovo polje ne može biti prazno.', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(1, $translation->getReferences());
         $this->assertSame(['C:/Users/Me/Documents/foo1.php' => []], $translation->getReferences()->toArray());
@@ -179,8 +179,8 @@ EOT
     private function translation8(Translation $translation): void
     {
         $this->assertSame('Field of type: %ss', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Polje tipa: %ss', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Polje tipa: %ss', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(2, $translation->getReferences());
         $this->assertSame(
@@ -195,8 +195,8 @@ EOT
     private function translation9(Translation $translation): void
     {
         $this->assertSame('Integer', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('Cijeo broj', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('Cijeo broj', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(0, $translation->getReferences());
         $this->assertCount(1, $translation->getComments());
@@ -206,8 +206,8 @@ EOT
     private function translation10(Translation $translation): void
     {
         $this->assertSame('{test1}', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(0, $translation->getComments());
         $this->assertCount(3, $translation->getReferences());
@@ -223,8 +223,8 @@ EOT
     private function translation11(Translation $translation): void
     {
         $this->assertSame('{test2}', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(0, $translation->getComments());
         $this->assertCount(1, $translation->getReferences());
@@ -237,8 +237,8 @@ EOT
     private function translation12(Translation $translation): void
     {
         $this->assertSame('Multibyte test', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame('日本人は日本で話される言語です！', $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame('日本人は日本で話される言語です！', $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(0, $translation->getComments());
         $this->assertCount(0, $translation->getReferences());
@@ -247,8 +247,8 @@ EOT
     private function translation13(Translation $translation): void
     {
         $this->assertSame('Tabulation test', $translation->getOriginal());
-        $this->assertNull($translation->getPlural());
-        $this->assertSame("FIELD\tFIELD", $translation->getTranslation());
+        $this->assertNull($translation->plural);
+        $this->assertSame("FIELD\tFIELD", $translation->translation);
         $this->assertCount(0, $translation->getPluralTranslations());
         $this->assertCount(0, $translation->getComments());
         $this->assertCount(0, $translation->getReferences());
@@ -257,8 +257,8 @@ EOT
     private function translation14(Translation $translation): void
     {
         $this->assertSame('%s has been added to your cart.', $translation->getOriginal());
-        $this->assertSame('%s have been added to your cart.', $translation->getPlural());
-        $this->assertSame('%s has been added to your cart.', $translation->getTranslation());
+        $this->assertSame('%s have been added to your cart.', $translation->plural);
+        $this->assertSame('%s has been added to your cart.', $translation->translation);
         $this->assertSame(['%s have been added to your cart.'], $translation->getPluralTranslations());
         $this->assertCount(1, $translation->getComments());
         $this->assertCount(0, $translation->getReferences());
@@ -297,7 +297,7 @@ EOT;
         $translations = $this->createPoLoader()->loadString($po);
         $translation = $translations->find(null, 'source');
         $this->assertNotNull($translation);
-        $this->assertSame($decoded, $translation->getTranslation());
+        $this->assertSame($decoded, $translation->translation);
     }
 
     public function testMultilineDisabledTranslations(): void
@@ -313,11 +313,11 @@ EOT;
         $translation  = $translations->find(null, 'Last agent hours-description');
         $this->assertNotNull($translation);
 
-        $this->assertTrue($translation->isDisabled());
+        $this->assertTrue($translation->disabled);
         $this->assertEquals(
             "How many hours in the past can system look at finding the last agent?"
             . " This parameter is only used if 'Call Last Agent' is set to 'YES'.",
-            $translation->getTranslation()
+            $translation->translation
         );
     }
 }

@@ -63,7 +63,7 @@ final class MoGenerator extends AbstractGenerator
         }
 
         foreach ($translations as $translation) {
-            if (!$translation->getTranslation() || $translation->isDisabled()) {
+            if (!$translation->translation || $translation->disabled) {
                 continue;
             }
 
@@ -90,11 +90,11 @@ final class MoGenerator extends AbstractGenerator
             if (is_string($translation)) {
                 $translationString = $translation;
             } elseif (self::hasPluralTranslations($translation)) {
-                $originalString .= "\x00{$translation->getPlural()}";
-                $translationString = "{$translation->getTranslation()}\x00"
+                $originalString .= "\x00{$translation->plural}";
+                $translationString = "{$translation->translation}\x00"
                     . implode("\x00", $translation->getPluralTranslations($pluralSize));
             } else {
-                $translationString = $translation->getTranslation() ?? '';
+                $translationString = $translation->translation ?? '';
             }
 
             $originalsIndex[] = [
@@ -184,7 +184,7 @@ final class MoGenerator extends AbstractGenerator
      */
     private static function hasPluralTranslations(Translation $translation): bool
     {
-        if (!$translation->getPlural()) {
+        if (!$translation->plural) {
             return false;
         }
 

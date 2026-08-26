@@ -66,7 +66,7 @@ abstract class Loader implements LoaderInterface
         $translation = Translation::create($context, $original);
 
         if (isset($plural)) {
-            $translation->setPlural($plural);
+            $translation->plural = $plural;
         }
 
         return $translation;
@@ -114,14 +114,14 @@ abstract class Loader implements LoaderInterface
                     }
 
                     if (is_scalar($singular)) {
-                        $translation->translate((string) $singular);
+                        $translation->translation = (string) $singular;
                     }
 
                     if ($plurals !== []) {
                         $translation->translatePlural(...$plurals);
                     }
                 } elseif (is_scalar($value)) {
-                    $translation->translate((string) $value);
+                    $translation->translation = (string) $value;
                 }
             }
         }

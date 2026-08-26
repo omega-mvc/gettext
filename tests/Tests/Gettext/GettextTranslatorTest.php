@@ -182,11 +182,11 @@ class GettextTranslatorTest extends TestCase
         foreach ($entries as [$translation, $text]) {
             $parts = explode("\x00", $text);
 
-            if ($translation->getPlural() !== null && count($parts) > 1) {
-                $translation->translate($parts[0]);
+            if ($translation->plural !== null && count($parts) > 1) {
+                $translation->translation = $parts[0];
                 $translation->translatePlural(...array_slice($parts, 1));
             } else {
-                $translation->translate($text);
+                $translation->translation = $text;
             }
 
             $translations->add($translation);

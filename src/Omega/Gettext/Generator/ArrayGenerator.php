@@ -95,7 +95,7 @@ final class ArrayGenerator extends AbstractGenerator
         $messages   = [];
 
         foreach ($translations as $translation) {
-            if ((!$this->includeEmpty && !$translation->getTranslation()) || $translation->isDisabled()) {
+            if ((!$this->includeEmpty && !$translation->translation) || $translation->disabled) {
                 continue;
             }
 
@@ -108,9 +108,9 @@ final class ArrayGenerator extends AbstractGenerator
 
             if (self::hasPluralTranslations($translation)) {
                 $messages[$context][$original] = $translation->getPluralTranslations($pluralSize);
-                array_unshift($messages[$context][$original], $translation->getTranslation());
+                array_unshift($messages[$context][$original], $translation->translation);
             } else {
-                $messages[$context][$original] = $translation->getTranslation();
+                $messages[$context][$original] = $translation->translation;
             }
         }
 

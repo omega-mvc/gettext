@@ -36,10 +36,10 @@ class TranslatorTest extends TestCase
         $translations->getHeaders()->set(Headers::HEADER_PLURAL, self::PLURAL_2);
 
         $hello = Translation::create(null, 'Hello');
-        $hello->translate('Ciao');
+        $hello->translation = 'Ciao';
 
         $apple = Translation::create(null, 'One apple', '%d apples');
-        $apple->translate('Una mela');
+        $apple->translation = 'Una mela';
         $apple->translatePlural('%d mele');
 
         $translations->add($hello);

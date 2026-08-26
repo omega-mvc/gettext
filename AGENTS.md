@@ -62,8 +62,10 @@ Key subdirectories under `src/Omega/Gettext/`:
 
 ## Config files
 
-Tracked configs are `phpunit.xml.dist`, `phpcs.xml.dist`, `phpstan.neon.dist`. Untracked local copies (`phpunit.xml`, `phpcs.xml`, `phpstan.neon`) may exist and shadow them — always edit the `.dist` files.
+Tracked configs are `phpunit.xml.dist`, `phpcs.xml.dist`, `phpstan.neon.dist`. A tracked but redundant `phpunit.xml` (identical to `.dist`) also exists; untracked `phpcs.xml` / `phpstan.neon` may shadow them locally. Always edit the `.dist` files.
+
+PHPStan uses `tests/constants.php` as a bootstrap file (`phpstan.neon.dist:5`), so constants defined there are available during static analysis.
 
 ## CI
 
-GitHub Actions runs three checks on push to `main` and PRs: PHPCS, PHPStan, PHPUnit (PHP 8.4). Each is in `.github/workflows/` as separate callable workflows invoked by `ci.yml`.
+GitHub Actions runs three checks on push to `main` and PRs: PHPCS, PHPStan, PHPUnit (PHP 8.4). Each is in `.github/workflows/` as separate callable workflows invoked by `ci.yml`. Tests in CI always run with `--no-coverage` (no Xdebug driver installed).

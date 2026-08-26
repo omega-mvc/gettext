@@ -72,7 +72,7 @@ final class PoLoader extends Loader
             $data = $splitLine[1] ?? '';
 
             if ($key === '#~') {
-                $translation->disable();
+                $translation->disabled = true;
 
                 $splitLine = preg_split('/\s+/', $data, 2) ?: [''];
                 $key = $splitLine[0];
@@ -111,11 +111,11 @@ final class PoLoader extends Loader
                     $translation = $translation->withOriginal(self::decode($data));
                     break;
                 case 'msgid_plural':
-                    $translation->setPlural(self::decode($data));
+                    $translation->plural = self::decode($data);
                     break;
                 case 'msgstr':
                 case 'msgstr[0]':
-                    $translation->translate(self::decode($data));
+                    $translation->translation = self::decode($data);
                     break;
                 case 'msgstr[1]':
                     $translation->translatePlural(self::decode($data));
@@ -150,7 +150,7 @@ final class PoLoader extends Loader
         $description = $translation->getComments()->toArray();
 
         if (!empty($description)) {
-            $translations->setDescription(implode("\n", $description));
+            $translations->description = implode("\n", $description);
         }
 
         $flags = $translation->getFlags()->toArray();
@@ -161,7 +161,7 @@ final class PoLoader extends Loader
 
         $headers = $translations->getHeaders();
 
-        foreach (self::parseHeaders($translation->getTranslation()) as $name => $value) {
+        foreach (self::parseHeaders($translation->translation) as $name => $value) {
             $headers->set($name, $value);
         }
 
@@ -250,7 +250,7 @@ final class PoLoader extends Loader
             return false;
         }
 
-        if (!empty($translation->getTranslation())) {
+        if (!empty($translation->translation)) {
             return false;
         }
 

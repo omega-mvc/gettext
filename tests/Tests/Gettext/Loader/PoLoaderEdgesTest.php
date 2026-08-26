@@ -33,7 +33,7 @@ class PoLoaderEdgesTest extends TestCase
         $translation = $translations->find('menu', 'File');
 
         $this->assertNotNull($translation);
-        $this->assertSame('Archivo', $translation->getTranslation());
+        $this->assertSame('Archivo', $translation->translation);
     }
 
     public function testUnknownKeywordsAreSkipped(): void

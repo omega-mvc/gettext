@@ -320,21 +320,21 @@ final class StrictPoLoader extends Loader
                 $this->translation->getComments()->add($data);
                 break;
             case '~':
-                if ($this->translation->getPreviousOriginal() !== null) {
+                if ($this->translation->previousOriginal !== null) {
                     throw new Exception("Inconsistent use of #~{$this->getErrorPosition()}");
                 }
-                $this->translation->disable();
+                $this->translation->disabled = true;
                 $this->isDisabled = true;
                 break;
             case '|':
-                if ($this->translation->getPreviousOriginal() !== null) {
+                if ($this->translation->previousOriginal !== null) {
                     throw new Exception('Cannot redeclare the previous comment #|, '
                         . "ensure the definitions are in the right order{$this->getErrorPosition()}");
                 }
                 $this->inPreviousPart = true;
-                $this->translation->setPreviousContext($this->readIdentifier('msgctxt'));
-                $this->translation->setPreviousOriginal($this->readIdentifier('msgid', true));
-                $this->translation->setPreviousPlural($this->readIdentifier('msgid_plural'));
+                $this->translation->previousContext = $this->readIdentifier('msgctxt');
+                $this->translation->previousOriginal = $this->readIdentifier('msgid', true);
+                $this->translation->previousPlural = $this->readIdentifier('msgid_plural');
                 $this->inPreviousPart = false;
                 break;
             case ',':
@@ -423,7 +423,7 @@ final class StrictPoLoader extends Loader
             return false;
         }
 
-        $this->translation->setPlural($data);
+        $this->translation->plural = $data;
 
         return true;
     }
@@ -437,7 +437,7 @@ final class StrictPoLoader extends Loader
         if (!$this->readString('msgstr')) {
             throw new Exception("Expected msgstr{$this->getErrorPosition()}");
         }
-        $this->translation->translate($this->readQuotedString('msgstr'));
+        $this->translation->translation = $this->readQuotedString('msgstr');
     }
 
     /**
@@ -467,7 +467,7 @@ final class StrictPoLoader extends Loader
             throw new Exception("Expected character \"]\"{$this->getErrorPosition()}");
         }
         $translations = $this->translation->getPluralTranslations();
-        if (($translation = $this->translation->getTranslation()) !== null) {
+        if (($translation = $this->translation->translation) !== null) {
             array_unshift($translations, $translation);
         }
         if (count($translations) !== $index) {
@@ -475,7 +475,7 @@ final class StrictPoLoader extends Loader
         }
         $data = $this->readQuotedString('msgstr');
         $translations[] = $data;
-        $this->translation->translate(array_shift($translations));
+        $this->translation->translation = array_shift($translations);
         $this->translation->translatePlural(...$translations);
 
         return true;
@@ -488,13 +488,13 @@ final class StrictPoLoader extends Loader
     {
         $this->header = $header = $this->translation;
         if (count($description = $header->getComments()->toArray())) {
-            $this->translations->setDescription(implode("\n", $description));
+            $this->translations->description = implode("\n", $description);
         }
         if (count($flags = $header->getFlags()->toArray())) {
             $this->translations->getFlags()->add(...$flags);
         }
         $headers = $this->translations->getHeaders();
-        $headerTranslation = $header->getTranslation();
+        $headerTranslation = $header->translation;
 
         if (is_string($headerTranslation) && $headerTranslation !== '') {
             foreach (self::readHeaders($headerTranslation) as $name => $value) {

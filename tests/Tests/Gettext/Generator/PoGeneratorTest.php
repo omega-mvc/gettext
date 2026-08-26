@@ -37,14 +37,14 @@ class PoGeneratorTest extends TestCase
         $generator = new PoGenerator();
         $translations = Translations::create('my-domain');
         $translations->getFlags()->add('fuzzy');
-        $translations->setDescription(
+        $translations->description =
             <<<'EOT'
 SOME DESCRIPTIVE TITLE
 Copyright (C) YEAR Free Software Foundation, Inc.
 This file is distributed under the same license as the PACKAGE package.
 FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 EOT
-        );
+        ;
         $translations->setLanguage('gl_ES');
         $translations->getHeaders()
             ->set('Content-Type', 'text/plain; charset=UTF-8')
@@ -56,21 +56,21 @@ EOT
         $translations->add($translation);
 
         $translation = Translation::create('context-1', 'Other comment');
-        $translation->translate('Outro comentario');
+        $translation->translation = 'Outro comentario';
         $translation->translatePlural('Outros comentarios');
         $translation->getExtractedComments()->add('Not sure about this');
         $translation->getFlags()->add('c-code');
         $translations->add($translation);
 
         $translation = Translation::create(null, 'Disabled comment');
-        $translation->disable();
-        $translation->translate('Comentario deshabilitado');
+        $translation->disabled = true;
+        $translation->translation = 'Comentario deshabilitado';
         $translation->getComments()->add('This is a disabled comment');
         $translations->add($translation);
 
         // https://github.com/php-gettext/Gettext/issues/244
         $translation = Translation::create(null, "foo\nbar");
-        $translation->translate("bar\nbaz");
+        $translation->translation = "bar\nbaz";
         $translations->add($translation);
 
         $result = $generator->generateString($translations);

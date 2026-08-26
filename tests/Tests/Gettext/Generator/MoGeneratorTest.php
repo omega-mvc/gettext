@@ -45,25 +45,25 @@ class MoGeneratorTest extends TestCase
             ->set('X-Generator', 'PHP-Gettext');
 
         $translation = Translation::create('context-1', 'Original');
-        $translation->translate('Orixinal');
+        $translation->translation = 'Orixinal';
         $translations->add($translation);
 
         $translation = Translation::create('context-1', 'Other comment');
-        $translation->translate('Outro comentario');
+        $translation->translation = 'Outro comentario';
         $translation->translatePlural('Outros comentarios');
         $translations->add($translation);
 
         $translation = Translation::create(null, 'Disabled comment');
-        $translation->disable();
-        $translation->translate('Comentario deshabilitado');
+        $translation->disabled = true;
+        $translation->translation = 'Comentario deshabilitado';
         $translations->add($translation);
 
         $translation = Translation::create(null, '15');
-        $translation->translate('15');
+        $translation->translation = '15';
         $translations->add($translation);
 
         $translation = Translation::create(null, '123456');
-        $translation->translate('12345');
+        $translation->translation = '12345';
         $translations->add($translation);
 
         $mo = $generator->generateString($translations);

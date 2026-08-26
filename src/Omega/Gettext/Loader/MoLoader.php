@@ -101,12 +101,12 @@ final class MoLoader extends Loader
             }
 
             if ($plural === null) {
-                $translation->translate($translated);
+                $translation->translation = $translated;
                 continue;
             }
 
             $v = explode("\x00", $translated);
-            $translation->translate(array_shift($v));
+            $translation->translation = array_shift($v);
             $translation->translatePlural(...array_filter($v));
         }
 

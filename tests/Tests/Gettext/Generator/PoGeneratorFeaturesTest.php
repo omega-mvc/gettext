@@ -27,7 +27,7 @@ class PoGeneratorFeaturesTest extends TestCase
     {
         $translations = Translations::create('po');
         $translation = Translation::create(null, 'Hello');
-        $translation->translate('Ciao');
+        $translation->translation = 'Ciao';
         $translation->getReferences()->add('bare-only.php');
         $translations->add($translation);
 
@@ -41,10 +41,10 @@ class PoGeneratorFeaturesTest extends TestCase
     {
         $translations = Translations::create('po');
         $translation = Translation::create('new-context', 'new-original', 'new-plural');
-        $translation->translate('t');
-        $translation->setPreviousContext('old-context');
-        $translation->setPreviousOriginal('old-original');
-        $translation->setPreviousPlural('old-plural');
+        $translation->translation = 't';
+        $translation->previousContext = 'old-context';
+        $translation->previousOriginal = 'old-original';
+        $translation->previousPlural = 'old-plural';
         $translations->add($translation);
 
         $output = (new PoGenerator())->generateString($translations);
@@ -61,7 +61,7 @@ class PoGeneratorFeaturesTest extends TestCase
         $translations->getHeaders()->set(Headers::HEADER_PLURAL, 'nplurals=3; plural=(n==1 ? 0 : 1);');
 
         $translation = Translation::create(null, 'One file', '%d files');
-        $translation->translate('Un file');
+        $translation->translation = 'Un file';
         $translation->translatePlural('%d file', '%d file');
         $translations->add($translation);
 

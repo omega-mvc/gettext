@@ -31,8 +31,10 @@ use function sprintf;
  */
 class Translations implements Countable, IteratorAggregate
 {
-    /** @var string|null Free description rendered as leading `#` comments. */
-    protected ?string $description = null;
+    public ?string $description = null {
+        get => $this->description;
+        set { $this->description = $value; }
+    }
 
     /** @var array<string, Translation> Entries indexed by their unique id. */
     protected array $translations = [];
@@ -88,30 +90,6 @@ class Translations implements Countable, IteratorAggregate
         }
 
         $this->headers = clone $this->headers;
-    }
-
-    /**
-     * Sets the free description rendered as leading `#` comments.
-     *
-     * @param string|null $description Description text, or null to remove it.
-     *
-     * @return self This object, for method chaining.
-     */
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Returns the catalog description.
-     *
-     * @return string|null The description text, or null if not set.
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 
     /**
