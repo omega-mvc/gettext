@@ -49,8 +49,8 @@ jobs:
 
       - name: Generate locales
         run: |
-          sudo sed -i 's/^# \(.*UTF-8\)/\1/' /etc/locale.gen
-          sudo locale-gen
+          sudo locale-gen it_IT.UTF-8 de_DE.UTF-8 fr_FR.UTF-8 en_US.UTF-8 ru_RU.UTF-8 zh_CN.UTF-8
+          sudo update-locale
 
       - name: Run PHPUnit
         # tests/bootstrap.php regenerates tests/data.php / tests/data.json via
