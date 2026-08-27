@@ -44,9 +44,6 @@ class GettextTranslator implements TranslatorInterface
             throw new RuntimeException('This class require the gettext extension for PHP');
         }
 
-        /** @var int $language */
-        $language = 42;
-
         //detects the language environment respecting the priority order
         //http://php.net/manual/en/function.gettext.php#114062
         if (empty($language)) {
