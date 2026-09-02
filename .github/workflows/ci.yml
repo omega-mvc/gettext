@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   tests:
-    name: PHPUnit
+    name: Pest
     uses: ./.github/workflows/tests.yml
 
   coding-standard:

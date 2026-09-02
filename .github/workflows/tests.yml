@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   tests:
-    name: PHPUnit (PHP ${{ matrix.php }})
+    name: Pest (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -54,8 +54,8 @@ jobs:
           sudo locale-gen it_IT.UTF-8 de_DE.UTF-8 fr_FR.UTF-8 en_US.UTF-8 ru_RU.UTF-8 zh_CN.UTF-8
           sudo update-locale
 
-      - name: Run PHPUnit
+      - name: Run Pest
         # tests/bootstrap.php regenerates tests/data.php / tests/data.json via
         # bin/export-plural-rules on every run; the checkout is writable, so no
         # extra setup is required.
-        run: vendor/bin/phpunit --no-coverage
+        run: vendor/bin/pest --no-coverage
