@@ -4,4 +4,4 @@ cache/
 phpunit.xml
 phpcs.xml
 phpstan.neon
-
+composer.lock
