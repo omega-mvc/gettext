@@ -39,8 +39,8 @@
         "phpcs": "XDEBUG_MODE=off php vendor/bin/phpcs",
         "phpcbf": "XDEBUG_MODE=off php vendor/bin/phpcbf --standard=PSR12",
         "phpstan": "XDEBUG_MODE=off php vendor/bin/phpstan analyze -vvv",
-        "test-no-coverage": "XDEBUG_MODE=off php vendor/bin/phpunit --no-coverage",
-        "test": "XDEBUG_MODE=coverage php vendor/bin/phpunit"
+        "test-no-coverage": "XDEBUG_MODE=off php vendor/bin/pest --no-coverage",
+        "test": "XDEBUG_MODE=coverage php vendor/bin/pest"
     },
     "config": {
         "allow-plugins": {

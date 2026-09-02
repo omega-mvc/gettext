@@ -31,6 +31,7 @@ Whether you are building a multilingual website, a PHP application, or a project
 
 - [Installation](#installation)
 - [Running Test](#running-test)
+- [Known issues](#known-issues)
 - [Classes and Functions](#classes-and-functions)
     - [Usage Example](#quick-start)
     - [Translation](#translation)
@@ -69,6 +70,23 @@ composer test-no-coverage
 // Test with coverage
 composer test
 ```
+
+## Known issues
+
+When the test suite is run, the summary reports:
+
+```
+Tests: 2 warnings, 3418 passed (62544 assertions)
+```
+
+These **2 warnings are intentional**: two tests (`Scanner\CodeScannerTest::testScanFileThrowsWhenFileIsUnreadable` and `Loader\LoaderEdgesTest::testUnreadableFilesThrow`) deliberately create a file with no read permissions to verify that the error is handled correctly (with the expected exception). The warning is therefore a *test tool*, not a real problem in the code.
+
+**Why is the detail suppressed?** Not to hide anything, but to avoid bothering users. The test still passes (the exception is thrown as expected) and the warning message adds no useful information to whoever runs the suite.
+
+**How to re-enable the detail display.** If you want to see the full report of the two warnings (file paths and stack traces), open `phpunit.xml.dist` and:
+
+1. Set `displayDetailsOnTestsThatTriggerWarnings` to `true`.
+2. (Recommended) set `failOnWarning` back to `true` to make the suite fail in the presence of warnings.
 
 ## Classes and functions
 

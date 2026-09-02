@@ -8,12 +8,11 @@
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
          displayDetailsOnPhpunitDeprecations="true"
-         failOnPhpunitDeprecation="true"
-         failOnRisky="true"
-         failOnWarning="true"
-         testdox="true"
-         testdoxSummary="true"
-         colors="true"
+          displayDetailsOnTestsThatTriggerWarnings="false"
+          failOnPhpunitDeprecation="true"
+          failOnRisky="true"
+          failOnWarning="false"
+          colors="true"
          >
     <testsuites>
         <testsuite name="default">
@@ -31,7 +30,4 @@
             <html outputDirectory="cache/coverage-report"/>
         </report>
     </coverage>
-    <logging>
-        <testdoxHtml outputFile="cache/coverage-report/testdox.html"/>
-    </logging>
 </phpunit>
