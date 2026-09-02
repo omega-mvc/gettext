@@ -9,9 +9,13 @@
     <file>src</file>
     <file>tests</file>
 
-    <!-- Vendored gettext/languages subpackage: deprecation fixes only, never restyled. -->
+    <!-- Vendored gettext/languages subpackage: deprecation fixes only, never restyled.
+         NOTE: no <exclude-pattern>vendor/*</exclude-pattern> here. Because this package
+         can be checked out nested inside another project's vendor/ directory (e.g. the
+         omega-mvc/omega starter), a relative 'vendor/*' pattern matches that enclosing
+         vendor/ path too, excluding EVERY file. The vendor dir is not scanned anyway
+         since only src and tests are listed as <file> roots. -->
     <exclude-pattern>src/Omega/Gettext/Languages/*</exclude-pattern>
-    <exclude-pattern>vendor/*</exclude-pattern>
 
     <!-- PHP 8.4 property hooks: PHPCS 4.x cannot tokenize hook syntax. -->
     <rule ref="PSR2.Classes.PropertyDeclaration">
