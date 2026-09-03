@@ -9,7 +9,7 @@ class Html extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build a HTML table';
     }
@@ -19,7 +19,7 @@ class Html extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::toStringDoWithOptions()
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         $lines = array();
         $lines[] = '<table>';
@@ -56,7 +56,7 @@ class Html extends Exporter
         return implode("\n", $lines);
     }
 
-    protected static function h($str)
+    protected static function h(string $str): string
     {
         return htmlspecialchars($str, ENT_COMPAT, 'UTF-8');
     }

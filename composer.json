@@ -23,7 +23,9 @@
         "squizlabs/php_codesniffer": "^4.0.4",
         "brick/varexporter": "^0.6.0",
         "phpstan/phpstan": "^2.2",
-        "pestphp/pest": "^5.1"
+        "pestphp/pest": "^5.1",
+        "pestphp/pest-plugin-type-coverage": "^5.0",
+        "pestphp/pest-plugin-phpstan": "^5.2"
     },
     "autoload": {
         "psr-4": {

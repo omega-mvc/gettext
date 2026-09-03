@@ -11,7 +11,7 @@ class Prettyjson extends Json
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build an uncompressed JSON-encoded file (PHP 5.4 or later is needed)';
     }
@@ -21,7 +21,7 @@ class Prettyjson extends Json
      *
      * @see \Omega\Gettext\Languages\Exporter\Json::getEncodeOptions()
      */
-    protected static function getEncodeOptions()
+    protected static function getEncodeOptions(): int
     {
         if (!(defined('\JSON_PRETTY_PRINT') && defined('\JSON_UNESCAPED_SLASHES') && defined('\JSON_UNESCAPED_UNICODE'))) {
             throw new Exception('PHP 5.4 or later is required to export uncompressed JSON');

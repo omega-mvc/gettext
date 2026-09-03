@@ -40,28 +40,28 @@ use function trim;
 final class StrictPoLoader extends Loader
 {
     /** @var bool */
-    public $throwOnWarning = false;
+    public bool $throwOnWarning = false;
     /** @var bool */
-    public $displayErrorLine = false;
+    public bool $displayErrorLine = false;
 
     /** @var Translations */
-    private $translations;
+    private Translations $translations;
     /** @var Translation */
-    private $translation;
+    private Translation $translation;
     /** @var Translation|null */
-    private $header;
+    private ?Translation $header;
     /** @var string */
-    private $data;
+    private string $data;
     /** @var int */
-    private $position;
+    private int $position;
     /** @var int|null */
-    private $pluralCount;
+    private ?int $pluralCount;
     /** @var bool */
-    private $inPreviousPart;
+    private bool $inPreviousPart = false;
     /** @var string[] */
-    private $warnings = [];
+    private array $warnings = [];
     /** @var bool */
-    private $isDisabled;
+    private bool $isDisabled = false;
 
     /**
      * Generates a Translations object from a .po based string

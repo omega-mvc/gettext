@@ -190,7 +190,7 @@ final class ArrayGenerator extends AbstractGenerator
       * @param mixed $value Scalar value to export.
       * @return string PHP representation, or null for null values.
      */
-    private static function prettyExportScalar($value): string
+    private static function prettyExportScalar(mixed $value): string
     {
         return $value === null ? 'null' : var_export($value, true);
     }

@@ -14,21 +14,21 @@ class Category
      *
      * @var string
      */
-    public $id;
+    public string $id;
 
     /**
      * The gettext formula that identifies this category (null if and only if the category is 'other').
      *
-     * @var string|null
+     * @var bool|string|null
      */
-    public $formula;
+    public bool|string|null $formula;
 
     /**
      * The CLDR representation of some exemplar numeric ranges that satisfy this category.
      *
      * @var string|null
      */
-    public $examples;
+    public ?string $examples;
 
     /**
      * Initialize the instance and parse the formula.
@@ -38,7 +38,7 @@ class Category
      *
      * @throws \Exception
      */
-    public function __construct($cldrCategoryId, $cldrFormulaAndExamples)
+    public function __construct(string $cldrCategoryId, string $cldrFormulaAndExamples)
     {
         $matches = array();
         if (!preg_match('/^pluralRule-count-(.+)$/', $cldrCategoryId, $matches)) {
@@ -78,7 +78,7 @@ class Category
      *
      * @return int[]
      */
-    public function getExampleIntegers()
+    public function getExampleIntegers(): array
     {
         return self::expandExamples($this->examples);
     }
@@ -92,7 +92,7 @@ class Category
      *
      * @return int[]
      */
-    public static function expandExamples($examples)
+    public static function expandExamples(string $examples): array
     {
         $result = array();
         $m = null;

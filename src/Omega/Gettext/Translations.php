@@ -114,7 +114,7 @@ class Translations implements Countable, IteratorAggregate
             'headers' => $this->headers->toArray(),
             'flags' => $this->flags->toArray(),
             'translations' => array_map(
-                function ($translation) {
+                function (Translation $translation) {
                     return $translation->toArray();
                 },
                 array_values($this->translations)

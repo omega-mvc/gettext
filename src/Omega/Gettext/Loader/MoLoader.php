@@ -26,9 +26,9 @@ final class MoLoader extends Loader
     private int $position = 0;
     private int $length = 0;
 
-    private const MAGIC1 = -1794895138;
-    private const MAGIC2 = -569244523;
-    private const MAGIC3 = 2500072158;
+    private const int MAGIC1 = -1794895138;
+    private const int MAGIC2 = -569244523;
+    private const int MAGIC3 = 2500072158;
 
     public function loadString(string $string, ?Translations $translations = null): Translations
     {

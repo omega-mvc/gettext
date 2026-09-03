@@ -30,7 +30,7 @@ class JsNodeVisitor
     protected string $filename;
 
     /** @var list<ParsedFunction> */
-    protected $functions = [];
+    protected array $functions = [];
 
     /**
      * @param array<string>|null $validFunctions
@@ -174,7 +174,7 @@ class JsNodeVisitor
     {
         $text = $comment->getText();
 
-        $lines = array_map(function ($line) {
+        $lines = array_map(function (string $line) {
             $line = ltrim($line, "#*/ \t");
             $line = rtrim($line, "#*/ \t");
             return trim($line);

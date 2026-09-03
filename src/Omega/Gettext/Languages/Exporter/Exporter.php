@@ -12,7 +12,7 @@ abstract class Exporter
     /**
      * @var array
      */
-    private static $exporters;
+    private static array $exporters;
 
     /**
      * Return the list of all the available exporters. Keys are the exporter handles, values are the exporter class names.
@@ -21,7 +21,7 @@ abstract class Exporter
      *
      * @return string[]
      */
-    final public static function getExporters($onlyForPublicUse = false)
+    final public static function getExporters(bool $onlyForPublicUse = false): array
     {
         if (!isset(self::$exporters)) {
             $exporters = array();
@@ -58,7 +58,7 @@ abstract class Exporter
      *
      * @return string
      */
-    final public static function getExporterDescription($exporterHandle)
+    final public static function getExporterDescription(string $exporterHandle): string
     {
         $exporters = self::getExporters();
         if (!isset($exporters[$exporterHandle])) {
@@ -75,7 +75,7 @@ abstract class Exporter
      *
      * @return string
      */
-    final public static function getExporterClassName($exporterHandle)
+    final public static function getExporterClassName(string $exporterHandle): string
     {
         return __NAMESPACE__ . '\\' . ucfirst(strtolower($exporterHandle));
     }
@@ -88,7 +88,7 @@ abstract class Exporter
      *
      * @return string
      */
-    final public static function toString($languages, $options = null)
+    final public static function toString(array $languages, ?array $options = null): string
     {
         if (!isset($options) || !is_array($options)) {
             $options = array();
@@ -112,7 +112,7 @@ abstract class Exporter
      *
      * @throws \Exception
      */
-    final public static function toFile($languages, $filename, $options = null)
+    final public static function toFile(array $languages, string $filename, ?array $options = null): void
     {
         $data = self::toString($languages, $options);
         if (@file_put_contents($filename, $data) === false) {
@@ -125,7 +125,7 @@ abstract class Exporter
      *
      * @return bool
      */
-    public static function isForPublicUse()
+    public static function isForPublicUse(): bool
     {
         return true;
     }
@@ -135,7 +135,7 @@ abstract class Exporter
      *
      * @return bool
      */
-    public static function supportsFormulasWithAndWithoutParenthesis()
+    public static function supportsFormulasWithAndWithoutParenthesis(): bool
     {
         return false;
     }
@@ -145,7 +145,7 @@ abstract class Exporter
      *
      * @return string
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         throw new Exception(get_called_class() . ' does not implement the method ' . __FUNCTION__);
     }
@@ -158,7 +158,7 @@ abstract class Exporter
      *
      * @return string
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         if (method_exists(get_called_class(), 'toStringDo')) {
             return static::toStringDo($languages);

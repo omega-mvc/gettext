@@ -14,26 +14,26 @@ class CldrData
      *
      * @var string
      */
-    const OTHER_CATEGORY = 'other';
+    const string OTHER_CATEGORY = 'other';
 
     /**
      * The list of the plural categories, sorted from 'zero' to 'other'.
      *
      * @var string[]
      */
-    public static $categories = array('zero', 'one', 'two', 'few', 'many', self::OTHER_CATEGORY);
+    public static array $categories = array('zero', 'one', 'two', 'few', 'many', self::OTHER_CATEGORY);
 
     /**
      * The loaded CLDR data.
      *
-     * @var array
+     * @var array|null
      */
-    private static $data;
+    private static ?array $data;
 
     /**
-     * @var array
+     * @var array|null
      */
-    private static $plurals;
+    private static ?array $plurals;
 
     /**
      * Returns a dictionary containing the language names.
@@ -42,7 +42,7 @@ class CldrData
      *
      * @return string[]
      */
-    public static function getLanguageNames()
+    public static function getLanguageNames(): array
     {
         return self::getData('languages');
     }
@@ -54,7 +54,7 @@ class CldrData
      *
      * @return string[]
      */
-    public static function getTerritoryNames()
+    public static function getTerritoryNames(): array
     {
         return self::getData('territories');
     }
@@ -68,7 +68,7 @@ class CldrData
      *
      * @return string[]
      */
-    public static function getScriptNames($standAlone)
+    public static function getScriptNames(bool $standAlone): array
     {
         return self::getData($standAlone ? 'standAloneScripts' : 'scripts');
     }
@@ -88,7 +88,7 @@ class CldrData
      *
      * @return array
      */
-    public static function getPlurals()
+    public static function getPlurals(): array
     {
         return self::getData('plurals');
     }
@@ -98,7 +98,7 @@ class CldrData
      *
      * @return array keys are the former language codes, values are the new language/locale codes
      */
-    public static function getSupersededLanguages()
+    public static function getSupersededLanguages(): array
     {
         return self::getData('supersededLanguages');
     }
@@ -110,7 +110,7 @@ class CldrData
      *
      * @return array|null Returns an array with the keys 'id' (normalized), 'name', 'supersededBy' (optional), 'territory' (optional), 'script' (optional), 'baseLanguage' (optional), 'categories'. If $id is not valid returns null.
      */
-    public static function getLanguageInfo($id)
+    public static function getLanguageInfo(string $id): ?array
     {
         $result = null;
         $matches = array();
@@ -235,10 +235,10 @@ class CldrData
      *
      * @return array
      */
-    private static function getData($key)
+    private static function getData(string $key): array
     {
         if (!isset(self::$data)) {
-            $fixKeys = function ($list, &$standAlone = null) {
+            $fixKeys = function (array $list, ?array &$standAlone = null) {
                 $result = array();
                 $standAlone = array();
                 $match = null;

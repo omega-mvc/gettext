@@ -11,7 +11,7 @@ class Po extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build a string to be used for gettext .po files';
     }
@@ -21,7 +21,7 @@ class Po extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::toStringDoWithOptions()
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         if (count($languages) !== 1) {
             throw new Exception('The ' . get_called_class() . ' exporter can only export one language');

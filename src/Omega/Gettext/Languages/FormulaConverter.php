@@ -18,7 +18,7 @@ class FormulaConverter
      *
      * @return bool|string returns true if the gettext will always evaluate to true, false if gettext will always evaluate to false, return the gettext formula otherwise
      */
-    public static function convertFormula($cldrFormula)
+    public static function convertFormula(string $cldrFormula): bool|string
     {
         if (strpbrk($cldrFormula, '()') !== false) {
             throw new Exception("Unable to convert the formula '{$cldrFormula}': parenthesis handling not implemented");
@@ -77,7 +77,7 @@ class FormulaConverter
      *
      * @return bool|string returns true if the gettext will always evaluate to true, false if gettext will always evaluate to false, return the gettext formula otherwise
      */
-    private static function convertAtom($cldrAtom)
+    private static function convertAtom(string $cldrAtom): bool|string
     {
         $m = null;
         $gettextAtom = $cldrAtom;
@@ -113,7 +113,7 @@ class FormulaConverter
      *
      * @return string
      */
-    private static function expandAtom($atom)
+    private static function expandAtom(string $atom): string
     {
         $m = null;
         if (preg_match('/^(n(?: % \d+)?) (==|!=) (\d+(?:\.\.\d+|,\d+)+)$/', $atom, $m)) {

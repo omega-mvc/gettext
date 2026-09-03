@@ -14,56 +14,56 @@ class Language
      *
      * @var string
      */
-    public $id;
+    public string $id;
 
     /**
      * The language name.
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * If this language is deprecated: the gettext code of the new language.
      *
      * @var string|null
      */
-    public $supersededBy;
+    public ?string $supersededBy;
 
     /**
      * The script name.
      *
      * @var string|null
      */
-    public $script;
+    public ?string $script;
 
     /**
      * The territory name.
      *
      * @var string|null
      */
-    public $territory;
+    public ?string $territory;
 
     /**
      * The name of the base language.
      *
      * @var string|null
      */
-    public $baseLanguage;
+    public ?string $baseLanguage;
 
     /**
      * The list of categories.
      *
      * @var \Omega\Gettext\Languages\Category[]
      */
-    public $categories;
+    public array $categories;
 
     /**
      * The gettext formula to decide which category should be applied.
      *
      * @var string
      */
-    public $formula;
+    public string $formula;
 
     /**
      * Initialize the instance and parse the language code.
@@ -72,7 +72,7 @@ class Language
      *
      * @throws \Exception throws an Exception if $fullId is not valid
      */
-    private function __construct($info)
+    private function __construct(array $info)
     {
         $this->id = $info['id'];
         $this->name = $info['name'];
@@ -115,7 +115,7 @@ class Language
      *
      * @return \Omega\Gettext\Languages\Language[]
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         $result = array();
         foreach (array_keys(CldrData::getLanguageNames()) as $cldrLanguageId) {
@@ -132,7 +132,7 @@ class Language
      *
      * @return \Omega\Gettext\Languages\Language|null
      */
-    public static function getById($id)
+    public static function getById(string $id): ?Language
     {
         $result = null;
         $info = CldrData::getLanguageInfo($id);
@@ -148,7 +148,7 @@ class Language
      *
      * @return \Omega\Gettext\Languages\Language
      */
-    public function getUSAsciiClone()
+    public function getUSAsciiClone(): Language
     {
         $clone = clone $this;
         self::asciifier($clone->name);
@@ -170,7 +170,7 @@ class Language
      *
      * @return string
      */
-    public function buildFormula($withoutParenthesis = false)
+    public function buildFormula(bool $withoutParenthesis = false): string
     {
         $numCategories = count($this->categories);
         switch ($numCategories) {
@@ -203,7 +203,7 @@ class Language
      *
      * @throws \Exception
      */
-    private function checkAlwaysTrueCategories()
+    private function checkAlwaysTrueCategories(): void
     {
         $alwaysTrueCategory = null;
         foreach ($this->categories as $category) {
@@ -234,7 +234,7 @@ class Language
      *
      * @throws \Exception
      */
-    private function checkAlwaysFalseCategories()
+    private function checkAlwaysFalseCategories(): void
     {
         $filtered = array();
         foreach ($this->categories as $category) {
@@ -256,7 +256,7 @@ class Language
      *
      * @throws \Exception
      */
-    private function checkAllCategoriesWithExamples()
+    private function checkAllCategoriesWithExamples(): void
     {
         $allCategoriesIds = array();
         $goodCategories = array();
@@ -337,7 +337,7 @@ class Language
      *
      * @return string
      */
-    private static function reverseFormula($formula)
+    private static function reverseFormula(string $formula): string
     {
         if (preg_match('/^n( % \d+)? == \d+(\.\.\d+|,\d+)*?$/', $formula)) {
             return str_replace(' == ', ' != ', $formula);
@@ -368,7 +368,7 @@ class Language
      *
      * @return string
      */
-    private static function reduceFormula($formula)
+    private static function reduceFormula(string $formula): string
     {
         $map = array(
             'n != 0 && n != 1' => 'n > 1',
@@ -385,7 +385,7 @@ class Language
      *
      * @throws \Exception
      */
-    private static function asciifier(&$value)
+    private static function asciifier(mixed &$value): void
     {
         if (is_string($value) && $value !== '') {
             // Avoid converting from 'Ÿ' to '"Y', let's prefer 'Y'

@@ -61,9 +61,9 @@ class PhpNodeVisitor implements NodeVisitor
      * No-op hook required by the NodeVisitor contract.
      *
      * @param array<Node> $nodes Root nodes of the AST.
-     * @return null Always null, leaving the tree untouched.
+     * @return array<Node>|null Always null, leaving the tree untouched.
      */
-    public function beforeTraverse(array $nodes)
+    public function beforeTraverse(array $nodes): ?array
     {
         return null;
     }
@@ -74,7 +74,7 @@ class PhpNodeVisitor implements NodeVisitor
      * @param Node $node Node currently entered.
      * @return null Always null, keeping the node unchanged.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): ?Node
     {
         if ($node instanceof FuncCall || $node instanceof MethodCall || $node instanceof StaticCall) {
             $name = static::getName($node);
@@ -107,7 +107,7 @@ class PhpNodeVisitor implements NodeVisitor
      * @param Node $node Node currently left.
      * @return null Always null, keeping the node unchanged.
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): ?Node
     {
         return null;
     }
@@ -116,9 +116,9 @@ class PhpNodeVisitor implements NodeVisitor
      * No-op hook required by the NodeVisitor contract.
      *
      * @param array<Node> $nodes Root nodes of the AST.
-     * @return null Always null, leaving the tree untouched.
+     * @return array<Node>|null Always null, leaving the tree untouched.
      */
-    public function afterTraverse(array $nodes)
+    public function afterTraverse(array $nodes): ?array
     {
         return null;
     }
@@ -184,7 +184,7 @@ class PhpNodeVisitor implements NodeVisitor
     {
         $text = $comment->getReformattedText();
 
-        $lines = array_map(function ($line) {
+        $lines = array_map(function (string $line) {
             $line = ltrim($line, "#*/ \t");
             $line = rtrim($line, "#*/ \t");
             return trim($line);

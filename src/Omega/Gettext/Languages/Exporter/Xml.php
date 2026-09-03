@@ -9,7 +9,7 @@ class Xml extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build an XML file - schema available at https://php-gettext.github.io/Languages/GettextLanguages.xsd';
     }
@@ -19,7 +19,7 @@ class Xml extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::toStringDoWithOptions()
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         $xml = new \DOMDocument('1.0', 'UTF-8');
         $xml->loadXML('<languages

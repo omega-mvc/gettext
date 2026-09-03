@@ -9,7 +9,7 @@ class Php extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build a PHP array';
     }
@@ -19,7 +19,7 @@ class Php extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::toStringDoWithOptions()
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         $lines = array();
         $lines[] = '<?php';

@@ -9,7 +9,7 @@ class Json extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::getDescription()
      */
-    public static function getDescription()
+    public static function getDescription(): string
     {
         return 'Build a compressed JSON-encoded file';
     }
@@ -19,7 +19,7 @@ class Json extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::supportsFormulasWithAndWithoutParenthesis()
      */
-    public static function supportsFormulasWithAndWithoutParenthesis()
+    public static function supportsFormulasWithAndWithoutParenthesis(): bool
     {
         return true;
     }
@@ -29,7 +29,7 @@ class Json extends Exporter
      *
      * @return int
      */
-    protected static function getEncodeOptions()
+    protected static function getEncodeOptions(): int
     {
         $result = 0;
         if (defined('\JSON_UNESCAPED_SLASHES')) {
@@ -47,7 +47,7 @@ class Json extends Exporter
      *
      * @see \Omega\Gettext\Languages\Exporter\Exporter::toStringDoWithOptions()
      */
-    protected static function toStringDoWithOptions($languages, array $options)
+    protected static function toStringDoWithOptions(array $languages, array $options): string
     {
         $list = array();
         foreach ($languages as $language) {
