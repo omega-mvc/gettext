@@ -16,6 +16,7 @@
     <a href="https://github.com/omega-mvc/gettext/actions/workflows/coding-standard.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/coding-standard.yml?label=PHPCS" alt="PHPCS"></a>
     <a href="https://github.com/omega-mvc/gettext/actions/workflows/static-analysis.yml"><img src="https://img.shields.io/github/actions/workflow/status/omega-mvc/gettext/static-analysis.yml?label=PHPStan" alt="PHPStan"></a>
     <a href="https://packagist.org/packages/omega-mvc/gettext"><img src="https://img.shields.io/packagist/v/omega-mvc/gettext.svg" alt="Packagist Version"></a>
+    <a href="https://semver.org"><img src="https://img.shields.io/badge/semver-1.0.0-brightgreen" alt="SemVer 1.0.0"></a>
 </p>
 
 # Gettext
