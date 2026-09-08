@@ -8,74 +8,58 @@ use LogicException;
 use Omega\Gettext\Formatter;
 use Omega\Gettext\Translator;
 use Omega\Gettext\TranslatorFunctions;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-#[CoversClass(Formatter::class)]
-#[CoversClass(Translator::class)]
-#[CoversClass(TranslatorFunctions::class)]
-class TranslatorFunctionsTest extends TestCase
-{
-    protected function setUp(): void
-    {
-        parent::setUp();
+covers(Formatter::class);
+covers(Translator::class);
+covers(TranslatorFunctions::class);
 
-        $reflection = new ReflectionClass(TranslatorFunctions::class);
+beforeEach(function (): void {
+    $reflection = new ReflectionClass(TranslatorFunctions::class);
 
-        foreach (['translator', 'formatter'] as $propertyName) {
-            $property = $reflection->getProperty($propertyName);
-            $property->setValue(null, null);
-        }
+    foreach (['translator', 'formatter'] as $propertyName) {
+        $property = $reflection->getProperty($propertyName);
+        $property->setValue(null, null);
     }
+});
 
-    public function testGettersThrowBeforeRegistration(): void
-    {
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('No translator registered, call TranslatorFunctions::register() first');
+it('throws before a translator is registered', function (): void {
+    expect(fn () => TranslatorFunctions::getTranslator())
+        ->toThrow(LogicException::class, 'No translator registered, call TranslatorFunctions::register() first');
+});
 
-        TranslatorFunctions::getTranslator();
-    }
+it('throws before a formatter is registered', function (): void {
+    expect(fn () => TranslatorFunctions::getFormatter())
+        ->toThrow(LogicException::class, 'No formatter registered, call TranslatorFunctions::register() first');
+});
 
-    public function testFormatterGetterThrowsBeforeRegistration(): void
-    {
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('No formatter registered, call TranslatorFunctions::register() first');
+it('stores the provided instances when registering', function (): void {
+    $translator = new Translator();
+    $formatter = new Formatter();
 
-        TranslatorFunctions::getFormatter();
-    }
+    TranslatorFunctions::register($translator, $formatter);
 
-    public function testRegisterStoresProvidedInstances(): void
-    {
-        $translator = new Translator();
-        $formatter = new Formatter();
+    expect(TranslatorFunctions::getTranslator())->toBe($translator);
+    expect(TranslatorFunctions::getFormatter())->toBe($formatter);
+});
 
-        TranslatorFunctions::register($translator, $formatter);
+it('creates a default formatter when registering without one', function (): void {
+    $translator = new Translator();
 
-        $this->assertSame($translator, TranslatorFunctions::getTranslator());
-        $this->assertSame($formatter, TranslatorFunctions::getFormatter());
-    }
+    TranslatorFunctions::register($translator);
 
-    public function testRegisterWithoutFormatterCreatesDefaultOne(): void
-    {
-        $translator = new Translator();
+    expect(TranslatorFunctions::getTranslator())->toBe($translator);
+    expect(TranslatorFunctions::getFormatter())->toBeInstanceOf(Formatter::class);
+});
 
-        TranslatorFunctions::register($translator);
+it('replaces previously registered instances', function (): void {
+    $first = new Translator();
+    $second = new Translator();
+    $formatter = new Formatter();
 
-        $this->assertSame($translator, TranslatorFunctions::getTranslator());
-        $this->assertInstanceOf(Formatter::class, TranslatorFunctions::getFormatter());
-    }
+    TranslatorFunctions::register($first);
+    TranslatorFunctions::register($second, $formatter);
 
-    public function testRegisterReplacesPreviousInstances(): void
-    {
-        $first = new Translator();
-        $second = new Translator();
-        $formatter = new Formatter();
-
-        TranslatorFunctions::register($first);
-        TranslatorFunctions::register($second, $formatter);
-
-        $this->assertSame($second, TranslatorFunctions::getTranslator());
-        $this->assertSame($formatter, TranslatorFunctions::getFormatter());
-    }
-}
+    expect(TranslatorFunctions::getTranslator())->toBe($second);
+    expect(TranslatorFunctions::getFormatter())->toBe($formatter);
+});

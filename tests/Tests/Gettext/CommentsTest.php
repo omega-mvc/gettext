@@ -5,60 +5,53 @@ declare(strict_types=1);
 namespace Tests\Tests\Gettext;
 
 use Omega\Gettext\Comments;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-class CommentsTest extends TestCase
-{
-    public function testComments(): void
-    {
-        $comments = new Comments();
+covers(Comments::class);
 
-        $this->assertSame([], $comments->toArray());
-        $this->assertCount(0, $comments);
+it('manages comments', function (): void {
+    $comments = new Comments();
 
-        $comments->add('foo');
+    expect($comments->toArray())->toBe([]);
+    expect($comments)->toHaveCount(0);
 
-        $this->assertSame(['foo'], $comments->toArray());
-        $this->assertCount(1, $comments);
+    $comments->add('foo');
 
-        $comments->add('foo');
+    expect($comments->toArray())->toBe(['foo']);
+    expect($comments)->toHaveCount(1);
 
-        $this->assertSame(['foo'], $comments->toArray());
-        $this->assertCount(1, $comments);
+    $comments->add('foo');
 
-        $comments->add('bar');
+    expect($comments->toArray())->toBe(['foo']);
+    expect($comments)->toHaveCount(1);
 
-        $this->assertSame(['foo', 'bar'], $comments->toArray());
-        $this->assertCount(2, $comments);
+    $comments->add('bar');
 
-        $comments->delete('foo');
+    expect($comments->toArray())->toBe(['foo', 'bar']);
+    expect($comments)->toHaveCount(2);
 
-        $this->assertSame(['bar'], $comments->toArray());
-        $this->assertCount(1, $comments);
-    }
+    $comments->delete('foo');
 
-    public function testMergeComments(): void
-    {
-        $comments1 = new Comments('one', 'two', 'three');
-        $comments2 = new Comments('three', 'four', 'five');
+    expect($comments->toArray())->toBe(['bar']);
+    expect($comments)->toHaveCount(1);
+});
 
-        $merged = $comments1->mergeWith($comments2);
+it('merges comments', function (): void {
+    $comments1 = new Comments('one', 'two', 'three');
+    $comments2 = new Comments('three', 'four', 'five');
 
-        $this->assertCount(5, $merged);
-        $this->assertSame(['one', 'two', 'three', 'four', 'five'], $merged->toArray());
+    $merged = $comments1->mergeWith($comments2);
 
-        $this->assertNotSame($merged, $comments1);
-        $this->assertNotSame($merged, $comments2);
-    }
+    expect($merged)->toHaveCount(5);
+    expect($merged->toArray())->toBe(['one', 'two', 'three', 'four', 'five']);
 
-    public function testCreateFromState(): void
-    {
-        $state = ['comments' => ['First comment', 'Second comment']];
-        $comments = Comments::__set_state($state);
+    expect($merged)->not->toBe($comments1);
+    expect($merged)->not->toBe($comments2);
+});
 
-        $this->assertCount(2, $comments);
-        $this->assertSame($state['comments'], $comments->toArray());
-    }
-}
+it('creates a comments collection from state', function (): void {
+    $state = ['comments' => ['First comment', 'Second comment']];
+    $comments = Comments::__set_state($state);
+
+    expect($comments)->toHaveCount(2);
+    expect($comments->toArray())->toBe($state['comments']);
+});

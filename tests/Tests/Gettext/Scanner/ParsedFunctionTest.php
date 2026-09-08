@@ -4,71 +4,63 @@ declare(strict_types=1);
 
 namespace Tests\Tests\Gettext\Scanner;
 
-use Omega\Gettext\Scanner\ParsedFunction;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Closure;
+use Omega\Gettext\Scanner\ParsedFunction;
 
-#[CoversClass(ParsedFunction::class)]
-class ParsedFunctionTest extends TestCase
-{
-    public function testConstructorDefaultsLastLineToLine(): void
-    {
-        $function = new ParsedFunction('__', 'file.php', 7);
+covers(ParsedFunction::class);
 
-        $this->assertSame('__', $function->getName());
-        $this->assertSame('file.php', $function->getFilename());
-        $this->assertSame(7, $function->getLine());
-        $this->assertSame(7, $function->getLastLine());
-    }
+it('defaults the last line to the current line', function (): void {
+    $function = new ParsedFunction('__', 'file.php', 7);
 
-    public function testExplicitLastLineIsKept(): void
-    {
-        $function = new ParsedFunction('ngettext', 'file.php', 3, 9);
+    expect($function->getName())->toBe('__');
+    expect($function->getFilename())->toBe('file.php');
+    expect($function->getLine())->toBe(7);
+    expect($function->getLastLine())->toBe(7);
+});
 
-        $this->assertSame(3, $function->getLine());
-        $this->assertSame(9, $function->getLastLine());
-    }
+it('keeps an explicit last line', function (): void {
+    $function = new ParsedFunction('ngettext', 'file.php', 3, 9);
 
-    public function testToArrayAndDebugInfoExposeTheFullState(): void
-    {
-        $function = new ParsedFunction('pgettext', 'app.js', 2, 4);
-        $function->addArgument('context');
-        $function->addArgument();
-        $function->addComment('translators: greeting');
-        $function->addFlag('js-format');
+    expect($function->getLine())->toBe(3);
+    expect($function->getLastLine())->toBe(9);
+});
 
-        $expected = [
-            'name' => 'pgettext',
-            'filename' => 'app.js',
-            'line' => 2,
-            'lastLine' => 4,
-            'arguments' => ['context', null],
-            'comments' => ['translators: greeting'],
-            'flags' => ['js-format'],
-        ];
+it('exposes the full state to array and debug info', function (): void {
+    $function = new ParsedFunction('pgettext', 'app.js', 2, 4);
+    $function->addArgument('context');
+    $function->addArgument();
+    $function->addComment('translators: greeting');
+    $function->addFlag('js-format');
 
-        $this->assertSame($expected, $function->toArray());
+    $expected = [
+        'name' => 'pgettext',
+        'filename' => 'app.js',
+        'line' => 2,
+        'lastLine' => 4,
+        'arguments' => ['context', null],
+        'comments' => ['translators: greeting'],
+        'flags' => ['js-format'],
+    ];
 
-        $debugInfo = Closure::bind(
-            static fn (): array => $function->__debugInfo(),
-            null,
-            ParsedFunction::class
-        )();
+    expect($function->toArray())->toBe($expected);
 
-        $this->assertSame($expected, $debugInfo);
-    }
+    $debugInfo = Closure::bind(
+        static fn (): array => $function->__debugInfo(),
+        null,
+        ParsedFunction::class
+    )();
 
-    public function testArgumentsCountAndStringFiltering(): void
-    {
-        $function = new ParsedFunction('dgettext', 'f.js', 1);
-        $function->addArgument('domain');
-        $function->addArgument(123);
-        $function->addArgument(null);
+    expect($debugInfo)->toBe($expected);
+});
 
-        $this->assertCount(3, $function->getArguments());
-        $this->assertSame(3, $function->countArguments());
-        $this->assertSame(['domain'], $function->getStringArguments(3));
-        $this->assertSame([], $function->getStringArguments(0));
-    }
-}
+it('counts arguments and filters them by type', function (): void {
+    $function = new ParsedFunction('dgettext', 'f.js', 1);
+    $function->addArgument('domain');
+    $function->addArgument(123);
+    $function->addArgument(null);
+
+    expect($function->getArguments())->toHaveCount(3);
+    expect($function->countArguments())->toBe(3);
+    expect($function->getStringArguments(3))->toBe(['domain']);
+    expect($function->getStringArguments(0))->toBe([]);
+});

@@ -7,225 +7,220 @@ namespace Tests\Tests\Gettext\Scanner;
 use Omega\Gettext\Scanner\ParsedFunction;
 use Omega\Gettext\Scanner\PhpFunctionsScanner;
 use Omega\Gettext\Scanner\PhpNodeVisitor;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-#[CoversClass(ParsedFunction::class)]
-#[CoversClass(PhpNodeVisitor::class)]
-#[CoversClass(PhpFunctionsScanner::class)]
-class PhpFunctionsScannerTest extends TestCase
+covers(ParsedFunction::class);
+covers(PhpNodeVisitor::class);
+covers(PhpFunctionsScanner::class);
+
+it('scans empty code', function (): void {
+    $scanner = new PhpFunctionsScanner();
+    $file = __DIR__ . '/../assets/functions.php';
+    $functions = $scanner->scan('', $file);
+
+    expect($functions)->toBe([]);
+});
+
+it('extracts php functions', function (): void {
+    $scanner = new PhpFunctionsScanner();
+    $file = __DIR__ . '/../assets/functions.php';
+    $code = file_get_contents($file);
+    $this->assertNotFalse($code);
+    $functions = $scanner->scan($code, $file);
+
+    expect($functions)->toHaveCount(14);
+
+    //fn1
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn1');
+    expect($function->countArguments())->toBe(3);
+    expect($function->getArguments())->toBe(['arg1', 'arg2', 3]);
+    expect($function->getLine())->toBe(4);
+    expect($function->getLastLine())->toBe(4);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(1);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe('This comment is related with the first function');
+
+    //fn2
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn2');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getLine())->toBe(5);
+    expect($function->getLastLine())->toBe(5);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn3
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn3');
+    expect($function->countArguments())->toBe(3);
+    expect($function->getArguments())->toBe([null, 'arg5', null]);
+    expect($function->getLine())->toBe(6);
+    expect($function->getLastLine())->toBe(6);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn4
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn4');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe(['arg4']);
+    expect($function->getLine())->toBe(6);
+    expect($function->getLastLine())->toBe(6);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn5
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn5');
+    expect($function->countArguments())->toBe(2);
+    expect($function->getArguments())->toBe([6, 7.5]);
+    expect($function->getLine())->toBe(6);
+    expect($function->getLastLine())->toBe(6);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn6
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn6');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe([['arr']]);
+    expect($function->getLine())->toBe(7);
+    expect($function->getLastLine())->toBe(7);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn7
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn7');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe([null]);
+    expect($function->getLine())->toBe(8);
+    expect($function->getLastLine())->toBe(8);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn9
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn9');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe([null]);
+    expect($function->getLine())->toBe(11);
+    expect($function->getLastLine())->toBe(11);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(2);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe('fn_8();');
+    expect(array_shift($comments))->toBe('ALLOW: This is a comment to fn9');
+
+    //fn10
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn10');
+    expect($function->countArguments())->toBe(0);
+    expect($function->getLine())->toBe(13);
+    expect($function->getLastLine())->toBe(13);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(1);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe('Comment to fn10');
+
+    //fn11
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn11');
+    expect($function->countArguments())->toBe(2);
+    expect($function->getArguments())->toBe(['arg9', 'arg10']);
+    expect($function->getLine())->toBe(16);
+    expect($function->getLastLine())->toBe(16);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(2);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe('Related comment 1');
+    expect(array_shift($comments))->toBe('ALLOW: Related comment 2');
+
+    //fn12
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn12');
+    expect($function->countArguments())->toBe(2);
+    expect($function->getArguments())->toBe(['arg11', 'arg12']);
+    expect($function->getLine())->toBe(22);
+    expect($function->getLastLine())->toBe(28);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(3);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe("Related comment\nnumber one");
+    expect(array_shift($comments))->toBe('Related comment 2');
+    expect(array_shift($comments))->toBe('ALLOW: Related comment 3');
+
+    //fn13
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn13');
+    expect($function->countArguments())->toBe(3);
+    expect($function->getArguments())->toBe([
+        'Translatable string',
+        '',
+        ['context' => 'Context string', 'foo'],
+    ]);
+    expect($function->getLine())->toBe(30);
+    expect($function->getLastLine())->toBe(30);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(1);
+
+    $comments = $function->getComments();
+    expect(array_shift($comments))->toBe('Related comment 5');
+
+    //fn14
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn14');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe(['Translatable string']);
+    expect($function->getLine())->toBe(32);
+    expect($function->getLastLine())->toBe(32);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+
+    //fn15
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('fn15');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe(['Translatable long string']);
+    expect($function->getLine())->toBe(33);
+    expect($function->getLastLine())->toBe(34);
+    expect($function->getFilename())->toBe($file);
+    expect($function->getComments())->toHaveCount(0);
+});
+
+it('handles first class callable syntax', function (): void {
+    $scanner = new PhpFunctionsScanner();
+    $functions = $scanner->scan('<?php $fn = __(...);', 'foo.php');
+
+    expect($functions)->toHaveCount(1);
+
+    $function = shiftPhpFunction($functions);
+    expect($function->getName())->toBe('__');
+    expect($function->countArguments())->toBe(1);
+    expect($function->getArguments())->toBe([null]);
+});
+
+/**
+ * Shifts a parsed function off the array, asserting its presence.
+ *
+ * @param array<ParsedFunction> $functions
+ */
+function shiftPhpFunction(array &$functions): ParsedFunction
 {
-    /**
-     * Shifts a parsed function off the array, asserting its presence.
-     *
-     * @param array<ParsedFunction> $functions
-     */
-    private function shiftFunction(array &$functions): ParsedFunction
-    {
-        $function = $functions[0] ?? null;
+    $function = $functions[0] ?? null;
 
-        if (!$function instanceof ParsedFunction) {
-            $this->fail('No more parsed functions available');
-        }
-
-        array_shift($functions);
-
-        return $function;
+    if (!$function instanceof ParsedFunction) {
+        Assert::fail('No more parsed functions available');
     }
 
-    public function testScanOnEmptyCode(): void
-    {
-        $scanner = new PhpFunctionsScanner();
-        $file = __DIR__ . '/../assets/functions.php';
-        $functions = $scanner->scan('', $file);
+    array_shift($functions);
 
-        $this->assertSame([], $functions);
-    }
-
-    public function testPhpFunctionsExtractor(): void
-    {
-        $scanner = new PhpFunctionsScanner();
-        $file = __DIR__ . '/../assets/functions.php';
-        $code = file_get_contents($file);
-        $this->assertNotFalse($code);
-        $functions = $scanner->scan($code, $file);
-
-        $this->assertCount(14, $functions);
-
-        //fn1
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn1', $function->getName());
-        $this->assertSame(3, $function->countArguments());
-        $this->assertSame(['arg1', 'arg2', 3], $function->getArguments());
-        $this->assertSame(4, $function->getLine());
-        $this->assertSame(4, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(1, $function->getComments());
-
-        $comments = $function->getComments();
-        $this->assertSame('This comment is related with the first function', array_shift($comments));
-
-        //fn2
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn2', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame(5, $function->getLine());
-        $this->assertSame(5, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn3
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn3', $function->getName());
-        $this->assertSame(3, $function->countArguments());
-        $this->assertSame([null, 'arg5', null], $function->getArguments());
-        $this->assertSame(6, $function->getLine());
-        $this->assertSame(6, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn4
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn4', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame(['arg4'], $function->getArguments());
-        $this->assertSame(6, $function->getLine());
-        $this->assertSame(6, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn5
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn5', $function->getName());
-        $this->assertSame(2, $function->countArguments());
-        $this->assertSame([6, 7.5], $function->getArguments());
-        $this->assertSame(6, $function->getLine());
-        $this->assertSame(6, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn6
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn6', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame([['arr']], $function->getArguments());
-        $this->assertSame(7, $function->getLine());
-        $this->assertSame(7, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn7
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn7', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame([null], $function->getArguments());
-        $this->assertSame(8, $function->getLine());
-        $this->assertSame(8, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn9
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn9', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame([null], $function->getArguments());
-        $this->assertSame(11, $function->getLine());
-        $this->assertSame(11, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(2, $function->getComments());
-
-        $comments = $function->getComments();
-        $this->assertSame('fn_8();', array_shift($comments));
-        $this->assertSame('ALLOW: This is a comment to fn9', array_shift($comments));
-
-        //fn10
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn10', $function->getName());
-        $this->assertSame(0, $function->countArguments());
-        $this->assertSame(13, $function->getLine());
-        $this->assertSame(13, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(1, $function->getComments());
-
-        $comments = $function->getComments();
-        $this->assertSame('Comment to fn10', array_shift($comments));
-
-        //fn11
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn11', $function->getName());
-        $this->assertSame(2, $function->countArguments());
-        $this->assertSame(['arg9', 'arg10'], $function->getArguments());
-        $this->assertSame(16, $function->getLine());
-        $this->assertSame(16, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(2, $function->getComments());
-
-        $comments = $function->getComments();
-        $this->assertSame('Related comment 1', array_shift($comments));
-        $this->assertSame('ALLOW: Related comment 2', array_shift($comments));
-
-        //fn12
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn12', $function->getName());
-        $this->assertSame(2, $function->countArguments());
-        $this->assertSame(['arg11', 'arg12'], $function->getArguments());
-        $this->assertSame(22, $function->getLine());
-        $this->assertSame(28, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(3, $function->getComments());
-
-        $comments = $function->getComments();
-        $this->assertSame("Related comment\nnumber one", array_shift($comments));
-        $this->assertSame('Related comment 2', array_shift($comments));
-        $this->assertSame('ALLOW: Related comment 3', array_shift($comments));
-
-        //fn13
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn13', $function->getName());
-        $this->assertSame(3, $function->countArguments());
-        $this->assertSame([
-            'Translatable string',
-            '',
-            ['context' => 'Context string', 'foo'],
-        ], $function->getArguments());
-        $this->assertSame(30, $function->getLine());
-        $this->assertSame(30, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(1, $function->getComments());
-        $comments = $function->getComments();
-        $this->assertSame('Related comment 5', array_shift($comments));
-
-        //fn14
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn14', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame(['Translatable string'], $function->getArguments());
-        $this->assertSame(32, $function->getLine());
-        $this->assertSame(32, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-
-        //fn15
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('fn15', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame(['Translatable long string'], $function->getArguments());
-        $this->assertSame(33, $function->getLine());
-        $this->assertSame(34, $function->getLastLine());
-        $this->assertSame($file, $function->getFilename());
-        $this->assertCount(0, $function->getComments());
-    }
-
-    public function testFirstClassCallableSyntax(): void
-    {
-        $scanner = new PhpFunctionsScanner();
-        $functions = $scanner->scan("<?php \$fn = __(...);", 'foo.php');
-
-        $this->assertCount(1, $functions);
-
-        $function = $this->shiftFunction($functions);
-        $this->assertSame('__', $function->getName());
-        $this->assertSame(1, $function->countArguments());
-        $this->assertSame([null], $function->getArguments());
-    }
+    return $function;
 }

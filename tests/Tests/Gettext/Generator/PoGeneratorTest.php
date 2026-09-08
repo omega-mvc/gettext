@@ -15,67 +15,62 @@ use Omega\Gettext\Languages\Language;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(Category::class)]
-#[CoversClass(CldrData::class)]
-#[CoversClass(FormulaConverter::class)]
-#[CoversClass(Language::class)]
-#[CoversClass(References::class)]
-#[CoversClass(PoGenerator::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class PoGeneratorTest extends TestCase
-{
-    public function testPoLoader(): void
-    {
-        $generator = new PoGenerator();
-        $translations = Translations::create('my-domain');
-        $translations->getFlags()->add('fuzzy');
-        $translations->description =
-            <<<'EOT'
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(Category::class);
+covers(CldrData::class);
+covers(FormulaConverter::class);
+covers(Language::class);
+covers(References::class);
+covers(PoGenerator::class);
+covers(Translation::class);
+covers(Translations::class);
+
+it('generates a complete po file', function (): void {
+    $generator = new PoGenerator();
+    $translations = Translations::create('my-domain');
+    $translations->getFlags()->add('fuzzy');
+    $translations->description =
+        <<<'EOT'
 SOME DESCRIPTIVE TITLE
 Copyright (C) YEAR Free Software Foundation, Inc.
 This file is distributed under the same license as the PACKAGE package.
 FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 EOT
-        ;
-        $translations->setLanguage('gl_ES');
-        $translations->getHeaders()
-            ->set('Content-Type', 'text/plain; charset=UTF-8')
-            ->set('X-Generator', 'PHP-Gettext');
+    ;
+    $translations->setLanguage('gl_ES');
+    $translations->getHeaders()
+        ->set('Content-Type', 'text/plain; charset=UTF-8')
+        ->set('X-Generator', 'PHP-Gettext');
 
-        $translation = Translation::create('context-1', 'Original');
-        $translation->getComments()->add('This is a comment');
-        $translation->getReferences()->add('/my/template.php', 45);
-        $translations->add($translation);
+    $translation = Translation::create('context-1', 'Original');
+    $translation->getComments()->add('This is a comment');
+    $translation->getReferences()->add('/my/template.php', 45);
+    $translations->add($translation);
 
-        $translation = Translation::create('context-1', 'Other comment');
-        $translation->translation = 'Outro comentario';
-        $translation->translatePlural('Outros comentarios');
-        $translation->getExtractedComments()->add('Not sure about this');
-        $translation->getFlags()->add('c-code');
-        $translations->add($translation);
+    $translation = Translation::create('context-1', 'Other comment');
+    $translation->translation = 'Outro comentario';
+    $translation->translatePlural('Outros comentarios');
+    $translation->getExtractedComments()->add('Not sure about this');
+    $translation->getFlags()->add('c-code');
+    $translations->add($translation);
 
-        $translation = Translation::create(null, 'Disabled comment');
-        $translation->disabled = true;
-        $translation->translation = 'Comentario deshabilitado';
-        $translation->getComments()->add('This is a disabled comment');
-        $translations->add($translation);
+    $translation = Translation::create(null, 'Disabled comment');
+    $translation->disabled = true;
+    $translation->translation = 'Comentario deshabilitado';
+    $translation->getComments()->add('This is a disabled comment');
+    $translations->add($translation);
 
-        // https://github.com/php-gettext/Gettext/issues/244
-        $translation = Translation::create(null, "foo\nbar");
-        $translation->translation = "bar\nbaz";
-        $translations->add($translation);
+    // https://github.com/php-gettext/Gettext/issues/244
+    $translation = Translation::create(null, "foo\nbar");
+    $translation->translation = "bar\nbaz";
+    $translations->add($translation);
 
-        $result = $generator->generateString($translations);
+    $result = $generator->generateString($translations);
 
-        $expected = <<<'EOT'
+    $expected = <<<'EOT'
 # SOME DESCRIPTIVE TITLE
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
@@ -115,26 +110,19 @@ msgstr ""
 
 EOT;
 
-        $this->assertSame($expected, $result);
-    }
+    expect($result)->toBe($expected);
+});
 
-    /**
-     * @return list<array{0: string, 1: string}>
-     */
-    public static function stringEncodeProvider(): array
-    {
-        return [
-            ['"test"', 'test'],
-            ['"\'test\'"', "'test'"],
-            ['"Special chars: \\n \\t \\\\ "', "Special chars: \n \t \\ "],
-            ['"Newline\nSlash and n\\\\nend"', "Newline\nSlash and n\\nend"],
-            ['"Quoted \\"string\\" with %s"', 'Quoted "string" with %s'],
-        ];
-    }
+dataset('stringEncode', function (): array {
+    return [
+        ['"test"', 'test'],
+        ['"\'test\'"', "'test'"],
+        ['"Special chars: \\n \\t \\\\ "', "Special chars: \n \t \\ "],
+        ['"Newline\nSlash and n\\\\nend"', "Newline\nSlash and n\\nend"],
+        ['"Quoted \\"string\\" with %s"', 'Quoted "string" with %s'],
+    ];
+});
 
-    #[DataProvider('stringEncodeProvider')]
-    public function testStringEncode(string $encoded, string $decoded): void
-    {
-        $this->assertSame($encoded, PoGenerator::encode($decoded));
-    }
-}
+it('encodes strings for po files', function (string $encoded, string $decoded): void {
+    expect(PoGenerator::encode($decoded))->toBe($encoded);
+})->with('stringEncode');

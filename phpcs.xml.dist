@@ -32,5 +32,10 @@
     <rule ref="PSR1.Files.SideEffects">
         <!-- Procedural test bootstrap by design. -->
         <exclude-pattern>tests/bootstrap.php</exclude-pattern>
+        <!-- Pest test files deliberately combine file-level helpers with
+             it()/dataset() side effects: the PHPUnit-private-method flow has
+             no class equivalent, so declarations and side effects coexist. -->
+        <exclude-pattern>tests/Tests/*</exclude-pattern>
+        <exclude-pattern>tests/Tests/**/*</exclude-pattern>
     </rule>
 </ruleset>

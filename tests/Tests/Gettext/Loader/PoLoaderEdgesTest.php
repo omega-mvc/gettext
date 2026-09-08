@@ -11,79 +11,68 @@ use Omega\Gettext\Loader\PoLoader;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(PoLoader::class)]
-#[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class PoLoaderEdgesTest extends TestCase
-{
-    public function testContextualEntries(): void
-    {
-        $po = 'msgctxt "menu"' . "\n"
-            . 'msgid "File"' . "\n"
-            . 'msgstr "Archivo"' . "\n";
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(PoLoader::class);
+covers(References::class);
+covers(Translation::class);
+covers(Translations::class);
 
-        $translations = (new PoLoader())->loadString($po);
-        $translation = $translations->find('menu', 'File');
+it('resolves contextual entries', function (): void {
+    $po = 'msgctxt "menu"' . "\n"
+        . 'msgid "File"' . "\n"
+        . 'msgstr "Archivo"' . "\n";
 
-        $this->assertNotNull($translation);
-        $this->assertSame('Archivo', $translation->translation);
-    }
+    $translations = (new PoLoader())->loadString($po);
+    $translation = $translations->find('menu', 'File');
 
-    public function testUnknownKeywordsAreSkipped(): void
-    {
-        $po = 'msgid "kept"' . "\n"
-            . 'msgstr "value"' . "\n"
-            . 'unknownkeyword "whatever"' . "\n";
+    $this->assertNotNull($translation);
+    expect($translation->translation)->toBe('Archivo');
+});
 
-        $translations = (new PoLoader())->loadString($po);
+it('skips unknown keywords', function (): void {
+    $po = 'msgid "kept"' . "\n"
+        . 'msgstr "value"' . "\n"
+        . 'unknownkeyword "whatever"' . "\n";
 
-        $this->assertNotNull($translations->find(null, 'kept'));
-    }
+    $translations = (new PoLoader())->loadString($po);
 
-    public function testFilesWithoutHeaderBlockParseFine(): void
-    {
-        $po = 'msgid "Hello"' . "\n"
-            . 'msgstr "Ciao"' . "\n";
+    expect($translations->find(null, 'kept'))->not->toBeNull();
+});
 
-        $translations = (new PoLoader())->loadString($po);
+it('parses files without a header block', function (): void {
+    $po = 'msgid "Hello"' . "\n"
+        . 'msgstr "Ciao"' . "\n";
 
-        $this->assertSame([], $translations->getHeaders()->toArray());
-        $this->assertNotNull($translations->find(null, 'Hello'));
-    }
+    $translations = (new PoLoader())->loadString($po);
 
-    public function testEmptyHeaderBlocksAreParsedAsNoHeaders(): void
-    {
-        $po = 'msgid ""' . "\n"
-            . 'msgstr ""' . "\n"
-            . "\n"
-            . 'msgid "Hello"' . "\n"
-            . 'msgstr "Ciao"' . "\n";
+    expect($translations->getHeaders()->toArray())->toBe([]);
+    expect($translations->find(null, 'Hello'))->not->toBeNull();
+});
 
-        $translations = (new PoLoader())->loadString($po);
+it('parses empty header blocks as no headers', function (): void {
+    $po = 'msgid ""' . "\n"
+        . 'msgstr ""' . "\n"
+        . "\n"
+        . 'msgid "Hello"' . "\n"
+        . 'msgstr "Ciao"' . "\n";
 
-        $this->assertSame([], $translations->getHeaders()->toArray());
-        $this->assertNotNull($translations->find(null, 'Hello'));
-    }
+    $translations = (new PoLoader())->loadString($po);
 
-    public function testMultilineHeaderValuesAreConcatenated(): void
-    {
-        $po = 'msgid ""' . "\n"
-            . 'msgstr ""' . "\n"
-            . '"Project-Id-Version: wrapped\ncontinued without colon\n"' . "\n"
-            . '"Language: it\n"' . "\n";
+    expect($translations->getHeaders()->toArray())->toBe([]);
+    expect($translations->find(null, 'Hello'))->not->toBeNull();
+});
 
-        $translations = (new PoLoader())->loadString($po);
+it('concatenates multiline header values', function (): void {
+    $po = 'msgid ""' . "\n"
+        . 'msgstr ""' . "\n"
+        . '"Project-Id-Version: wrapped\ncontinued without colon\n"' . "\n"
+        . '"Language: it\n"' . "\n";
 
-        $this->assertSame(
-            'wrappedcontinued without colon',
-            $translations->getHeaders()->get('Project-Id-Version')
-        );
-    }
-}
+    $translations = (new PoLoader())->loadString($po);
+
+    expect($translations->getHeaders()->get('Project-Id-Version'))
+        ->toBe('wrappedcontinued without colon');
+});

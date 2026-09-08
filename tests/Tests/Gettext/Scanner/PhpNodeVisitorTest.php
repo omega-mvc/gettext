@@ -7,90 +7,81 @@ namespace Tests\Tests\Gettext\Scanner;
 use Omega\Gettext\Scanner\ParsedFunction;
 use Omega\Gettext\Scanner\PhpFunctionsScanner;
 use Omega\Gettext\Scanner\PhpNodeVisitor;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ParsedFunction::class)]
-#[CoversClass(PhpFunctionsScanner::class)]
-#[CoversClass(PhpNodeVisitor::class)]
-class PhpNodeVisitorTest extends TestCase
-{
-    public function testCommentedCallToUnknownFunctionIsBufferedNotExtracted(): void
-    {
-        $scanner = new PhpFunctionsScanner(['__']);
+covers(ParsedFunction::class);
+covers(PhpFunctionsScanner::class);
+covers(PhpNodeVisitor::class);
 
-        $functions = $scanner->scan(
-            '<?php return /* translators: hi */ myHelper("x");',
-            'virtual.php'
-        );
+it('buffers commented calls to unknown functions without extracting them', function (): void {
+    $scanner = new PhpFunctionsScanner(['__']);
 
-        $this->assertSame([], $functions);
+    $functions = $scanner->scan(
+        '<?php return /* translators: hi */ myHelper("x");',
+        'virtual.php'
+    );
+
+    expect($functions)->toBe([]);
+});
+
+it('collects the comment attached to the call', function (): void {
+    $scanner = new PhpFunctionsScanner(['__']);
+
+    $functions = $scanner->scan(
+        "<?php return /* translators: hi */ __('Hello');",
+        'virtual.php'
+    );
+
+    expect($functions)->toHaveCount(1);
+
+    $function = $functions[0];
+
+    expect($function->getName())->toBe('__');
+    expect($function->getComments())->toBe(['translators: hi']);
+    expect($function->getStringArguments(1))->toBe(['Hello']);
+});
+
+it('falls back to the numeric item for dynamic array keys', function (): void {
+    $scanner = new PhpFunctionsScanner(['__']);
+
+    $functions = $scanner->scan(
+        "<?php __(('a' . PHP_VERSION), [time() => 'v']);",
+        'virtual.php'
+    );
+
+    expect($functions)->toHaveCount(1);
+    expect($functions[0]->getArguments())->toHaveCount(2);
+});
+
+it('extracts method and static calls by name', function (): void {
+    $scanner = new PhpFunctionsScanner(['__']);
+
+    $functions = $scanner->scan(
+        '<?php $obj->__("A"); Cls::__("B");',
+        'virtual.php'
+    );
+
+    expect($functions)->toHaveCount(2);
+
+    foreach ($functions as $function) {
+        expect($function->getName())->toBe('__');
     }
+});
 
-    public function testCommentAttachedToTheCallIsCollected(): void
-    {
-        $scanner = new PhpFunctionsScanner(['__']);
+it('reduces array arguments to literal maps', function (): void {
+    $scanner = new PhpFunctionsScanner(['__']);
 
-        $functions = $scanner->scan(
-            "<?php return /* translators: hi */ __('Hello');",
-            'virtual.php'
-        );
+    $functions = $scanner->scan(
+        "<?php __('x', ['plain', 'k' => 'v', time() => 'd', 'ab' . 'cd']);",
+        'virtual.php'
+    );
 
-        $this->assertCount(1, $functions);
+    expect($functions)->toHaveCount(1);
 
-        $function = $functions[0];
+    $arguments = $functions[0]->getArguments();
 
-        $this->assertSame('__', $function->getName());
-        $this->assertSame(['translators: hi'], $function->getComments());
-        $this->assertSame(['Hello'], $function->getStringArguments(1));
-    }
+    expect($arguments[0])->toBe('x');
 
-    public function testDynamicArrayKeyFallsBackToNumericItem(): void
-    {
-        $scanner = new PhpFunctionsScanner(['__']);
+    $array = $arguments[1];
 
-        $functions = $scanner->scan(
-            "<?php __(('a' . PHP_VERSION), [time() => 'v']);",
-            'virtual.php'
-        );
-
-        $this->assertCount(1, $functions);
-        $this->assertCount(2, $functions[0]->getArguments());
-    }
-
-    public function testMethodAndStaticCallsAreExtractedByName(): void
-    {
-        $scanner = new PhpFunctionsScanner(['__']);
-
-        $functions = $scanner->scan(
-            '<?php $obj->__("A"); Cls::__("B");',
-            'virtual.php'
-        );
-
-        $this->assertCount(2, $functions);
-
-        foreach ($functions as $function) {
-            $this->assertSame('__', $function->getName());
-        }
-    }
-
-    public function testArrayArgumentsAreReducedToLiteralMaps(): void
-    {
-        $scanner = new PhpFunctionsScanner(['__']);
-
-        $functions = $scanner->scan(
-            "<?php __('x', ['plain', 'k' => 'v', time() => 'd', 'ab' . 'cd']);",
-            'virtual.php'
-        );
-
-        $this->assertCount(1, $functions);
-
-        $arguments = $functions[0]->getArguments();
-
-        $this->assertSame('x', $arguments[0]);
-
-        $array = $arguments[1];
-
-        $this->assertSame(['plain', 'k' => 'v', 1 => 'd', 2 => 'abcd'], $array);
-    }
-}
+    expect($array)->toBe(['plain', 'k' => 'v', 1 => 'd', 2 => 'abcd']);
+});

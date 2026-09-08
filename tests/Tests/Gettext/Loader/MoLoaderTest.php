@@ -11,161 +11,156 @@ use Omega\Gettext\Loader\MoLoader;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(MoLoader::class)]
-#[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class MoLoaderTest extends TestCase
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(MoLoader::class);
+covers(References::class);
+covers(Translation::class);
+covers(Translations::class);
+
+it('loads a complete mo file', function (): void {
+    $loader = new MoLoader();
+    $translations = $loader->loadFile(__DIR__ . '/../assets/translations.mo');
+
+    expect($translations)->toHaveCount(11);
+
+    $array = $translations->getTranslations();
+
+    moTranslation0(shiftMoTranslation($array));
+    moTranslation1(shiftMoTranslation($array));
+    moTranslation2(shiftMoTranslation($array));
+    moTranslation3(shiftMoTranslation($array));
+    moTranslation4(shiftMoTranslation($array));
+    moTranslation5(shiftMoTranslation($array));
+    moTranslation6(shiftMoTranslation($array));
+    moTranslation7(shiftMoTranslation($array));
+    moTranslation8(shiftMoTranslation($array));
+    moTranslation9(shiftMoTranslation($array));
+    moTranslation10(shiftMoTranslation($array));
+
+    $headers = $translations->getHeaders()->toArray();
+
+    expect($headers)->toHaveCount(12);
+
+    expect($headers['Content-Type'])->toBe('text/plain; charset=UTF-8');
+    expect($headers['Content-Transfer-Encoding'])->toBe('8bit');
+    expect($headers['POT-Creation-Date'])->toBe('');
+    expect($headers['PO-Revision-Date'])->toBe('');
+    expect($headers['Last-Translator'])->toBe('');
+    expect($headers['Language-Team'])->toBe('');
+    expect($headers['MIME-Version'])->toBe('1.0');
+    expect($headers['Language'])->toBe('bs');
+    expect($headers['Plural-Forms'])->toBe(
+        'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);'
+    );
+    expect($headers['X-Generator'])->toBe('Poedit 1.6.5');
+    expect($headers['Project-Id-Version'])->toBe('gettext generator test');
+    expect($headers['X-Domain'])->toBe('testingdomain');
+
+    expect($translations->getDomain())->toBe('testingdomain');
+    expect($translations->getLanguage())->toBe('bs');
+});
+
+/**
+ * Shifts a translation off the array, asserting its presence.
+ *
+ * @param array<string, Translation> $translations
+ */
+function shiftMoTranslation(array &$translations): Translation
 {
-    /**
-     * Shifts a translation off the array, asserting its presence.
-     *
-     * @param array<string, Translation> $translations
-     */
-    private function shiftTranslation(array &$translations): Translation
-    {
-        $translation = array_shift($translations);
-        $this->assertNotNull($translation);
+    $translation = array_shift($translations);
+    Assert::assertNotNull($translation);
 
-        return $translation;
-    }
+    return $translation;
+}
 
-    public function testMoLoader(): void
-    {
-        $loader = new MoLoader();
-        $translations = $loader->loadFile(__DIR__ . '/../assets/translations.mo');
+function moTranslation0(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('%s has been added to your cart.');
+    expect($translation->plural)->toBe('%s have been added to your cart.');
+    expect($translation->translation)->toBe('%s has been added to your cart.');
+    expect($translation->getPluralTranslations())->toHaveCount(1);
+}
 
-        $this->assertCount(11, $translations);
+function moTranslation1(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('%ss must be unique for %ss %ss.');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('%ss mora da bude jedinstven za %ss %ss.');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $array = $translations->getTranslations();
+function moTranslation2(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('Field of type: %ss');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('Polje tipa: %ss');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $this->translation0($this->shiftTranslation($array));
-        $this->translation1($this->shiftTranslation($array));
-        $this->translation2($this->shiftTranslation($array));
-        $this->translation3($this->shiftTranslation($array));
-        $this->translation4($this->shiftTranslation($array));
-        $this->translation5($this->shiftTranslation($array));
-        $this->translation6($this->shiftTranslation($array));
-        $this->translation7($this->shiftTranslation($array));
-        $this->translation8($this->shiftTranslation($array));
-        $this->translation9($this->shiftTranslation($array));
-        $this->translation10($this->shiftTranslation($array));
+function moTranslation3(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('Integer');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('Cijeo broj');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $headers = $translations->getHeaders()->toArray();
+function moTranslation4(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('Multibyte test');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('日本人は日本で話される言語です！');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $this->assertCount(12, $headers);
+function moTranslation5(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('Tabulation test');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe("FIELD\tFIELD");
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $this->assertSame('text/plain; charset=UTF-8', $headers['Content-Type']);
-        $this->assertSame('8bit', $headers['Content-Transfer-Encoding']);
-        $this->assertSame('', $headers['POT-Creation-Date']);
-        $this->assertSame('', $headers['PO-Revision-Date']);
-        $this->assertSame('', $headers['Last-Translator']);
-        $this->assertSame('', $headers['Language-Team']);
-        $this->assertSame('1.0', $headers['MIME-Version']);
-        $this->assertSame('bs', $headers['Language']);
-        $this->assertSame(
-            'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);',
-            $headers['Plural-Forms']
-        );
-        $this->assertSame('Poedit 1.6.5', $headers['X-Generator']);
-        $this->assertSame('gettext generator test', $headers['Project-Id-Version']);
-        $this->assertSame('testingdomain', $headers['X-Domain']);
+function moTranslation6(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('This field cannot be blank.');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('Ovo polje ne može biti prazno.');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-        $this->assertSame('testingdomain', $translations->getDomain());
-        $this->assertSame('bs', $translations->getLanguage());
-    }
+function moTranslation7(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('This field cannot be null.');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('Ovo polje ne može ostati prazno.');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-    private function translation0(Translation $translation): void
-    {
-        $this->assertSame('%s has been added to your cart.', $translation->getOriginal());
-        $this->assertSame('%s have been added to your cart.', $translation->plural);
-        $this->assertSame('%s has been added to your cart.', $translation->translation);
-        $this->assertCount(1, $translation->getPluralTranslations());
-    }
+function moTranslation8(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('and');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe('i');
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-    private function translation1(Translation $translation): void
-    {
-        $this->assertSame('%ss must be unique for %ss %ss.', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
+function moTranslation9(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('{test1}');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe("test1\n<div>\n test2\n</div>\ntest3");
+    expect($translation->getPluralTranslations())->toHaveCount(0);
+}
 
-    private function translation2(Translation $translation): void
-    {
-        $this->assertSame('Field of type: %ss', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('Polje tipa: %ss', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation3(Translation $translation): void
-    {
-        $this->assertSame('Integer', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('Cijeo broj', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation4(Translation $translation): void
-    {
-        $this->assertSame('Multibyte test', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('日本人は日本で話される言語です！', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation5(Translation $translation): void
-    {
-        $this->assertSame('Tabulation test', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame("FIELD\tFIELD", $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation6(Translation $translation): void
-    {
-        $this->assertSame('This field cannot be blank.', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('Ovo polje ne može biti prazno.', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation7(Translation $translation): void
-    {
-        $this->assertSame('This field cannot be null.', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('Ovo polje ne može ostati prazno.', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation8(Translation $translation): void
-    {
-        $this->assertSame('and', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame('i', $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation9(Translation $translation): void
-    {
-        $this->assertSame('{test1}', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
-
-    private function translation10(Translation $translation): void
-    {
-        $this->assertSame('{test2}', $translation->getOriginal());
-        $this->assertNull($translation->plural);
-        $this->assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
-        $this->assertCount(0, $translation->getPluralTranslations());
-    }
+function moTranslation10(Translation $translation): void
+{
+    expect($translation->getOriginal())->toBe('{test2}');
+    expect($translation->plural)->toBeNull();
+    expect($translation->translation)->toBe("test1\n<div>\n test2\n</div>\ntest3");
+    expect($translation->getPluralTranslations())->toHaveCount(0);
 }

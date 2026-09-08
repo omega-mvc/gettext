@@ -4,108 +4,97 @@ declare(strict_types=1);
 
 namespace Tests\Tests\Gettext;
 
-use Omega\Gettext\Headers;
 use InvalidArgumentException;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
+use Omega\Gettext\Headers;
 
-#[CoversClass(Headers::class)]
-class HeadersTest extends TestCase
-{
-    public function testHeaders(): void
-    {
-        $headers = new Headers();
+covers(Headers::class);
 
-        $this->assertSame([], $headers->jsonSerialize());
-        $this->assertCount(0, $headers);
+it('manages headers', function (): void {
+    $headers = new Headers();
 
-        $headers->set('foo', 'bar');
+    expect($headers->jsonSerialize())->toBe([]);
+    expect($headers)->toHaveCount(0);
 
-        $this->assertSame(['foo' => 'bar'], $headers->jsonSerialize());
-        $this->assertCount(1, $headers);
-        $this->assertSame('bar', $headers->get('foo'));
+    $headers->set('foo', 'bar');
 
-        $headers->set('foo', 'bar2');
+    expect($headers->jsonSerialize())->toBe(['foo' => 'bar']);
+    expect($headers)->toHaveCount(1);
+    expect($headers->get('foo'))->toBe('bar');
 
-        $this->assertSame(['foo' => 'bar2'], $headers->jsonSerialize());
-        $this->assertCount(1, $headers);
-        $this->assertSame('bar2', $headers->get('foo'));
+    $headers->set('foo', 'bar2');
 
-        $headers->set('foo2', 'bar2');
+    expect($headers->jsonSerialize())->toBe(['foo' => 'bar2']);
+    expect($headers)->toHaveCount(1);
+    expect($headers->get('foo'))->toBe('bar2');
 
-        $this->assertSame(['foo' => 'bar2', 'foo2' => 'bar2'], $headers->jsonSerialize());
-        $this->assertCount(2, $headers);
-        $this->assertSame('bar2', $headers->get('foo2'));
+    $headers->set('foo2', 'bar2');
 
-        $headers->delete('foo2');
-        $this->assertCount(1, $headers);
+    expect($headers->jsonSerialize())->toBe(['foo' => 'bar2', 'foo2' => 'bar2']);
+    expect($headers)->toHaveCount(2);
+    expect($headers->get('foo2'))->toBe('bar2');
 
-        $headers->clear();
-        $this->assertCount(0, $headers);
-    }
+    $headers->delete('foo2');
+    expect($headers)->toHaveCount(1);
 
-    public function testDomain(): void
-    {
-        $headers = new Headers();
-        $headers->setDomain('foo');
+    $headers->clear();
+    expect($headers)->toHaveCount(0);
+});
 
-        $this->assertCount(1, $headers);
-        $this->assertSame('X-Domain', Headers::HEADER_DOMAIN);
-        $this->assertSame('foo', $headers->get(Headers::HEADER_DOMAIN));
-        $this->assertSame('foo', $headers->getDomain());
-    }
+it('manages the domain header', function (): void {
+    $headers = new Headers();
+    $headers->setDomain('foo');
 
-    public function testLanguage(): void
-    {
-        $headers = new Headers();
-        $headers->setLanguage('gl_ES');
+    expect($headers)->toHaveCount(1);
+    expect(Headers::HEADER_DOMAIN)->toBe('X-Domain');
+    expect($headers->get(Headers::HEADER_DOMAIN))->toBe('foo');
+    expect($headers->getDomain())->toBe('foo');
+});
 
-        $this->assertCount(1, $headers);
-        $this->assertSame('Language', Headers::HEADER_LANGUAGE);
-        $this->assertSame('gl_ES', $headers->get(Headers::HEADER_LANGUAGE));
-        $this->assertSame('gl_ES', $headers->getLanguage());
-    }
+it('manages the language header', function (): void {
+    $headers = new Headers();
+    $headers->setLanguage('gl_ES');
 
-    public function testInvalidLanguage(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+    expect($headers)->toHaveCount(1);
+    expect(Headers::HEADER_LANGUAGE)->toBe('Language');
+    expect($headers->get(Headers::HEADER_LANGUAGE))->toBe('gl_ES');
+    expect($headers->getLanguage())->toBe('gl_ES');
+});
 
-        $headers = new Headers();
-        $headers->setPluralForm(1, 'foo');
-    }
+it('rejects an invalid plural model count', function (): void {
+    $headers = new Headers();
 
-    public function testPluralForm(): void
-    {
-        $headers = new Headers();
-        $headers->setPluralForm(2, '(n=1)');
+    expect(fn () => $headers->setPluralForm(1, 'foo'))
+        ->toThrow(InvalidArgumentException::class);
+});
 
-        $this->assertCount(1, $headers);
-        $this->assertSame('Plural-Forms', Headers::HEADER_PLURAL);
-        $this->assertSame('nplurals=2; plural=(n=1);', $headers->get(Headers::HEADER_PLURAL));
-        $this->assertSame([2, '(n=1)'], $headers->getPluralForm());
-    }
+it('manages the plural form header', function (): void {
+    $headers = new Headers();
+    $headers->setPluralForm(2, '(n=1)');
 
-    public function testMergeHeaders(): void
-    {
-        $headers1 = new Headers(['X-Domain' => 'foo', 'Language' => 'gl_ES']);
-        $headers2 = new Headers(['Translator' => 'Oscar Otero', 'Language' => 'ru']);
-        $merged = $headers1->mergeWith($headers2);
+    expect($headers)->toHaveCount(1);
+    expect(Headers::HEADER_PLURAL)->toBe('Plural-Forms');
+    expect($headers->get(Headers::HEADER_PLURAL))->toBe('nplurals=2; plural=(n=1);');
+    expect($headers->getPluralForm())->toBe([2, '(n=1)']);
+});
 
-        $this->assertCount(3, $merged);
-        $this->assertSame('foo', $merged->get('X-Domain'));
-        $this->assertSame('Oscar Otero', $merged->get('Translator'));
-        $this->assertSame('ru', $merged->get('Language'));
+it('merges headers', function (): void {
+    $headers1 = new Headers(['X-Domain' => 'foo', 'Language' => 'gl_ES']);
+    $headers2 = new Headers(['Translator' => 'Oscar Otero', 'Language' => 'ru']);
+    $merged = $headers1->mergeWith($headers2);
 
-        $this->assertNotSame($merged, $headers1);
-        $this->assertNotSame($merged, $headers2);
-    }
+    expect($merged)->toHaveCount(3);
+    expect($merged->get('X-Domain'))->toBe('foo');
+    expect($merged->get('Translator'))->toBe('Oscar Otero');
+    expect($merged->get('Language'))->toBe('ru');
 
-    public function testCreateFromState(): void
-    {
-        $state = ['headers' => ['X-Domain' => 'foo']];
-        $headers = Headers::__set_state($state);
+    expect($merged)->not->toBe($headers1);
+    expect($merged)->not->toBe($headers2);
+});
 
-        $this->assertCount(1, $headers);
-        $this->assertSame('foo', $headers->get('X-Domain'));
-    }
-}
+it('creates a headers collection from state', function (): void {
+    $state = ['headers' => ['X-Domain' => 'foo']];
+    $headers = Headers::__set_state($state);
+
+    expect($headers)->toHaveCount(1);
+    expect($headers->get('X-Domain'))->toBe('foo');
+});

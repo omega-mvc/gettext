@@ -16,64 +16,59 @@ use Omega\Gettext\Loader\MoLoader;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(Category::class)]
-#[CoversClass(CldrData::class)]
-#[CoversClass(FormulaConverter::class)]
-#[CoversClass(Language::class)]
-#[CoversClass(References::class)]
-#[CoversClass(MoGenerator::class)]
-#[CoversClass(MoLoader::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class MoGeneratorTest extends TestCase
-{
-    public function testMoGenerator(): void
-    {
-        $generator = new MoGenerator()->includeHeaders();
-        $loader = new MoLoader();
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(Category::class);
+covers(CldrData::class);
+covers(FormulaConverter::class);
+covers(Language::class);
+covers(References::class);
+covers(MoGenerator::class);
+covers(MoLoader::class);
+covers(Translation::class);
+covers(Translations::class);
 
-        $translations = Translations::create('my-domain');
-        $translations->setLanguage('gl_ES');
-        $translations->getHeaders()
-            ->set('Content-Type', 'text/plain; charset=UTF-8')
-            ->set('X-Generator', 'PHP-Gettext');
+it('generates a mo file and round-trips it', function (): void {
+    $generator = new MoGenerator()->includeHeaders();
+    $loader = new MoLoader();
 
-        $translation = Translation::create('context-1', 'Original');
-        $translation->translation = 'Orixinal';
-        $translations->add($translation);
+    $translations = Translations::create('my-domain');
+    $translations->setLanguage('gl_ES');
+    $translations->getHeaders()
+        ->set('Content-Type', 'text/plain; charset=UTF-8')
+        ->set('X-Generator', 'PHP-Gettext');
 
-        $translation = Translation::create('context-1', 'Other comment');
-        $translation->translation = 'Outro comentario';
-        $translation->translatePlural('Outros comentarios');
-        $translations->add($translation);
+    $translation = Translation::create('context-1', 'Original');
+    $translation->translation = 'Orixinal';
+    $translations->add($translation);
 
-        $translation = Translation::create(null, 'Disabled comment');
-        $translation->disabled = true;
-        $translation->translation = 'Comentario deshabilitado';
-        $translations->add($translation);
+    $translation = Translation::create('context-1', 'Other comment');
+    $translation->translation = 'Outro comentario';
+    $translation->translatePlural('Outros comentarios');
+    $translations->add($translation);
 
-        $translation = Translation::create(null, '15');
-        $translation->translation = '15';
-        $translations->add($translation);
+    $translation = Translation::create(null, 'Disabled comment');
+    $translation->disabled = true;
+    $translation->translation = 'Comentario deshabilitado';
+    $translations->add($translation);
 
-        $translation = Translation::create(null, '123456');
-        $translation->translation = '12345';
-        $translations->add($translation);
+    $translation = Translation::create(null, '15');
+    $translation->translation = '15';
+    $translations->add($translation);
 
-        $mo = $generator->generateString($translations);
-        $expected = file_get_contents(__DIR__ . '/../assets/mo-generator-result.mo');
+    $translation = Translation::create(null, '123456');
+    $translation->translation = '12345';
+    $translations->add($translation);
 
-        $this->assertSame($expected, $mo);
+    $mo = $generator->generateString($translations);
+    $expected = file_get_contents(__DIR__ . '/../assets/mo-generator-result.mo');
 
-        $result = $loader->loadString($mo);
+    expect($mo)->toBe($expected);
 
-        $this->assertCount(4, $result);
-        $this->assertCount(5, $result->getHeaders());
-    }
-}
+    $result = $loader->loadString($mo);
+
+    expect($result)->toHaveCount(4);
+    expect($result->getHeaders())->toHaveCount(5);
+});

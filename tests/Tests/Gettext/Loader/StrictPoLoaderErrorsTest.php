@@ -12,73 +12,60 @@ use Omega\Gettext\Loader\StrictPoLoader;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(References::class)]
-#[CoversClass(StrictPoLoader::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class StrictPoLoaderErrorsTest extends TestCase
-{
-    public function testOctalEscapesAboveSignedCharRangeAreRejected(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Octal value out of range [0, 0177]');
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(References::class);
+covers(StrictPoLoader::class);
+covers(Translation::class);
+covers(Translations::class);
 
-        (new StrictPoLoader())->loadString('msgid "\400"' . "\n" . 'msgstr "v"');
-    }
+it('rejects octal escapes above the signed char range', function (): void {
+    expect(fn () => (new StrictPoLoader())->loadString('msgid "\400"' . "\n" . 'msgstr "v"'))
+        ->toThrow(Exception::class, 'Octal value out of range [0, 0177]');
+});
 
-    public function testPluralEntriesWithoutIndexedTranslationThrow(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Expected indexed msgstr');
+it('throws for plural entries without an indexed translation', function (): void {
+    expect(fn () => (new StrictPoLoader())->loadString('msgid "a"' . "\n" . 'msgid_plural "b"' . "\n" . 'msgid "c"'))
+        ->toThrow(Exception::class, 'Expected indexed msgstr');
+});
 
-        (new StrictPoLoader())->loadString('msgid "a"' . "\n" . 'msgid_plural "b"' . "\n" . 'msgid "c"');
-    }
+it('produces warnings for malformed header names', function (): void {
+    $loader = new StrictPoLoader();
+    $translations = $loader->loadString(
+        'msgid ""' . "\n"
+        . 'msgstr ""' . "\n"
+        . '"junkline\nLanguage: it\n"'
+    );
 
-    public function testMalformedHeaderNamesProduceWarnings(): void
-    {
-        $loader = new StrictPoLoader();
-        $translations = $loader->loadString(
-            'msgid ""' . "\n"
-            . 'msgstr ""' . "\n"
-            . '"junkline\nLanguage: it\n"'
-        );
+    $warnings = $loader->getWarnings();
 
-        $warnings = $loader->getWarnings();
+    expect($translations)->toHaveCount(0);
+    expect($warnings)->not->toBeEmpty();
+    expect((string) $warnings[0])->toContain('Malformed header name');
+});
 
-        $this->assertCount(0, $translations);
-        $this->assertArrayHasKey(0, $warnings);
-        $this->assertStringContainsString('Malformed header name', (string) $warnings[0]);
-    }
+it('collects extracted comments', function (): void {
+    $translations = (new StrictPoLoader())->loadString(
+        '#. extracted note' . "\n"
+        . 'msgid "a"' . "\n"
+        . 'msgstr "b"'
+    );
 
-    public function testExtractedCommentsAreCollected(): void
-    {
-        $translations = (new StrictPoLoader())->loadString(
-            '#. extracted note' . "\n"
-            . 'msgid "a"' . "\n"
-            . 'msgstr "b"'
-        );
+    $translation = $translations->find(null, 'a');
 
-        $translation = $translations->find(null, 'a');
+    $this->assertNotNull($translation);
+    expect($translation->getExtractedComments()->toArray())->toBe(['extracted note']);
+});
 
-        $this->assertNotNull($translation);
-        $this->assertSame(['extracted note'], $translation->getExtractedComments()->toArray());
-    }
+it('produces warnings for duplicated headers', function (): void {
+    $loader = new StrictPoLoader();
+    $loader->loadString(
+        'msgid ""' . "\n"
+        . 'msgstr ""' . "\n"
+        . '"Language: it\nLanguage: fr\n"'
+    );
 
-    public function testDuplicatedHeadersProduceWarnings(): void
-    {
-        $loader = new StrictPoLoader();
-        $loader->loadString(
-            'msgid ""' . "\n"
-            . 'msgstr ""' . "\n"
-            . '"Language: it\nLanguage: fr\n"'
-        );
-
-        $this->assertStringContainsString('Header already defined', implode("\n", $loader->getWarnings()));
-    }
-}
+    expect(implode("\n", $loader->getWarnings()))->toContain('Header already defined');
+});

@@ -9,167 +9,157 @@ use Omega\Gettext\Flags;
 use Omega\Gettext\Merge;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-class TranslationTest extends TestCase
-{
-    public function testTranslation(): void
-    {
-        $translation = Translation::create('foo', 'bar');
+covers(Comments::class);
+covers(Flags::class);
+covers(References::class);
+covers(Translation::class);
 
-        $this->assertSame('foo', $translation->getContext());
-        $this->assertSame('bar', $translation->getOriginal());
-        $this->assertSame("foo\004bar", $translation->getId());
-        $this->assertFalse($translation->isTranslated());
+it('creates and updates translations', function (): void {
+    $translation = Translation::create('foo', 'bar');
 
-        $translation->translation = 'This is the translation';
-        $this->assertSame('This is the translation', $translation->translation);
-        $this->assertTrue($translation->isTranslated());
+    expect($translation->getContext())->toBe('foo');
+    expect($translation->getOriginal())->toBe('bar');
+    expect($translation->getId())->toBe("foo\004bar");
+    expect($translation->isTranslated())->toBeFalse();
 
-        $translation->plural = 'bars';
-        $this->assertSame('bars', $translation->plural);
+    $translation->translation = 'This is the translation';
+    expect($translation->translation)->toBe('This is the translation');
+    expect($translation->isTranslated())->toBeTrue();
 
-        $translation->translatePlural('bars-1', 'bars-2');
-        $this->assertSame(['bars-1', 'bars-2'], $translation->getPluralTranslations());
+    $translation->plural = 'bars';
+    expect($translation->plural)->toBe('bars');
 
-        $this->assertFalse($translation->disabled);
+    $translation->translatePlural('bars-1', 'bars-2');
+    expect($translation->getPluralTranslations())->toBe(['bars-1', 'bars-2']);
 
-        $translation->disabled = true;
-        $this->assertTrue($translation->disabled);
+    expect($translation->disabled)->toBeFalse();
 
-        $translation->disabled = false;
-        $this->assertFalse($translation->disabled);
+    $translation->disabled = true;
+    expect($translation->disabled)->toBeTrue();
 
-        $this->assertInstanceOf(Comments::class, $translation->getComments());
-        $this->assertInstanceOf(Comments::class, $translation->getExtractedComments());
-        $this->assertInstanceOf(Flags::class, $translation->getFlags());
-        $this->assertInstanceOf(References::class, $translation->getReferences());
+    $translation->disabled = false;
+    expect($translation->disabled)->toBeFalse();
 
-        $clone = clone $translation;
+    $this->assertInstanceOf(Comments::class, $translation->getComments());
+    $this->assertInstanceOf(Comments::class, $translation->getExtractedComments());
+    $this->assertInstanceOf(Flags::class, $translation->getFlags());
+    $this->assertInstanceOf(References::class, $translation->getReferences());
 
-        $this->assertInstanceOf(Comments::class, $clone->getComments());
-        $this->assertInstanceOf(Comments::class, $clone->getExtractedComments());
-        $this->assertInstanceOf(Flags::class, $clone->getFlags());
-        $this->assertInstanceOf(References::class, $clone->getReferences());
+    $clone = clone $translation;
 
-        $this->assertNotSame($translation->getComments(), $clone->getComments());
-        $this->assertNotSame($translation->getExtractedComments(), $clone->getExtractedComments());
-        $this->assertNotSame($translation->getFlags(), $clone->getFlags());
-        $this->assertNotSame($translation->getReferences(), $clone->getReferences());
-    }
+    $this->assertInstanceOf(Comments::class, $clone->getComments());
+    $this->assertInstanceOf(Comments::class, $clone->getExtractedComments());
+    $this->assertInstanceOf(Flags::class, $clone->getFlags());
+    $this->assertInstanceOf(References::class, $clone->getReferences());
 
-    public function testCreateWithPlural(): void
-    {
-        $translation = Translation::create('comments', 'One comment', '%s comments');
+    expect($translation->getComments())->not->toBe($clone->getComments());
+    expect($translation->getExtractedComments())->not->toBe($clone->getExtractedComments());
+    expect($translation->getFlags())->not->toBe($clone->getFlags());
+    expect($translation->getReferences())->not->toBe($clone->getReferences());
+});
 
-        $this->assertSame('comments', $translation->getContext());
-        $this->assertSame('One comment', $translation->getOriginal());
-        $this->assertSame('%s comments', $translation->plural);
-        $this->assertSame("comments\004One comment", $translation->getId());
+it('creates translations with plurals', function (): void {
+    $translation = Translation::create('comments', 'One comment', '%s comments');
 
-        $translation = Translation::create(null, 'Original');
+    expect($translation->getContext())->toBe('comments');
+    expect($translation->getOriginal())->toBe('One comment');
+    expect($translation->plural)->toBe('%s comments');
+    expect($translation->getId())->toBe("comments\004One comment");
 
-        $this->assertNull($translation->plural);
-    }
+    $translation = Translation::create(null, 'Original');
 
-    public function testMergeTranslation(): void
-    {
-        $translation1 = Translation::create('context', 'Original');
-        $translation1->translation = 'Orixinal';
-        $translation1->getFlags()->add('flag-1', 'flag-2');
-        $translation1->getComments()->add('Comment 1', 'Comment 2');
-        $translation1->getExtractedComments()->add('Extracted 1');
-        $translation1->getReferences()->add('template.php', 34);
+    expect($translation->plural)->toBeNull();
+});
 
-        $translation2 = Translation::create('context2', 'Original2');
-        $translation2->plural = 'Plural';
-        $translation2->translatePlural('Plural 1', 'Plural 2');
-        $translation2->getFlags()->add('flag-1', 'flag-3');
-        $translation2->getComments()->add('Comment 2', 'Comment 3');
-        $translation2->getReferences()
-            ->add('template.php', 44)
-            ->add('template2.php', 55);
+it('merges translations', function (): void {
+    $translation1 = Translation::create('context', 'Original');
+    $translation1->translation = 'Orixinal';
+    $translation1->getFlags()->add('flag-1', 'flag-2');
+    $translation1->getComments()->add('Comment 1', 'Comment 2');
+    $translation1->getExtractedComments()->add('Extracted 1');
+    $translation1->getReferences()->add('template.php', 34);
 
-        $merged = $translation1->mergeWith($translation2);
+    $translation2 = Translation::create('context2', 'Original2');
+    $translation2->plural = 'Plural';
+    $translation2->translatePlural('Plural 1', 'Plural 2');
+    $translation2->getFlags()->add('flag-1', 'flag-3');
+    $translation2->getComments()->add('Comment 2', 'Comment 3');
+    $translation2->getReferences()
+        ->add('template.php', 44)
+        ->add('template2.php', 55);
 
-        $this->assertSame('context', $merged->getContext());
-        $this->assertSame('Original', $merged->getOriginal());
-        $this->assertSame('Plural', $merged->plural);
-        $this->assertSame(['Plural 1', 'Plural 2'], $merged->getPluralTranslations());
+    $merged = $translation1->mergeWith($translation2);
 
-        $this->assertCount(3, $merged->getFlags());
-        $this->assertSame(['flag-1', 'flag-2', 'flag-3'], $merged->getFlags()->toArray());
+    expect($merged->getContext())->toBe('context');
+    expect($merged->getOriginal())->toBe('Original');
+    expect($merged->plural)->toBe('Plural');
+    expect($merged->getPluralTranslations())->toBe(['Plural 1', 'Plural 2']);
 
-        $this->assertCount(3, $merged->getComments());
-        $this->assertSame(['Comment 1', 'Comment 2', 'Comment 3'], $merged->getComments()->toArray());
+    expect($merged->getFlags())->toHaveCount(3);
+    expect($merged->getFlags()->toArray())->toBe(['flag-1', 'flag-2', 'flag-3']);
 
-        $this->assertCount(3, $merged->getReferences());
-        $this->assertSame([
-            'template.php' => [34, 44],
-            'template2.php' => [55],
-        ], $merged->getReferences()->toArray());
+    expect($merged->getComments())->toHaveCount(3);
+    expect($merged->getComments()->toArray())->toBe(['Comment 1', 'Comment 2', 'Comment 3']);
 
-        $this->assertCount(1, $merged->getExtractedComments());
-        $this->assertSame(['Extracted 1'], $merged->getExtractedComments()->toArray());
+    expect($merged->getReferences())->toHaveCount(3);
+    expect($merged->getReferences()->toArray())->toBe([
+        'template.php' => [34, 44],
+        'template2.php' => [55],
+    ]);
 
-        $this->assertNotSame($merged, $translation1);
-        $this->assertNotSame($merged, $translation2);
-    }
+    expect($merged->getExtractedComments())->toHaveCount(1);
+    expect($merged->getExtractedComments()->toArray())->toBe(['Extracted 1']);
 
-    public function testMergeWithTheirStrategiesReplaceMetadata(): void
-    {
-        $ours = Translation::create(null, 'Hello');
-        $ours->translation = 'Ciao';
-        $ours->getReferences()->add('ours.php', 1);
-        $ours->getExtractedComments()->add('ours note');
+    expect($merged)->not->toBe($translation1);
+    expect($merged)->not->toBe($translation2);
+});
 
-        $theirs = Translation::create(null, 'Hello');
-        $theirs->getReferences()->add('theirs.php', 9);
-        $theirs->getExtractedComments()->add('theirs note');
+it('lets their strategies replace metadata', function (): void {
+    $ours = Translation::create(null, 'Hello');
+    $ours->translation = 'Ciao';
+    $ours->getReferences()->add('ours.php', 1);
+    $ours->getExtractedComments()->add('ours note');
 
-        $merged = $ours->mergeWith($theirs, Merge::REFERENCES_THEIRS | Merge::EXTRACTED_COMMENTS_THEIRS);
+    $theirs = Translation::create(null, 'Hello');
+    $theirs->getReferences()->add('theirs.php', 9);
+    $theirs->getExtractedComments()->add('theirs note');
 
-        $this->assertSame(['theirs.php' => [9]], $merged->getReferences()->toArray());
-        $this->assertSame(['theirs note'], $merged->getExtractedComments()->toArray());
-    }
+    $merged = $ours->mergeWith($theirs, Merge::REFERENCES_THEIRS | Merge::EXTRACTED_COMMENTS_THEIRS);
 
-    public function testMergeWithOverrideLetsTheirValuesWin(): void
-    {
-        $ours = Translation::create('old-ctx', 'Hello', 'Hello-plural');
-        $ours->translation = 'ciao-ours';
-        $ours->translatePlural('plurali-ours');
-        $ours->previousContext = 'prev-ours';
-        $ours->previousOriginal = 'orig-prev-ours';
-        $ours->previousPlural = 'plur-prev-ours';
+    expect($merged->getReferences()->toArray())->toBe(['theirs.php' => [9]]);
+    expect($merged->getExtractedComments()->toArray())->toBe(['theirs note']);
+});
 
-        $theirs = Translation::create('new-ctx', 'Hello', 'Hello-plural');
-        $theirs->translation = 'ciao-theirs';
-        $theirs->translatePlural('plurali-theirs');
-        $theirs->previousContext = 'prev-theirs';
-        $theirs->previousOriginal = 'orig-prev-theirs';
-        $theirs->previousPlural = 'plur-prev-theirs';
+it('lets override merges let their values win', function (): void {
+    $ours = Translation::create('old-ctx', 'Hello', 'Hello-plural');
+    $ours->translation = 'ciao-ours';
+    $ours->translatePlural('plurali-ours');
+    $ours->previousContext = 'prev-ours';
+    $ours->previousOriginal = 'orig-prev-ours';
+    $ours->previousPlural = 'plur-prev-ours';
 
-        $merged = $ours->mergeWith($theirs, Merge::TRANSLATIONS_OVERRIDE);
+    $theirs = Translation::create('new-ctx', 'Hello', 'Hello-plural');
+    $theirs->translation = 'ciao-theirs';
+    $theirs->translatePlural('plurali-theirs');
+    $theirs->previousContext = 'prev-theirs';
+    $theirs->previousOriginal = 'orig-prev-theirs';
+    $theirs->previousPlural = 'plur-prev-theirs';
 
-        $this->assertSame('ciao-theirs', $merged->translation);
-        $this->assertSame(['plurali-theirs'], $merged->getPluralTranslations());
-        $this->assertSame('prev-theirs', $merged->previousContext);
-        $this->assertSame('orig-prev-theirs', $merged->previousOriginal);
-        $this->assertSame('plur-prev-theirs', $merged->previousPlural);
-    }
+    $merged = $ours->mergeWith($theirs, Merge::TRANSLATIONS_OVERRIDE);
 
-    public function testPluralTranslationsArePaddedToTheRequestedSize(): void
-    {
-        $translation = Translation::create(null, 'One apple', '%d apples');
-        $translation->translatePlural('%d mele');
+    expect($merged->translation)->toBe('ciao-theirs');
+    expect($merged->getPluralTranslations())->toBe(['plurali-theirs']);
+    expect($merged->previousContext)->toBe('prev-theirs');
+    expect($merged->previousOriginal)->toBe('orig-prev-theirs');
+    expect($merged->previousPlural)->toBe('plur-prev-theirs');
+});
 
-        $this->assertSame(['%d mele'], $translation->getPluralTranslations());
-        $this->assertSame(['%d mele', '', ''], $translation->getPluralTranslations(3));
-        $this->assertSame([], $translation->getPluralTranslations(0));
-    }
-}
+it('pads plural translations to the requested size', function (): void {
+    $translation = Translation::create(null, 'One apple', '%d apples');
+    $translation->translatePlural('%d mele');
+
+    expect($translation->getPluralTranslations())->toBe(['%d mele']);
+    expect($translation->getPluralTranslations(3))->toBe(['%d mele', '', '']);
+    expect($translation->getPluralTranslations(0))->toBe([]);
+});

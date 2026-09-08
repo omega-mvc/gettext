@@ -11,66 +11,59 @@ use Omega\Gettext\Headers;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(PoGenerator::class)]
-#[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class PoGeneratorFeaturesTest extends TestCase
-{
-    public function testReferencesWithoutLineNumbersRenderBareFilenames(): void
-    {
-        $translations = Translations::create('po');
-        $translation = Translation::create(null, 'Hello');
-        $translation->translation = 'Ciao';
-        $translation->getReferences()->add('bare-only.php');
-        $translations->add($translation);
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(PoGenerator::class);
+covers(References::class);
+covers(Translation::class);
+covers(Translations::class);
 
-        $output = (new PoGenerator())->generateString($translations);
+it('renders references without line numbers as bare filenames', function (): void {
+    $translations = Translations::create('po');
+    $translation = Translation::create(null, 'Hello');
+    $translation->translation = 'Ciao';
+    $translation->getReferences()->add('bare-only.php');
+    $translations->add($translation);
 
-        $this->assertStringContainsString('#: bare-only.php', $output);
-        $this->assertStringNotContainsString('bare-only.php:', $output);
-    }
+    $output = (new PoGenerator())->generateString($translations);
 
-    public function testPreviousStringsAreRenderedAsOldReferences(): void
-    {
-        $translations = Translations::create('po');
-        $translation = Translation::create('new-context', 'new-original', 'new-plural');
-        $translation->translation = 't';
-        $translation->previousContext = 'old-context';
-        $translation->previousOriginal = 'old-original';
-        $translation->previousPlural = 'old-plural';
-        $translations->add($translation);
+    expect($output)->toContain('#: bare-only.php');
+    expect($output)->not->toContain('bare-only.php:');
+});
 
-        $output = (new PoGenerator())->generateString($translations);
+it('renders previous strings as old references', function (): void {
+    $translations = Translations::create('po');
+    $translation = Translation::create('new-context', 'new-original', 'new-plural');
+    $translation->translation = 't';
+    $translation->previousContext = 'old-context';
+    $translation->previousOriginal = 'old-original';
+    $translation->previousPlural = 'old-plural';
+    $translations->add($translation);
 
-        $this->assertStringContainsString('#| msgctxt "old-context"', $output);
-        $this->assertStringContainsString('#| msgid "old-original"', $output);
-        $this->assertStringContainsString('#| msgid_plural "old-plural"', $output);
-        $this->assertStringContainsString('msgctxt "new-context"', $output);
-    }
+    $output = (new PoGenerator())->generateString($translations);
 
-    public function testPluralEntriesRenderIndexedMsgstrLines(): void
-    {
-        $translations = Translations::create('po');
-        $translations->getHeaders()->set(Headers::HEADER_PLURAL, 'nplurals=3; plural=(n==1 ? 0 : 1);');
+    expect($output)->toContain('#| msgctxt "old-context"');
+    expect($output)->toContain('#| msgid "old-original"');
+    expect($output)->toContain('#| msgid_plural "old-plural"');
+    expect($output)->toContain('msgctxt "new-context"');
+});
 
-        $translation = Translation::create(null, 'One file', '%d files');
-        $translation->translation = 'Un file';
-        $translation->translatePlural('%d file', '%d file');
-        $translations->add($translation);
+it('renders plural entries with indexed msgstr lines', function (): void {
+    $translations = Translations::create('po');
+    $translations->getHeaders()->set(Headers::HEADER_PLURAL, 'nplurals=3; plural=(n==1 ? 0 : 1);');
 
-        $output = (new PoGenerator())->generateString($translations);
+    $translation = Translation::create(null, 'One file', '%d files');
+    $translation->translation = 'Un file';
+    $translation->translatePlural('%d file', '%d file');
+    $translations->add($translation);
 
-        $this->assertStringContainsString('msgid "One file"', $output);
-        $this->assertStringContainsString('msgid_plural "%d files"', $output);
-        $this->assertStringContainsString('msgstr[0] "Un file"', $output);
-        $this->assertStringContainsString('msgstr[1] "%d file"', $output);
-        $this->assertStringContainsString('msgstr[2] "%d file"', $output);
-    }
-}
+    $output = (new PoGenerator())->generateString($translations);
+
+    expect($output)->toContain('msgid "One file"');
+    expect($output)->toContain('msgid_plural "%d files"');
+    expect($output)->toContain('msgstr[0] "Un file"');
+    expect($output)->toContain('msgstr[1] "%d file"');
+    expect($output)->toContain('msgstr[2] "%d file"');
+});

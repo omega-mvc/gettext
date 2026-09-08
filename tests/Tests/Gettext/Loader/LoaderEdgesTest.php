@@ -16,123 +16,107 @@ use Omega\Gettext\Loader\MoLoader;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ArrayLoader::class)]
-#[CoversClass(Comments::class)]
-#[CoversClass(Flags::class)]
-#[CoversClass(Headers::class)]
-#[CoversClass(JsonLoader::class)]
-#[CoversClass(Loader::class)]
-#[CoversClass(MoLoader::class)]
-#[CoversClass(References::class)]
-#[CoversClass(Translation::class)]
-#[CoversClass(Translations::class)]
-class LoaderEdgesTest extends TestCase
-{
-    public function testArrayLoaderCannotLoadFromStrings(): void
-    {
-        $this->expectException(BadMethodCallException::class);
-        $this->expectExceptionMessage('Arrays cannot be loaded from string. Use ArrayLoader::loadFile() instead');
+covers(ArrayLoader::class);
+covers(Comments::class);
+covers(Flags::class);
+covers(Headers::class);
+covers(JsonLoader::class);
+covers(Loader::class);
+covers(MoLoader::class);
+covers(References::class);
+covers(Translation::class);
+covers(Translations::class);
 
-        (new ArrayLoader())->loadString('anything');
+it('refuses to load arrays from strings', function (): void {
+    expect(fn () => (new ArrayLoader())->loadString('anything'))->toThrow(
+        BadMethodCallException::class,
+        'Arrays cannot be loaded from string. Use ArrayLoader::loadFile() instead'
+    );
+});
+
+it('rejects files that do not return arrays', function (): void {
+    $file = createTempFile('<?php return "not-an-array";');
+
+    try {
+        expect(fn () => (new ArrayLoader())->loadFile($file))
+            ->toThrow(Exception::class, "Invalid translations file '$file': it must return an array");
+    } finally {
+        unlink($file);
     }
+});
 
-    public function testArrayLoaderRejectsFilesNotReturningArrays(): void
-    {
-        $file = $this->createTempFile('<?php return "not-an-array";');
+it('rejects invalid json payloads', function (): void {
+    $file = createTempFile('"just-a-string"');
 
-        try {
-            $this->expectException(Exception::class);
-            $this->expectExceptionMessage("Invalid translations file '$file': it must return an array");
-
-            (new ArrayLoader())->loadFile($file);
-        } finally {
-            unlink($file);
-        }
+    try {
+        expect(fn () => (new JsonLoader())->loadFile($file))
+            ->toThrow(Exception::class, 'Invalid translations file: it must contain a JSON object');
+    } finally {
+        unlink($file);
     }
+});
 
-    public function testJsonLoaderRejectsInvalidPayloads(): void
-    {
-        $file = $this->createTempFile('"just-a-string"');
+it('skips malformed dictionary structures safely', function (): void {
+    $file = createTempFile(
+        '<?php return '
+        . var_export([
+            'messages' => 'not-an-array',
+        ], true) . ';'
+    );
 
-        try {
-            $this->expectException(Exception::class);
-            $this->expectExceptionMessage('Invalid translations file: it must contain a JSON object');
+    try {
+        $translations = (new ArrayLoader())->loadFile($file);
 
-            (new JsonLoader())->loadFile($file);
-        } finally {
-            unlink($file);
-        }
+        expect($translations)->toHaveCount(0);
+    } finally {
+        unlink($file);
     }
+});
 
-    public function testMalformedDictionaryStructuresAreSkippedSafely(): void
-    {
-        $file = $this->createTempFile(
-            '<?php return '
-            . var_export([
-                'messages' => 'not-an-array',
-            ], true) . ';'
-        );
-
-        try {
-            $translations = (new ArrayLoader())->loadFile($file);
-
-            $this->assertCount(0, $translations);
-        } finally {
-            unlink($file);
-        }
-    }
-
-    public function testScalarContextsAndEmptyOriginalsAreSkipped(): void
-    {
-        $file = $this->createTempFile(
-            '<?php return '
-            . var_export([
-                'domain' => 'mixed',
-                'messages' => [
-                    'scalar-context' => 'dropped',
-                    '' => [
-                        '' => 'skipped-empty-original',
-                        'real' => 'KEPT',
-                    ],
+it('skips scalar contexts and empty originals', function (): void {
+    $file = createTempFile(
+        '<?php return '
+        . var_export([
+            'domain' => 'mixed',
+            'messages' => [
+                'scalar-context' => 'dropped',
+                '' => [
+                    '' => 'skipped-empty-original',
+                    'real' => 'KEPT',
                 ],
-            ], true) . ';'
-        );
+            ],
+        ], true) . ';'
+    );
 
-        try {
-            $translations = (new ArrayLoader())->loadFile($file);
+    try {
+        $translations = (new ArrayLoader())->loadFile($file);
 
-            $this->assertCount(1, $translations);
-            $this->assertNotNull($translations->find(null, 'real'));
-            $this->assertNull($translations->find(null, ''));
-        } finally {
-            unlink($file);
-        }
+        expect($translations)->toHaveCount(1);
+        expect($translations->find(null, 'real'))->not->toBeNull();
+        expect($translations->find(null, ''))->toBeNull();
+    } finally {
+        unlink($file);
     }
+});
 
-    public function testUnreadableFilesThrow(): void
-    {
-        $file = $this->createTempFile('whatever');
-        chmod($file, 0000);
+it('throws for unreadable files', function (): void {
+    $file = createTempFile('whatever');
+    chmod($file, 0000);
 
-        try {
-            $this->expectException(Exception::class);
-            $this->expectExceptionMessage("Cannot read the file '$file', probably permissions");
-
-            (new MoLoader())->loadFile($file);
-        } finally {
-            chmod($file, 0600);
-            unlink($file);
-        }
+    try {
+        expect(fn () => (new MoLoader())->loadFile($file))
+            ->toThrow(Exception::class, "Cannot read the file '$file', probably permissions");
+    } finally {
+        chmod($file, 0600);
+        unlink($file);
     }
+});
 
-    private function createTempFile(string $content): string
-    {
-        $file = sys_get_temp_dir() . '/gettext-loader-edge-' . uniqid() . '.txt';
-        file_put_contents($file, $content);
+function createTempFile(string $content): string
+{
+    $file = sys_get_temp_dir() . '/gettext-loader-edge-' . uniqid() . '.txt';
+    file_put_contents($file, $content);
 
-        return $file;
-    }
+    return $file;
 }
