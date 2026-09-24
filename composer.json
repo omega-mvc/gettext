@@ -47,6 +47,7 @@
         "phpcs": "XDEBUG_MODE=off php vendor/bin/phpcs",
         "phpcbf": "XDEBUG_MODE=off php vendor/bin/phpcbf --standard=PSR12",
         "phpstan": "XDEBUG_MODE=off php vendor/bin/phpstan analyze -vvv",
+        "type-coverage": "vendor/bin/pest --type-coverage",
         "test-no-coverage": "XDEBUG_MODE=off php vendor/bin/pest --no-coverage",
         "test": "XDEBUG_MODE=coverage php vendor/bin/pest"
     },
