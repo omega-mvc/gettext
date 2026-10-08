@@ -3,7 +3,7 @@
     "type": "library",
     "description": "GNU gettext-based localization and translation support for the Omega ecosystem, providing message translation management and internationalization services.",
     "keywords": ["js", "gettext", "i18n", "translation", "po", "mo"],
-    "homepage": "https://github.com/php-gettext/Gettext",
+    "homepage": "https://omega-mvc.github.io",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
