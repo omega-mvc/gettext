@@ -194,9 +194,14 @@ final class PoLoader extends Loader
             // Useful for distinguishing between header definitions and possible continuations of a header entry.
             if (preg_match('/^[\w-]+:/', $line)) {
                 $pieces = array_map('trim', explode(':', $line, 2));
-                [$name, $value] = $pieces;
+                $name = $pieces[0];
+                $value = $pieces[1] ?? '';
 
                 $headers[$name] = $value;
+                continue;
+            }
+
+            if ($name === null) {
                 continue;
             }
 

@@ -17,22 +17,26 @@ use Omega\Gettext\Scanner\ParsedFunction;
 use Omega\Gettext\Scanner\Scanner;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(CodeScanner::class);
-covers(Comments::class);
-covers(Flags::class);
-covers(Headers::class);
-covers(JsFunctionsScanner::class);
-covers(JsNodeVisitor::class);
-covers(JsScanner::class);
-covers(ParsedFunction::class);
-covers(References::class);
-covers(Scanner::class);
-covers(Translation::class);
-covers(Translations::class);
-
-it('scans javascript functions', function (): void {
-    $js = <<<'JS'
+#[CoversClass(CodeScanner::class)]
+#[CoversClass(Comments::class)]
+#[CoversClass(Flags::class)]
+#[CoversClass(Headers::class)]
+#[CoversClass(JsFunctionsScanner::class)]
+#[CoversClass(JsNodeVisitor::class)]
+#[CoversClass(JsScanner::class)]
+#[CoversClass(ParsedFunction::class)]
+#[CoversClass(References::class)]
+#[CoversClass(Scanner::class)]
+#[CoversClass(Translation::class)]
+#[CoversClass(Translations::class)]
+final class JsScannerTest extends TestCase
+{
+    public function testScansJavascriptFunctions(): void
+    {
+        $js = <<<'JS'
 __("Hello");
 ngettext("One apple", "%d apples", 3);
 pgettext("menu", "File");
@@ -40,46 +44,47 @@ noop__("marked");
 dgettext("domain2", "Save");
 JS;
 
-    $scanner = new JsScanner(
-        Translations::create('domain1'),
-        Translations::create('domain2')
-    );
-    $scanner->setDefaultDomain('domain1');
+        $scanner = new JsScanner(
+            Translations::create('domain1'),
+            Translations::create('domain2')
+        );
+        $scanner->setDefaultDomain('domain1');
 
-    $scanner->scanString($js, 'virtual.js');
+        $scanner->scanString($js, 'virtual.js');
 
-    /**
-     * @var Translations $domain1
-     * @var Translations $domain2
-     */
-    ['domain1' => $domain1, 'domain2' => $domain2] = $scanner->getTranslations();
+        /**
+         * @var Translations $domain1
+         * @var Translations $domain2
+         */
+        ['domain1' => $domain1, 'domain2' => $domain2] = $scanner->getTranslations();
 
-    expect($domain1)->toHaveCount(4);
-    expect($domain2)->toHaveCount(1);
+        $this->assertCount(4, $domain1);
+        $this->assertCount(1, $domain2);
 
-    $translation = $domain1->find(null, 'Hello');
-    $this->assertNotNull($translation);
-    expect($translation->getReferences()->toArray())->toBe(['virtual.js' => [1]]);
+        $translation = $domain1->find(null, 'Hello');
+        $this->assertNotNull($translation);
+        $this->assertSame(['virtual.js' => [1]], $translation->getReferences()->toArray());
 
-    $apple = $domain1->find(null, 'One apple');
-    $this->assertNotNull($apple);
-    expect($apple->plural)->toBe('%d apples');
-    expect($apple->getReferences()->toArray())->toBe(['virtual.js' => [2]]);
+        $apple = $domain1->find(null, 'One apple');
+        $this->assertNotNull($apple);
+        $this->assertSame('%d apples', $apple->plural);
+        $this->assertSame(['virtual.js' => [2]], $apple->getReferences()->toArray());
 
-    $menu = $domain1->find('menu', 'File');
-    $this->assertNotNull($menu);
-    expect($domain1->find(null, 'File'))->toBeNull();
+        $menu = $domain1->find('menu', 'File');
+        $this->assertNotNull($menu);
+        $this->assertNull($domain1->find(null, 'File'));
 
-    $marked = $domain1->find(null, 'marked');
-    $this->assertNotNull($marked);
+        $marked = $domain1->find(null, 'marked');
+        $this->assertNotNull($marked);
 
-    $save = $domain2->find(null, 'Save');
-    $this->assertNotNull($save);
-    expect($save->getReferences()->toArray())->toBe(['virtual.js' => [5]]);
-});
+        $save = $domain2->find(null, 'Save');
+        $this->assertNotNull($save);
+        $this->assertSame(['virtual.js' => [5]], $save->getReferences()->toArray());
+    }
 
-it('scans domain and context variants', function (): void {
-    $js = <<<'JS'
+    public function testScansDomainAndContextVariants(): void
+    {
+        $js = <<<'JS'
 dngettext("dom", "One file", "%d files", 2);
 npgettext("ctx", "One item", "%d items", 5);
 dpgettext("dom", "bar", "Print");
@@ -87,72 +92,78 @@ dnpgettext("dom", "bar", "One icon", "%d icons", 4);
 __("plain");
 JS;
 
-    $scanner = new JsScanner(
-        Translations::create('dom'),
-        Translations::create('default')
-    );
-    $scanner->setDefaultDomain('default');
+        $scanner = new JsScanner(
+            Translations::create('dom'),
+            Translations::create('default')
+        );
+        $scanner->setDefaultDomain('default');
 
-    $scanner->scanString($js, 'virtual.js');
+        $scanner->scanString($js, 'virtual.js');
 
-    /**
-     * @var Translations $dom
-     * @var Translations $default
-     */
-    ['dom' => $dom, 'default' => $default] = $scanner->getTranslations();
+        /**
+         * @var Translations $dom
+         * @var Translations $default
+         */
+        ['dom' => $dom, 'default' => $default] = $scanner->getTranslations();
 
-    expect($dom)->toHaveCount(3);
-    expect($default)->toHaveCount(2);
+        $this->assertCount(3, $dom);
+        $this->assertCount(2, $default);
 
-    $file = $dom->find(null, 'One file');
-    $this->assertNotNull($file);
-    expect($file->plural)->toBe('%d files');
+        $file = $dom->find(null, 'One file');
+        $this->assertNotNull($file);
+        $this->assertSame('%d files', $file->plural);
 
-    $print = $dom->find('bar', 'Print');
-    $this->assertNotNull($print);
+        $print = $dom->find('bar', 'Print');
+        $this->assertNotNull($print);
 
-    $icon = $dom->find('bar', 'One icon');
-    $this->assertNotNull($icon);
-    expect($icon->plural)->toBe('%d icons');
+        $icon = $dom->find('bar', 'One icon');
+        $this->assertNotNull($icon);
+        $this->assertSame('%d icons', $icon->plural);
 
-    $plain = $default->find(null, 'plain');
-    $this->assertNotNull($plain);
+        $plain = $default->find(null, 'plain');
+        $this->assertNotNull($plain);
 
-    $item = $default->find('ctx', 'One item');
-    $this->assertNotNull($item);
-    expect($item->plural)->toBe('%d items');
-});
+        $item = $default->find('ctx', 'One item');
+        $this->assertNotNull($item);
+        $this->assertSame('%d items', $item->plural);
+    }
 
-it('ignores unknown functions', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
-    $scanner->scanString("unknownCall('arg'); __('kept');", 'virtual.js');
+    public function testIgnoresUnknownFunctions(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+        $scanner->scanString("unknownCall('arg'); __('kept');", 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find(null, 'kept'))->not->toBeNull();
-});
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find(null, 'kept'));
+    }
 
-it('throws on invalid functions', function (): void {
-    expect(fn () => (new JsScanner(Translations::create('messages')))->scanString('__(123);', 'virtual.js'))
-        ->toThrow(Exception::class, 'Some required arguments are not valid');
-});
+    public function testThrowsOnInvalidFunctions(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Some required arguments are not valid');
 
-it('skips ignored invalid functions', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
-    $scanner->ignoreInvalidFunctions();
-    $scanner->scanString("ngettext('only-one'); __(123); __('kept');", 'virtual.js');
+        (new JsScanner(Translations::create('messages')))->scanString('__(123);', 'virtual.js');
+    }
 
-    $translations = $scanner->getTranslations()['messages'];
+    public function testSkipsIgnoredInvalidFunctions(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+        $scanner->ignoreInvalidFunctions();
+        $scanner->scanString("ngettext('only-one'); __(123); __('kept');", 'virtual.js');
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find(null, 'kept'))->not->toBeNull();
-});
+        $translations = $scanner->getTranslations()['messages'];
 
-it('skips invalid calls across all handlers when tolerant', function (): void {
-    $js = <<<'JS'
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find(null, 'kept'));
+    }
+
+    public function testSkipsInvalidCallsAcrossAllHandlersWhenTolerant(): void
+    {
+        $js = <<<'JS'
 ngettext("a");
 pgettext("b");
 dgettext("c");
@@ -162,124 +173,133 @@ dngettext("f");
 dnpgettext("g");
 JS;
 
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
-    $scanner->ignoreInvalidFunctions();
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+        $scanner->ignoreInvalidFunctions();
 
-    $scanner->scanString($js, 'virtual.js');
+        $scanner->scanString($js, 'virtual.js');
 
-    expect($scanner->getTranslations()['messages'])->toHaveCount(0);
-});
+        $this->assertCount(0, $scanner->getTranslations()['messages']);
+    }
 
-it('records spread arguments as dynamic', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
+    public function testRecordsSpreadArgumentsAsDynamic(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
 
-    $scanner->scanString('var rest = ["x"]; __("Hello", ...rest);', 'virtual.js');
+        $scanner->scanString('var rest = ["x"]; __("Hello", ...rest);', 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find(null, 'Hello'))->not->toBeNull();
-});
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find(null, 'Hello'));
+    }
 
-it('skips calls without a resolvable name', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
+    public function testSkipsCallsWithoutAResolvableName(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
 
-    $scanner->scanString("(() => 1)(); __('kept');", 'virtual.js');
+        $scanner->scanString("(() => 1)(); __('kept');", 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find(null, 'kept'))->not->toBeNull();
-});
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find(null, 'kept'));
+    }
 
-it('attaches leading comments to extracted calls', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
-    $scanner->extractCommentsStartingWith('');
+    public function testAttachesLeadingCommentsToExtractedCalls(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+        $scanner->extractCommentsStartingWith('');
 
-    $scanner->scanString('/* translators: js */ __("Hello");', 'virtual.js');
+        $scanner->scanString('/* translators: js */ __("Hello");', 'virtual.js');
 
-    $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
+        $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
 
-    $this->assertNotNull($translation);
-    expect($translation->getExtractedComments()->toArray())->toBe(['translators: js']);
-});
+        $this->assertNotNull($translation);
+        $this->assertSame(['translators: js'], $translation->getExtractedComments()->toArray());
+    }
 
-it('handles template literal arguments without expressions', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
+    public function testHandlesTemplateLiteralArgumentsWithoutExpressions(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
 
-    $scanner->scanString('pgettext(`menu`, `File`);', 'virtual.js');
+        $scanner->scanString('pgettext(`menu`, `File`);', 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find('menu', 'File'))->not->toBeNull();
-});
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find('menu', 'File'));
+    }
 
-it('rejects dynamic arguments unless tolerant', function (): void {
-    $js = <<<'JS'
+    public function testRejectsDynamicArgumentsUnlessTolerant(): void
+    {
+        $js = <<<'JS'
 ngettext(`one ${name}`, `many ${name}`, 3);
 __("plain", unknownVar);
 JS;
 
-    expect(function () use ($js): void {
+        $this->expectException(Exception::class);
+
         $strict = new JsScanner(Translations::create('messages'));
         $strict->setDefaultDomain('messages');
 
         $strict->scanString($js, 'virtual.js');
-    })->toThrow(Exception::class);
-});
+    }
 
-it('skips dynamic arguments when tolerant', function (): void {
-    $js = <<<'JS'
+    public function testSkipsDynamicArgumentsWhenTolerant(): void
+    {
+        $js = <<<'JS'
 ngettext(`one ${name}`, `many ${name}`, 3);
 __("plain", unknownVar);
 __("kept");
 JS;
 
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
-    $scanner->ignoreInvalidFunctions();
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+        $scanner->ignoreInvalidFunctions();
 
-    $scanner->scanString($js, 'virtual.js');
+        $scanner->scanString($js, 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(2);
-    expect($translations->find(null, 'plain'))->not->toBeNull();
-    expect($translations->find(null, 'kept'))->not->toBeNull();
-});
+        $this->assertCount(2, $translations);
+        $this->assertNotNull($translations->find(null, 'plain'));
+        $this->assertNotNull($translations->find(null, 'kept'));
+    }
 
-it('skips computed member calls but keeps named ones', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
+    public function testSkipsComputedMemberCallsButKeepsNamedOnes(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
 
-    $scanner->scanString('obj["fn"](); i.__("kept");', 'virtual.js');
+        $scanner->scanString('obj["fn"](); i.__("kept");', 'virtual.js');
 
-    $translations = $scanner->getTranslations()['messages'];
+        $translations = $scanner->getTranslations()['messages'];
 
-    expect($translations)->toHaveCount(1);
-    expect($translations->find(null, 'kept'))->not->toBeNull();
-});
+        $this->assertCount(1, $translations);
+        $this->assertNotNull($translations->find(null, 'kept'));
+    }
 
-it('exposes the function map and scanner accessors', function (): void {
-    $scanner = new JsScanner(Translations::create('messages'));
+    public function testExposesTheFunctionMapAndScannerAccessors(): void
+    {
+        $scanner = new JsScanner(Translations::create('messages'));
 
-    $functions = $scanner->getFunctions();
+        $functions = $scanner->getFunctions();
 
-    expect($functions['__'])->toBe('gettext');
-    expect($functions['n__'])->toBe('ngettext');
-    expect($functions['dnp__'])->toBe('dnpgettext');
+        $this->assertSame('gettext', $functions['__']);
+        $this->assertSame('ngettext', $functions['n__']);
+        $this->assertSame('dnpgettext', $functions['dnp__']);
 
-    $this->assertInstanceOf(JsFunctionsScanner::class, $scanner->getFunctionsScanner());
-    $this->assertInstanceOf(CodeScanner::class, $scanner);
-    $this->assertInstanceOf(Scanner::class, $scanner);
+        $this->assertInstanceOf(JsFunctionsScanner::class, $scanner->getFunctionsScanner());
+        $this->assertInstanceOf(CodeScanner::class, $scanner);
+        $this->assertInstanceOf(Scanner::class, $scanner);
 
-    expect($scanner->getDefaultDomain())->toBe('');
-    $scanner->setDefaultDomain('domain1');
-    expect($scanner->getDefaultDomain())->toBe('domain1');
-});
+        $this->assertSame('', $scanner->getDefaultDomain());
+        $scanner->setDefaultDomain('domain1');
+        $this->assertSame('domain1', $scanner->getDefaultDomain());
+    }
+}

@@ -5,64 +5,71 @@ declare(strict_types=1);
 namespace Tests\Tests\Gettext;
 
 use Omega\Gettext\Flags;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(Flags::class);
+#[CoversClass(Flags::class)]
+final class FlagsTest extends TestCase
+{
+    public function testManagesFlags(): void
+    {
+        $flags = new Flags();
 
-it('manages flags', function (): void {
-    $flags = new Flags();
+        $this->assertSame([], $flags->toArray());
+        $this->assertCount(0, $flags);
 
-    expect($flags->toArray())->toBe([]);
-    expect($flags)->toHaveCount(0);
+        $flags->add('foo');
 
-    $flags->add('foo');
+        $this->assertSame(['foo'], $flags->toArray());
+        $this->assertCount(1, $flags);
 
-    expect($flags->toArray())->toBe(['foo']);
-    expect($flags)->toHaveCount(1);
+        $flags->add('foo');
 
-    $flags->add('foo');
+        $this->assertSame(['foo'], $flags->toArray());
+        $this->assertCount(1, $flags);
 
-    expect($flags->toArray())->toBe(['foo']);
-    expect($flags)->toHaveCount(1);
+        $flags->add('bar');
 
-    $flags->add('bar');
+        $this->assertSame(['bar', 'foo'], $flags->toArray());
+        $this->assertCount(2, $flags);
 
-    expect($flags->toArray())->toBe(['bar', 'foo']);
-    expect($flags)->toHaveCount(2);
+        $flags->add('one', 'two', 'three');
 
-    $flags->add('one', 'two', 'three');
+        $this->assertSame(['bar', 'foo', 'one', 'three', 'two'], $flags->toArray());
+        $this->assertCount(5, $flags);
 
-    expect($flags->toArray())->toBe(['bar', 'foo', 'one', 'three', 'two']);
-    expect($flags)->toHaveCount(5);
+        $flags->delete('bar', 'one', 'two');
 
-    $flags->delete('bar', 'one', 'two');
+        $this->assertSame(['foo', 'three'], $flags->toArray());
+        $this->assertCount(2, $flags);
+    }
 
-    expect($flags->toArray())->toBe(['foo', 'three']);
-    expect($flags)->toHaveCount(2);
-});
+    public function testMergesFlags(): void
+    {
+        $flags1 = new Flags('one', 'two', 'three');
+        $flags2 = new Flags('three', 'four', 'five');
 
-it('merges flags', function (): void {
-    $flags1 = new Flags('one', 'two', 'three');
-    $flags2 = new Flags('three', 'four', 'five');
+        $merged = $flags1->mergeWith($flags2);
 
-    $merged = $flags1->mergeWith($flags2);
+        $this->assertCount(5, $merged);
+        $this->assertSame([
+            'five',
+            'four',
+            'one',
+            'three',
+            'two',
+        ], $merged->toArray());
 
-    expect($merged)->toHaveCount(5);
-    expect($merged->toArray())->toBe([
-        'five',
-        'four',
-        'one',
-        'three',
-        'two',
-    ]);
+        $this->assertNotSame($flags1, $merged);
+        $this->assertNotSame($flags2, $merged);
+    }
 
-    expect($merged)->not->toBe($flags1);
-    expect($merged)->not->toBe($flags2);
-});
+    public function testCreatesAFlagsCollectionFromState(): void
+    {
+        $state = ['flags' => ['one', 'two']];
+        $flags = Flags::__set_state($state);
 
-it('creates a flags collection from state', function (): void {
-    $state = ['flags' => ['one', 'two']];
-    $flags = Flags::__set_state($state);
-
-    expect($flags)->toHaveCount(2);
-    expect($flags->toArray())->toBe($state['flags']);
-});
+        $this->assertCount(2, $flags);
+        $this->assertSame($state['flags'], $flags->toArray());
+    }
+}

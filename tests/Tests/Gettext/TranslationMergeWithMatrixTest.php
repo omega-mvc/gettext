@@ -19,199 +19,223 @@ use Omega\Gettext\Flags;
 use Omega\Gettext\Merge;
 use Omega\Gettext\References;
 use Omega\Gettext\Translation;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Tests\TestCase;
 
-covers(Comments::class);
-covers(Flags::class);
-covers(Merge::class);
-covers(References::class);
-covers(Translation::class);
+#[CoversClass(Comments::class)]
+#[CoversClass(Flags::class)]
+#[CoversClass(Merge::class)]
+#[CoversClass(References::class)]
+#[CoversClass(Translation::class)]
+final class TranslationMergeWithMatrixTest extends TestCase
+{
+    /**
+     * @return list<array{0: int, 1: int, 2: bool}>
+     */
+    public static function mergeMatrix(): array
+    {
+        $families = [
+            [Merge::COMMENTS_THEIRS, Merge::COMMENTS_OURS],
+            [Merge::EXTRACTED_COMMENTS_THEIRS, Merge::EXTRACTED_COMMENTS_OURS],
+            [Merge::REFERENCES_THEIRS, Merge::REFERENCES_OURS],
+            [Merge::FLAGS_THEIRS, Merge::FLAGS_OURS],
+        ];
 
-dataset('mergeMatrix', function (): array {
-    $families = [
-        [Merge::COMMENTS_THEIRS, Merge::COMMENTS_OURS],
-        [Merge::EXTRACTED_COMMENTS_THEIRS, Merge::EXTRACTED_COMMENTS_OURS],
-        [Merge::REFERENCES_THEIRS, Merge::REFERENCES_OURS],
-        [Merge::FLAGS_THEIRS, Merge::FLAGS_OURS],
-    ];
+        $rows = [];
 
-    $rows = [];
+        foreach ([0, 1, 2] as $commentsArm) {
+            foreach ([0, 1, 2] as $extractedArm) {
+                foreach ([0, 1, 2] as $referencesArm) {
+                    foreach ([0, 1, 2] as $flagsArm) {
+                        $strategy = 0;
 
-    foreach ([0, 1, 2] as $commentsArm) {
-        foreach ([0, 1, 2] as $extractedArm) {
-            foreach ([0, 1, 2] as $referencesArm) {
-                foreach ([0, 1, 2] as $flagsArm) {
-                    $strategy = 0;
+                        foreach ([$commentsArm, $extractedArm, $referencesArm, $flagsArm] as $index => $arm) {
+                            $strategy |= match ($arm) {
+                                1 => $families[$index][0],
+                                2 => $families[$index][1],
+                                default => 0,
+                            };
+                        }
 
-                    foreach ([$commentsArm, $extractedArm, $referencesArm, $flagsArm] as $index => $arm) {
-                        $strategy |= match ($arm) {
-                            1 => $families[$index][0],
-                            2 => $families[$index][1],
-                            default => 0,
-                        };
-                    }
-
-                    // Every 6-bit vector: ours holds the complement so the
-                    // merge takes theirs exactly where the bit is set.
-                    foreach ([0, 0x2A, 0x15, 0x3F] as $theirsMask) {
-                        foreach ([false, true] as $theirsDisabled) {
-                            // Override on/off completes the field rules:
-                            // theirs wins only where present AND override.
-                            foreach ([0, Merge::TRANSLATIONS_OVERRIDE] as $overrideBit) {
-                                $rows[] = [$strategy | $overrideBit, $theirsMask, $theirsDisabled];
+                        // Every 6-bit vector: ours holds the complement so the
+                        // merge takes theirs exactly where the bit is set.
+                        foreach ([0, 0x2A, 0x15, 0x3F] as $theirsMask) {
+                            foreach ([false, true] as $theirsDisabled) {
+                                // Override on/off completes the field rules:
+                                // theirs wins only where present AND override.
+                                foreach ([0, Merge::TRANSLATIONS_OVERRIDE] as $overrideBit) {
+                                    $rows[] = [$strategy | $overrideBit, $theirsMask, $theirsDisabled];
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        return $rows;
     }
 
-    return $rows;
-});
+    #[DataProvider('mergeMatrix')]
+    public function testMergesEveryFamilyAndStateCombination(
+        int $strategy,
+        int $theirsMask,
+        bool $theirsDisabled
+    ): void {
+        $override = (bool) ($strategy & Merge::TRANSLATIONS_OVERRIDE);
 
-it('merges every family and state combination', function (int $strategy, int $theirsMask, bool $theirsDisabled): void {
-    $override = (bool) ($strategy & Merge::TRANSLATIONS_OVERRIDE);
+        $ours = Translation::create('ctx-ours', 'original-ours');
+        $ours->translation = 'translation-ours';
+        $ours->plural = 'plural-ours';
+        $ours->previousContext = 'prevctx-ours';
+        $ours->previousOriginal = 'prevorig-ours';
+        $ours->previousPlural = 'prevplur-ours';
+        $ours->translatePlural('ptrans-ours');
+        $ours->getComments()->add('comment-ours');
+        $ours->getExtractedComments()->add('extracted-ours');
+        $ours->getReferences()->add('ours.php', 1);
+        $ours->getFlags()->add('flag-ours');
 
-    $ours = Translation::create('ctx-ours', 'original-ours');
-    $ours->translation = 'translation-ours';
-    $ours->plural = 'plural-ours';
-    $ours->previousContext = 'prevctx-ours';
-    $ours->previousOriginal = 'prevorig-ours';
-    $ours->previousPlural = 'prevplur-ours';
-    $ours->translatePlural('ptrans-ours');
-    $ours->getComments()->add('comment-ours');
-    $ours->getExtractedComments()->add('extracted-ours');
-    $ours->getReferences()->add('ours.php', 1);
-    $ours->getFlags()->add('flag-ours');
+        $theirs = Translation::create(null, 'original-theirs');
+        $theirs->plural = 'plural-theirs';
 
-    $theirs = Translation::create(null, 'original-theirs');
-    $theirs->plural = 'plural-theirs';
+        if (($theirsMask & 0x01) !== 0) {
+            $theirs->translation = 'translation-theirs';
+        }
 
-    if (($theirsMask & 0x01) !== 0) {
-        $theirs->translation = 'translation-theirs';
+        if (($theirsMask & 0x02) !== 0) {
+            $theirs->previousContext = 'prevctx-theirs';
+        }
+
+        if (($theirsMask & 0x04) !== 0) {
+            $theirs->previousOriginal = 'prevorig-theirs';
+        }
+
+        if (($theirsMask & 0x08) !== 0) {
+            $theirs->previousPlural = 'prevplur-theirs';
+        }
+
+        if (($theirsMask & 0x10) !== 0) {
+            $theirs->translatePlural('ptrans-theirs');
+        }
+
+        $theirs->getComments()->add('comment-theirs');
+        $theirs->getExtractedComments()->add('extracted-theirs');
+        $theirs->getReferences()->add('theirs.php', 2);
+        $theirs->getFlags()->add('flag-theirs');
+        $theirs->disabled = $theirsDisabled;
+
+        // Ours keeps the complementary presence bits: where the theirs mask
+        // is unset and override is off, the local value must survive.
+        $merged = $ours->mergeWith($theirs, $strategy);
+
+        $this->assertFamily(
+            $merged->getComments()->toArray(),
+            ['comment-ours'],
+            ['comment-theirs'],
+            $strategy & Merge::COMMENTS_THEIRS,
+            $strategy & Merge::COMMENTS_OURS
+        );
+        $this->assertFamily(
+            $merged->getExtractedComments()->toArray(),
+            ['extracted-ours'],
+            ['extracted-theirs'],
+            $strategy & Merge::EXTRACTED_COMMENTS_THEIRS,
+            $strategy & Merge::EXTRACTED_COMMENTS_OURS
+        );
+        $this->assertReferenceFamily(
+            $merged->getReferences()->toArray(),
+            $strategy & Merge::REFERENCES_THEIRS,
+            $strategy & Merge::REFERENCES_OURS
+        );
+        $this->assertFamily(
+            $merged->getFlags()->toArray(),
+            ['flag-ours'],
+            ['flag-theirs'],
+            $strategy & Merge::FLAGS_THEIRS,
+            $strategy & Merge::FLAGS_OURS
+        );
+
+        $expectTheirs = static function (bool $oursPresent, bool $theirsPresent) use ($override): bool {
+            return !$oursPresent || ($theirsPresent && $override);
+        };
+
+        $takeTranslation = $expectTheirs(true, ($theirsMask & 0x01) !== 0);
+        $this->assertSame(
+            $takeTranslation ? 'translation-theirs' : 'translation-ours',
+            $merged->translation
+        );
+
+        $takePlural = $expectTheirs(true, true);
+        $this->assertSame($takePlural ? 'plural-theirs' : 'plural-ours', $merged->plural);
+
+        $this->assertSame(
+            $expectTheirs(true, ($theirsMask & 0x02) !== 0) ? 'prevctx-theirs' : 'prevctx-ours',
+            $merged->previousContext
+        );
+        $this->assertSame(
+            $expectTheirs(true, ($theirsMask & 0x04) !== 0) ? 'prevorig-theirs' : 'prevorig-ours',
+            $merged->previousOriginal
+        );
+        $this->assertSame(
+            $expectTheirs(true, ($theirsMask & 0x08) !== 0) ? 'prevplur-theirs' : 'prevplur-ours',
+            $merged->previousPlural
+        );
+        $this->assertSame(
+            $expectTheirs(true, ($theirsMask & 0x10) !== 0) ? ['ptrans-theirs'] : ['ptrans-ours'],
+            $merged->getPluralTranslations()
+        );
+
+        $this->assertSame($theirsDisabled, $merged->disabled);
     }
 
-    if (($theirsMask & 0x02) !== 0) {
-        $theirs->previousContext = 'prevctx-theirs';
+    /**
+     * @param list<string> $actual
+     * @param list<string> $oursItems
+     * @param list<string> $theirsItems
+     */
+    private function assertFamily(
+        array $actual,
+        array $oursItems,
+        array $theirsItems,
+        int $theirsFlag,
+        int $oursFlag
+    ): void {
+        if ($theirsFlag !== 0) {
+            $this->assertSameCanonicalize($theirsItems, $actual);
+        } elseif ($oursFlag !== 0) {
+            $this->assertSameCanonicalize($oursItems, $actual);
+        } else {
+            $this->assertSameCanonicalize([...$oursItems, ...$theirsItems], $actual);
+        }
     }
 
-    if (($theirsMask & 0x04) !== 0) {
-        $theirs->previousOriginal = 'prevorig-theirs';
+    /**
+     * @param array<string, list<int>> $actual
+     */
+    private function assertReferenceFamily(array $actual, int $theirsFlag, int $oursFlag): void
+    {
+        if ($theirsFlag !== 0) {
+            $this->assertSame(['theirs.php' => [2]], $actual);
+        } elseif ($oursFlag !== 0) {
+            $this->assertSame(['ours.php' => [1]], $actual);
+        } else {
+            $this->assertSame(['ours.php' => [1], 'theirs.php' => [2]], $actual);
+        }
     }
 
-    if (($theirsMask & 0x08) !== 0) {
-        $theirs->previousPlural = 'prevplur-theirs';
+    /**
+     * Collection order differs between union sources, so comparison ignores it.
+     *
+     * @param list<string> $expected
+     * @param list<string> $actual
+     */
+    private function assertSameCanonicalize(array $expected, array $actual): void
+    {
+        sort($expected);
+        sort($actual);
+
+        $this->assertSame($expected, $actual);
     }
-
-    if (($theirsMask & 0x10) !== 0) {
-        $theirs->translatePlural('ptrans-theirs');
-    }
-
-    $theirs->getComments()->add('comment-theirs');
-    $theirs->getExtractedComments()->add('extracted-theirs');
-    $theirs->getReferences()->add('theirs.php', 2);
-    $theirs->getFlags()->add('flag-theirs');
-    $theirs->disabled = $theirsDisabled;
-
-    // Ours keeps the complementary presence bits: where the theirs mask
-    // is unset and override is off, the local value must survive.
-    $merged = $ours->mergeWith($theirs, $strategy);
-
-    assertFamily(
-        $merged->getComments()->toArray(),
-        ['comment-ours'],
-        ['comment-theirs'],
-        $strategy & Merge::COMMENTS_THEIRS,
-        $strategy & Merge::COMMENTS_OURS
-    );
-    assertFamily(
-        $merged->getExtractedComments()->toArray(),
-        ['extracted-ours'],
-        ['extracted-theirs'],
-        $strategy & Merge::EXTRACTED_COMMENTS_THEIRS,
-        $strategy & Merge::EXTRACTED_COMMENTS_OURS
-    );
-    assertReferenceFamily(
-        $merged->getReferences()->toArray(),
-        $strategy & Merge::REFERENCES_THEIRS,
-        $strategy & Merge::REFERENCES_OURS
-    );
-    assertFamily(
-        $merged->getFlags()->toArray(),
-        ['flag-ours'],
-        ['flag-theirs'],
-        $strategy & Merge::FLAGS_THEIRS,
-        $strategy & Merge::FLAGS_OURS
-    );
-
-    $expectTheirs = static function (bool $oursPresent, bool $theirsPresent) use ($override): bool {
-        return !$oursPresent || ($theirsPresent && $override);
-    };
-
-    $takeTranslation = $expectTheirs(true, ($theirsMask & 0x01) !== 0);
-    expect($merged->translation)
-        ->toBe($takeTranslation ? 'translation-theirs' : 'translation-ours');
-
-    $takePlural = $expectTheirs(true, true);
-    expect($merged->plural)->toBe($takePlural ? 'plural-theirs' : 'plural-ours');
-
-    expect($merged->previousContext)
-        ->toBe($expectTheirs(true, ($theirsMask & 0x02) !== 0) ? 'prevctx-theirs' : 'prevctx-ours');
-    expect($merged->previousOriginal)
-        ->toBe($expectTheirs(true, ($theirsMask & 0x04) !== 0) ? 'prevorig-theirs' : 'prevorig-ours');
-    expect($merged->previousPlural)
-        ->toBe($expectTheirs(true, ($theirsMask & 0x08) !== 0) ? 'prevplur-theirs' : 'prevplur-ours');
-    expect($merged->getPluralTranslations())
-        ->toBe($expectTheirs(true, ($theirsMask & 0x10) !== 0) ? ['ptrans-theirs'] : ['ptrans-ours']);
-
-    expect($merged->disabled)->toBe($theirsDisabled);
-})->with('mergeMatrix');
-
-/**
- * @param list<string> $actual
- * @param list<string> $oursItems
- * @param list<string> $theirsItems
- */
-function assertFamily(
-    array $actual,
-    array $oursItems,
-    array $theirsItems,
-    int $theirsFlag,
-    int $oursFlag
-): void {
-    if ($theirsFlag !== 0) {
-        assertSameCanonicalize($theirsItems, $actual);
-    } elseif ($oursFlag !== 0) {
-        assertSameCanonicalize($oursItems, $actual);
-    } else {
-        assertSameCanonicalize([...$oursItems, ...$theirsItems], $actual);
-    }
-}
-
-/**
- * @param array<string, list<int>> $actual
- */
-function assertReferenceFamily(array $actual, int $theirsFlag, int $oursFlag): void
-{
-    if ($theirsFlag !== 0) {
-        expect($actual)->toBe(['theirs.php' => [2]]);
-    } elseif ($oursFlag !== 0) {
-        expect($actual)->toBe(['ours.php' => [1]]);
-    } else {
-        expect($actual)->toBe(['ours.php' => [1], 'theirs.php' => [2]]);
-    }
-}
-
-/**
- * Collection order differs between union sources, so comparison ignores it.
- *
- * @param list<string> $expected
- * @param list<string> $actual
- */
-function assertSameCanonicalize(array $expected, array $actual): void
-{
-    sort($expected);
-    sort($actual);
-
-    expect($expected)->toBe($actual);
 }

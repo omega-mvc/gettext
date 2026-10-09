@@ -268,7 +268,7 @@ final class StrictPoLoader extends Loader
                     throw new Exception("Octal value out of range [0, 0177]{$this->getErrorPosition()}");
                 }
 
-                if ($decimal > 127) {
+                if ($decimal < 0 || $decimal > 127) {
                     throw new Exception("Octal value out of range [0, 0177]{$this->getErrorPosition()}");
                 }
 

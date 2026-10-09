@@ -6,15 +6,23 @@ namespace Tests\Tests\Gettext\Languages;
 
 use Exception;
 use Omega\Gettext\Languages\FormulaConverter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(FormulaConverter::class);
+#[CoversClass(FormulaConverter::class)]
+final class FormulaConverterTest extends TestCase
+{
+    public function testRejectsAnInvalidFormula(): void
+    {
+        $this->expectException(Exception::class);
 
-it('rejects an invalid formula', function (): void {
-    expect(fn () => FormulaConverter::convertFormula('()'))
-        ->toThrow(Exception::class);
-});
+        FormulaConverter::convertFormula('()');
+    }
 
-it('rejects an invalid atom chunk', function (): void {
-    expect(fn () => FormulaConverter::convertFormula('f ==== empty'))
-        ->toThrow(Exception::class);
-});
+    public function testRejectsAnInvalidAtomChunk(): void
+    {
+        $this->expectException(Exception::class);
+
+        FormulaConverter::convertFormula('f ==== empty');
+    }
+}

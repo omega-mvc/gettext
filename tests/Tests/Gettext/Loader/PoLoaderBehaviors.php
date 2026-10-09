@@ -28,18 +28,19 @@ final class PoLoaderBehaviors
     public static function assertPoFileContent(Translations $translations): void
     {
         $description = $translations->description;
-        expect($description)->toBe(
+        Assert::assertSame(
             <<<'EOT'
 SOME DESCRIPTIVE TITLE
 Copyright (C) YEAR Free Software Foundation, Inc.
 This file is distributed under the same license as the PACKAGE package.
 FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-EOT
+EOT,
+            $description
         );
 
-        expect($translations->getFlags()->toArray())->toBe(['fuzzy']);
+        Assert::assertSame(['fuzzy'], $translations->getFlags()->toArray());
 
-        expect($translations)->toHaveCount(14);
+        Assert::assertCount(14, $translations);
 
         $array = $translations->getTranslations();
 
@@ -60,25 +61,26 @@ EOT
 
         $headers = $translations->getHeaders()->toArray();
 
-        expect($headers)->toHaveCount(12);
+        Assert::assertCount(12, $headers);
 
-        expect($headers['Content-Type'])->toBe('text/plain; charset=UTF-8');
-        expect($headers['Content-Transfer-Encoding'])->toBe('8bit');
-        expect($headers['POT-Creation-Date'])->toBe('');
-        expect($headers['PO-Revision-Date'])->toBe('');
-        expect($headers['Last-Translator'])->toBe('');
-        expect($headers['Language-Team'])->toBe('');
-        expect($headers['MIME-Version'])->toBe('1.0');
-        expect($headers['Language'])->toBe('bs');
-        expect($headers['Plural-Forms'])->toBe(
-            'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);'
+        Assert::assertSame('text/plain; charset=UTF-8', $headers['Content-Type']);
+        Assert::assertSame('8bit', $headers['Content-Transfer-Encoding']);
+        Assert::assertSame('', $headers['POT-Creation-Date']);
+        Assert::assertSame('', $headers['PO-Revision-Date']);
+        Assert::assertSame('', $headers['Last-Translator']);
+        Assert::assertSame('', $headers['Language-Team']);
+        Assert::assertSame('1.0', $headers['MIME-Version']);
+        Assert::assertSame('bs', $headers['Language']);
+        Assert::assertSame(
+            'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);',
+            $headers['Plural-Forms']
         );
-        expect($headers['X-Generator'])->toBe('Poedit 1.6.5');
-        expect($headers['Project-Id-Version'])->toBe('gettext generator test');
-        expect($headers['X-Domain'])->toBe('testingdomain');
+        Assert::assertSame('Poedit 1.6.5', $headers['X-Generator']);
+        Assert::assertSame('gettext generator test', $headers['Project-Id-Version']);
+        Assert::assertSame('testingdomain', $headers['X-Domain']);
 
-        expect($translations->getDomain())->toBe('testingdomain');
-        expect($translations->getLanguage())->toBe('bs');
+        Assert::assertSame('testingdomain', $translations->getDomain());
+        Assert::assertSame('bs', $translations->getLanguage());
     }
 
     public static function assertMultilineDisabled(Loader $loader): void
@@ -93,10 +95,11 @@ EOT;
         $translation = $translations->find(null, 'Last agent hours-description');
         Assert::assertNotNull($translation);
 
-        expect($translation->disabled)->toBeTrue();
-        expect($translation->translation)->toBe(
+        Assert::assertTrue($translation->disabled);
+        Assert::assertSame(
             "How many hours in the past can system look at finding the last agent?"
-            . " This parameter is only used if 'Call Last Agent' is set to 'YES'."
+            . " This parameter is only used if 'Call Last Agent' is set to 'YES'.",
+            $translation->translation
         );
     }
 
@@ -109,7 +112,8 @@ EOT;
         $translations = $loader->loadString($po);
         $translation = $translations->find(null, 'source');
         Assert::assertNotNull($translation);
-        expect($translation->translation)->toBe($decoded);
+
+        Assert::assertSame($decoded, $translation->translation);
     }
 
     /**
@@ -127,150 +131,154 @@ EOT;
 
     private static function translation1(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe(
-            'Ensure this value has at least %(limit_value)d character (it has %sd).'
+        Assert::assertSame(
+            'Ensure this value has at least %(limit_value)d character (it has %sd).',
+            $translation->getOriginal()
         );
-        expect($translation->plural)->toBe(
-            'Ensure this value has at least %(limit_value)d characters (it has %sd).'
+        Assert::assertSame(
+            'Ensure this value has at least %(limit_value)d characters (it has %sd).',
+            $translation->plural
         );
-        expect($translation->translation)->toBe('');
-        expect($translation->getPluralTranslations())->toBe(['', '']);
+        Assert::assertSame('', $translation->translation);
+        Assert::assertSame(['', ''], $translation->getPluralTranslations());
     }
 
     private static function translation2(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe(
-            'Ensure this value has at most %(limit_value)d character (it has %sd).'
+        Assert::assertSame(
+            'Ensure this value has at most %(limit_value)d character (it has %sd).',
+            $translation->getOriginal()
         );
-        expect($translation->plural)->toBe(
-            'Ensure this value has at most %(limit_value)d characters (it has %sd).'
+        Assert::assertSame(
+            'Ensure this value has at most %(limit_value)d characters (it has %sd).',
+            $translation->plural
         );
-        expect($translation->translation)->toBe('');
-        expect($translation->getPluralTranslations())->toBe(['', '']);
+        Assert::assertSame('', $translation->translation);
+        Assert::assertSame(['', ''], $translation->getPluralTranslations());
     }
 
     private static function translation3(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('%ss must be unique for %ss %ss.');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('%ss mora da bude jedinstven za %ss %ss.');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
+        Assert::assertSame('%ss must be unique for %ss %ss.', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('%ss mora da bude jedinstven za %ss %ss.', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
     }
 
     private static function translation4(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('and');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('i');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getFlags()->toArray())->toBe(['c-format']);
+        Assert::assertSame('and', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('i', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertSame(['c-format'], $translation->getFlags()->toArray());
     }
 
     private static function translation5(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('Value %sr is not a valid choice.');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getExtractedComments()->toArray())->toBe(['This is a extracted comment']);
+        Assert::assertSame('Value %sr is not a valid choice.', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertSame(['This is a extracted comment'], $translation->getExtractedComments()->toArray());
     }
 
     private static function translation6(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('This field cannot be null.');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('Ovo polje ne može ostati prazno.');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(1);
-        expect($translation->getReferences()->toArray())->toBe(['C:/Users/Me/Documents/foo2.php' => [1]]);
+        Assert::assertSame('This field cannot be null.', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('Ovo polje ne može ostati prazno.', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(1, $translation->getReferences());
+        Assert::assertSame(['C:/Users/Me/Documents/foo2.php' => [1]], $translation->getReferences()->toArray());
     }
 
     private static function translation7(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('This field cannot be blank.');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('Ovo polje ne može biti prazno.');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(1);
-        expect($translation->getReferences()->toArray())->toBe(['C:/Users/Me/Documents/foo1.php' => []]);
+        Assert::assertSame('This field cannot be blank.', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('Ovo polje ne može biti prazno.', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(1, $translation->getReferences());
+        Assert::assertSame(['C:/Users/Me/Documents/foo1.php' => []], $translation->getReferences()->toArray());
     }
 
     private static function translation8(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('Field of type: %ss');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('Polje tipa: %ss');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(2);
-        expect($translation->getReferences()->toArray())->toBe([
+        Assert::assertSame('Field of type: %ss', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('Polje tipa: %ss', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(2, $translation->getReferences());
+        Assert::assertSame([
             'attributes/address/composer.php' => [8],
             'attributes/address/form.php' => [7],
-        ]);
+        ], $translation->getReferences()->toArray());
     }
 
     private static function translation9(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('Integer');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('Cijeo broj');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(0);
-        expect($translation->getComments())->toHaveCount(1);
-        expect($translation->getComments()->toArray())->toBe(['a simple line comment is above']);
+        Assert::assertSame('Integer', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('Cijeo broj', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(0, $translation->getReferences());
+        Assert::assertCount(1, $translation->getComments());
+        Assert::assertSame(['a simple line comment is above'], $translation->getComments()->toArray());
     }
 
     private static function translation10(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('{test1}');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe("test1\n<div>\n test2\n</div>\ntest3");
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getComments())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(3);
-        expect($translation->getReferences()->toArray())->toBe([
+        Assert::assertSame('{test1}', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(0, $translation->getComments());
+        Assert::assertCount(3, $translation->getReferences());
+        Assert::assertSame([
             '/var/www/test/test.php' => [96, 97],
             '/var/www/test/test2.php' => [98],
-        ]);
+        ], $translation->getReferences()->toArray());
     }
 
     private static function translation11(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('{test2}');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe("test1\n<div>\n test2\n</div>\ntest3");
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getComments())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(1);
-        expect($translation->getReferences()->toArray())->toBe(['/var/www/test/test.php' => [96]]);
+        Assert::assertSame('{test2}', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame("test1\n<div>\n test2\n</div>\ntest3", $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(0, $translation->getComments());
+        Assert::assertCount(1, $translation->getReferences());
+        Assert::assertSame(['/var/www/test/test.php' => [96]], $translation->getReferences()->toArray());
     }
 
     private static function translation12(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('Multibyte test');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe('日本人は日本で話される言語です！');
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getComments())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(0);
+        Assert::assertSame('Multibyte test', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame('日本人は日本で話される言語です！', $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(0, $translation->getComments());
+        Assert::assertCount(0, $translation->getReferences());
     }
 
     private static function translation13(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('Tabulation test');
-        expect($translation->plural)->toBeNull();
-        expect($translation->translation)->toBe("FIELD\tFIELD");
-        expect($translation->getPluralTranslations())->toHaveCount(0);
-        expect($translation->getComments())->toHaveCount(0);
-        expect($translation->getReferences())->toHaveCount(0);
+        Assert::assertSame('Tabulation test', $translation->getOriginal());
+        Assert::assertNull($translation->plural);
+        Assert::assertSame("FIELD\tFIELD", $translation->translation);
+        Assert::assertCount(0, $translation->getPluralTranslations());
+        Assert::assertCount(0, $translation->getComments());
+        Assert::assertCount(0, $translation->getReferences());
     }
 
     private static function translation14(Translation $translation): void
     {
-        expect($translation->getOriginal())->toBe('%s has been added to your cart.');
-        expect($translation->plural)->toBe('%s have been added to your cart.');
-        expect($translation->translation)->toBe('%s has been added to your cart.');
-        expect($translation->getPluralTranslations())->toBe(['%s have been added to your cart.']);
-        expect($translation->getComments())->toHaveCount(1);
-        expect($translation->getReferences())->toHaveCount(0);
+        Assert::assertSame('%s has been added to your cart.', $translation->getOriginal());
+        Assert::assertSame('%s have been added to your cart.', $translation->plural);
+        Assert::assertSame('%s has been added to your cart.', $translation->translation);
+        Assert::assertSame(['%s have been added to your cart.'], $translation->getPluralTranslations());
+        Assert::assertCount(1, $translation->getComments());
+        Assert::assertCount(0, $translation->getReferences());
     }
 }

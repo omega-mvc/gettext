@@ -5,29 +5,34 @@ declare(strict_types=1);
 namespace Tests\Tests\Gettext\Scanner;
 
 use Omega\Gettext\Scanner\ParsedFunction;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(ParsedFunction::class);
+#[CoversClass(ParsedFunction::class)]
+final class ParsedFunctionsAndCommentsTest extends TestCase
+{
+    public function testCollectsArgumentsCommentsAndFlags(): void
+    {
+        $function = new ParsedFunction('__', 'template.php', 45);
 
-it('collects arguments, comments and flags', function (): void {
-    $function = new ParsedFunction('__', 'template.php', 45);
+        $this->assertSame('__', $function->getName());
+        $this->assertSame('template.php', $function->getFilename());
+        $this->assertSame(45, $function->getLine());
+        $this->assertSame(45, $function->getLastLine());
 
-    expect($function->getName())->toBe('__');
-    expect($function->getFilename())->toBe('template.php');
-    expect($function->getLine())->toBe(45);
-    expect($function->getLastLine())->toBe(45);
+        $function->addArgument('a');
+        $this->assertSame(['a'], $function->getArguments());
 
-    $function->addArgument('a');
-    expect($function->getArguments())->toBe(['a']);
+        $function->addArgument('c');
+        $this->assertSame(['a', 'c'], $function->getArguments());
 
-    $function->addArgument('c');
-    expect($function->getArguments())->toBe(['a', 'c']);
+        $function->addComment('This is a comment');
+        $this->assertSame(['This is a comment'], $function->getComments());
 
-    $function->addComment('This is a comment');
-    expect($function->getComments())->toBe(['This is a comment']);
+        $function->addComment('This is other comment');
+        $this->assertSame(['This is a comment', 'This is other comment'], $function->getComments());
 
-    $function->addComment('This is other comment');
-    expect($function->getComments())->toBe(['This is a comment', 'This is other comment']);
-
-    $function->addFlag('php-format');
-    expect($function->getFlags())->toBe(['php-format']);
-});
+        $function->addFlag('php-format');
+        $this->assertSame(['php-format'], $function->getFlags());
+    }
+}

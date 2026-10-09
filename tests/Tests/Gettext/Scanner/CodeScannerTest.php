@@ -17,129 +17,150 @@ use Omega\Gettext\Scanner\PhpScanner;
 use Omega\Gettext\Scanner\Scanner;
 use Omega\Gettext\Translation;
 use Omega\Gettext\Translations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(CodeScanner::class);
-covers(Comments::class);
-covers(Flags::class);
-covers(Headers::class);
-covers(ParsedFunction::class);
-covers(PhpFunctionsScanner::class);
-covers(PhpNodeVisitor::class);
-covers(PhpScanner::class);
-covers(References::class);
-covers(Scanner::class);
-covers(Translation::class);
-covers(Translations::class);
-
-it('sets and gets the functions map', function (): void {
-    $scanner = createExposedScanner();
-
-    $returned = $scanner->setFunctions(['__' => 'gettext', 'bad__' => 'noSuchMethod']);
-
-    expect($returned)->toBe($scanner);
-    expect($scanner->getFunctions())->toBe(['__' => 'gettext', 'bad__' => 'noSuchMethod']);
-});
-
-it('yields no handler for unknown function names', function (): void {
-    $scanner = createExposedScanner();
-
-    $parsed = new ParsedFunction('notRegistered', 'f.php', 3);
-
-    expect($scanner->exposedGetHandler($parsed))->toBeNull();
-
-    $scanner->exposedHandleFunction($parsed);
-
-    $translations = $scanner->getTranslations()['messages'];
-
-    expect($translations)->toHaveCount(0);
-});
-
-it('rejects handlers that are not callable', function (): void {
-    $scanner = createExposedScanner();
-    $scanner->setFunctions(['__' => 'gettext', 'bad__' => 'noSuchMethod']);
-
-    $parsed = new ParsedFunction('bad__', 'f.php', 1);
-    $parsed->addArgument('text');
-
-    expect($scanner->exposedGetHandler($parsed))->toBeNull();
-});
-
-it('delivers the parsed call to a known handler', function (): void {
-    $scanner = createExposedScanner();
-
-    $parsed = new ParsedFunction('__', 'f.php', 5);
-    $parsed->addArgument('Hello');
-
-    expect($scanner->exposedGetHandler($parsed))->not->toBeNull();
-
-    $scanner->exposedHandleFunction($parsed);
-
-    $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
-
-    $this->assertNotNull($translation);
-    expect($translation->getReferences()->toArray())->toBe(['f.php' => [5]]);
-});
-
-it('can disable the references', function (): void {
-    $scanner = createExposedScanner();
-    $scanner->addReferences(false);
-
-    $parsed = new ParsedFunction('__', 'f.php', 5);
-    $parsed->addArgument('Hello');
-
-    $scanner->exposedHandleFunction($parsed);
-
-    $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
-
-    $this->assertNotNull($translation);
-    expect($translation->getReferences()->toArray())->toBe([]);
-});
-
-it('flows flags and prefixed comments through the handlers', function (): void {
-    $scanner = createExposedScanner();
-    $scanner->extractCommentsStartingWith('translators:');
-
-    $parsed = new ParsedFunction('__', 'f.php', 7);
-    $parsed->addArgument('Hi');
-    $parsed->addFlag('php-format');
-    $parsed->addComment('random note');
-    $parsed->addComment('translators: real');
-
-    $scanner->exposedHandleFunction($parsed);
-
-    $translation = $scanner->getTranslations()['messages']->find(null, 'Hi');
-
-    $this->assertNotNull($translation);
-    expect($translation->getFlags()->toArray())->toBe(['php-format']);
-    expect($translation->getExtractedComments()->toArray())->toBe(['translators: real']);
-});
-
-it('throws without tolerance on missing arguments', function (): void {
-    $scanner = createExposedScanner();
-
-    expect(fn () => $scanner->scanString("<?php ngettext('only');", 'f.php'))
-        ->toThrow(Exception::class, 'At least 2 arguments are required');
-});
-
-it('throws when the scanned file is unreadable', function (): void {
-    $file = tempnam(sys_get_temp_dir(), 'gettext-unreadable');
-    chmod((string) $file, 0000);
-
-    try {
-        $scanner = createExposedScanner();
-
-        expect(fn () => $scanner->scanFile((string) $file))
-            ->toThrow(Exception::class, "Cannot read the file '$file', probably permissions");
-    } finally {
-        chmod((string) $file, 0600);
-        unlink((string) $file);
-    }
-});
-
-function createExposedScanner(): ExposedCodeScanner
+#[CoversClass(CodeScanner::class)]
+#[CoversClass(Comments::class)]
+#[CoversClass(Flags::class)]
+#[CoversClass(Headers::class)]
+#[CoversClass(ParsedFunction::class)]
+#[CoversClass(PhpFunctionsScanner::class)]
+#[CoversClass(PhpNodeVisitor::class)]
+#[CoversClass(PhpScanner::class)]
+#[CoversClass(References::class)]
+#[CoversClass(Scanner::class)]
+#[CoversClass(Translation::class)]
+#[CoversClass(Translations::class)]
+final class CodeScannerTest extends TestCase
 {
-    $scanner = new ExposedCodeScanner(Translations::create('messages'));
-    $scanner->setDefaultDomain('messages');
+    public function testSetsAndGetsTheFunctionsMap(): void
+    {
+        $scanner = self::createExposedScanner();
 
-    return $scanner;
+        $returned = $scanner->setFunctions(['__' => 'gettext', 'bad__' => 'noSuchMethod']);
+
+        $this->assertSame($scanner, $returned);
+        $this->assertSame(['__' => 'gettext', 'bad__' => 'noSuchMethod'], $scanner->getFunctions());
+    }
+
+    public function testYieldsNoHandlerForUnknownFunctionNames(): void
+    {
+        $scanner = self::createExposedScanner();
+
+        $parsed = new ParsedFunction('notRegistered', 'f.php', 3);
+
+        $this->assertNull($scanner->exposedGetHandler($parsed));
+
+        $scanner->exposedHandleFunction($parsed);
+
+        $translations = $scanner->getTranslations()['messages'];
+
+        $this->assertCount(0, $translations);
+    }
+
+    public function testRejectsHandlersThatAreNotCallable(): void
+    {
+        $scanner = self::createExposedScanner();
+        $scanner->setFunctions(['__' => 'gettext', 'bad__' => 'noSuchMethod']);
+
+        $parsed = new ParsedFunction('bad__', 'f.php', 1);
+        $parsed->addArgument('text');
+
+        $this->assertNull($scanner->exposedGetHandler($parsed));
+    }
+
+    public function testDeliversTheParsedCallToAKnownHandler(): void
+    {
+        $scanner = self::createExposedScanner();
+
+        $parsed = new ParsedFunction('__', 'f.php', 5);
+        $parsed->addArgument('Hello');
+
+        $this->assertNotNull($scanner->exposedGetHandler($parsed));
+
+        $scanner->exposedHandleFunction($parsed);
+
+        $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
+
+        $this->assertNotNull($translation);
+        $this->assertSame(['f.php' => [5]], $translation->getReferences()->toArray());
+    }
+
+    public function testCanDisableTheReferences(): void
+    {
+        $scanner = self::createExposedScanner();
+        $scanner->addReferences(false);
+
+        $parsed = new ParsedFunction('__', 'f.php', 5);
+        $parsed->addArgument('Hello');
+
+        $scanner->exposedHandleFunction($parsed);
+
+        $translation = $scanner->getTranslations()['messages']->find(null, 'Hello');
+
+        $this->assertNotNull($translation);
+        $this->assertSame([], $translation->getReferences()->toArray());
+    }
+
+    public function testFlowsFlagsAndPrefixedCommentsThroughTheHandlers(): void
+    {
+        $scanner = self::createExposedScanner();
+        $scanner->extractCommentsStartingWith('translators:');
+
+        $parsed = new ParsedFunction('__', 'f.php', 7);
+        $parsed->addArgument('Hi');
+        $parsed->addFlag('php-format');
+        $parsed->addComment('random note');
+        $parsed->addComment('translators: real');
+
+        $scanner->exposedHandleFunction($parsed);
+
+        $translation = $scanner->getTranslations()['messages']->find(null, 'Hi');
+
+        $this->assertNotNull($translation);
+        $this->assertSame(['php-format'], $translation->getFlags()->toArray());
+        $this->assertSame(['translators: real'], $translation->getExtractedComments()->toArray());
+    }
+
+    public function testThrowsWithoutToleranceOnMissingArguments(): void
+    {
+        $scanner = self::createExposedScanner();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('At least 2 arguments are required');
+
+        $scanner->scanString("<?php ngettext('only');", 'f.php');
+    }
+
+    public function testScanFileThrowsWhenFileIsUnreadable(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'gettext-unreadable');
+        chmod((string) $file, 0000);
+
+        set_error_handler(static function (int $errno, string $errstr, string $errfile, int $errline): bool {
+            return true;
+        });
+
+        try {
+            $scanner = self::createExposedScanner();
+
+            $this->expectException(Exception::class);
+            $this->expectExceptionMessage("Cannot read the file '$file', probably permissions");
+
+            $scanner->scanFile((string) $file);
+        } finally {
+            restore_error_handler();
+            chmod((string) $file, 0600);
+            unlink((string) $file);
+        }
+    }
+
+    private static function createExposedScanner(): ExposedCodeScanner
+    {
+        $scanner = new ExposedCodeScanner(Translations::create('messages'));
+        $scanner->setDefaultDomain('messages');
+
+        return $scanner;
+    }
 }

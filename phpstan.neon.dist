@@ -1,10 +1,15 @@
 includes:
-    - vendor/pestphp/pest-plugin-phpstan/extension.neon
+    - vendor/tomasvotruba/type-coverage/config/extension.neon
 parameters:
     level: 10
     tmpDir: cache/phpstan
     bootstrapFiles:
         - tests/constants.php
+    type_coverage:
+        return_type: 100
+        param_type: 100
+        property_type: 100
+        constant_type: 100
     paths:
         - src
         - tests

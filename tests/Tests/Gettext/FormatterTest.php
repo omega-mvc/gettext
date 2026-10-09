@@ -6,58 +6,80 @@ namespace Tests\Tests\Gettext;
 
 use InvalidArgumentException;
 use Omega\Gettext\Formatter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(Formatter::class);
+#[CoversClass(Formatter::class)]
+final class FormatterTest extends TestCase
+{
+    public function testReturnsTheTextUnchangedWhenNoArgumentsAreGiven(): void
+    {
+        $formatter = new Formatter();
 
-it('returns the text unchanged when no arguments are given', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame('Hello world', $formatter->format('Hello world', []));
+    }
 
-    expect($formatter->format('Hello world', []))->toBe('Hello world');
-});
+    public function testReplacesPrintfStylePlaceholders(): void
+    {
+        $formatter = new Formatter();
 
-it('replaces printf style placeholders', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame(
+            'Hello John, you have 3 messages',
+            $formatter->format('Hello %s, you have %d messages', ['John', 3])
+        );
+    }
 
-    expect($formatter->format('Hello %s, you have %d messages', ['John', 3]))
-        ->toBe('Hello John, you have 3 messages');
-});
+    public function testAcceptsNullArgumentsInPrintfStyle(): void
+    {
+        $formatter = new Formatter();
 
-it('accepts null arguments in printf style', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame('a-', $formatter->format('%s-%s', ['a', null]));
+    }
 
-    expect($formatter->format('%s-%s', ['a', null]))->toBe('a-');
-});
+    public function testReplacesMapStylePlaceholders(): void
+    {
+        $formatter = new Formatter();
 
-it('replaces map style placeholders', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame(
+            'Hi John, welcome to Rome',
+            $formatter->format('Hi %name, welcome to %place', ['%name' => 'John', '%place' => 'Rome'])
+        );
+    }
 
-    expect($formatter->format('Hi %name, welcome to %place', ['%name' => 'John', '%place' => 'Rome']))
-        ->toBe('Hi John, welcome to Rome');
-});
+    public function testCastsMapStyleScalarsToStrings(): void
+    {
+        $formatter = new Formatter();
 
-it('casts map style scalars to strings', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame(
+            '1 1.5 1',
+            $formatter->format('%int %float %bool', ['%int' => 1, '%float' => 1.5, '%bool' => true])
+        );
+    }
 
-    expect($formatter->format('%int %float %bool', ['%int' => 1, '%float' => 1.5, '%bool' => true]))
-        ->toBe('1 1.5 1');
-});
+    public function testLeavesTheTextUnchangedWhenTheMapIsEmpty(): void
+    {
+        $formatter = new Formatter();
 
-it('leaves the text unchanged when the map is empty', function (): void {
-    $formatter = new Formatter();
+        $this->assertSame('Hi %name', $formatter->format('Hi %name', [[]]));
+    }
 
-    expect($formatter->format('Hi %name', [[]]))->toBe('Hi %name');
-});
+    public function testRejectsNonScalarMapValues(): void
+    {
+        $formatter = new Formatter();
 
-it('rejects non scalar map values', function (): void {
-    $formatter = new Formatter();
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Formatter replacements must be scalars, array given');
 
-    expect(fn () => $formatter->format('Hi %data', ['%data' => ['nested']]))
-        ->toThrow(InvalidArgumentException::class, 'Formatter replacements must be scalars, array given');
-});
+        $formatter->format('Hi %data', ['%data' => ['nested']]);
+    }
 
-it('rejects non scalar printf arguments', function (): void {
-    $formatter = new Formatter();
+    public function testRejectsNonScalarPrintfArguments(): void
+    {
+        $formatter = new Formatter();
 
-    expect(fn () => $formatter->format('Hello %s and %s', ['John', ['nested']]))
-        ->toThrow(InvalidArgumentException::class, 'Formatter arguments must be scalars, array given');
-});
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Formatter arguments must be scalars, array given');
+
+        $formatter->format('Hello %s and %s', ['John', ['nested']]);
+    }
+}

@@ -5,79 +5,86 @@ declare(strict_types=1);
 namespace Tests\Tests\Gettext;
 
 use Omega\Gettext\References;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\Tests\TestCase;
 
-covers(References::class);
+#[CoversClass(References::class)]
+final class ReferencesTest extends TestCase
+{
+    public function testManagesReferences(): void
+    {
+        $references = new References();
 
-it('manages references', function (): void {
-    $references = new References();
+        $this->assertSame([], $references->jsonSerialize());
+        $this->assertCount(0, $references);
 
-    expect($references->jsonSerialize())->toBe([]);
-    expect($references)->toHaveCount(0);
+        $references->add('filename.php', 34);
 
-    $references->add('filename.php', 34);
+        $this->assertSame(['filename.php' => [34]], $references->jsonSerialize());
+        $this->assertCount(1, $references);
 
-    expect($references->jsonSerialize())->toBe(['filename.php' => [34]]);
-    expect($references)->toHaveCount(1);
+        $references->add('filename.php', 34);
 
-    $references->add('filename.php', 34);
+        $this->assertSame(['filename.php' => [34]], $references->jsonSerialize());
+        $this->assertCount(1, $references);
 
-    expect($references->jsonSerialize())->toBe(['filename.php' => [34]]);
-    expect($references)->toHaveCount(1);
+        $references->add('filename.php', 44);
 
-    $references->add('filename.php', 44);
+        $this->assertSame(['filename.php' => [34, 44]], $references->jsonSerialize());
+        $this->assertCount(2, $references);
 
-    expect($references->jsonSerialize())->toBe(['filename.php' => [34, 44]]);
-    expect($references)->toHaveCount(2);
-
-    foreach ($references as $filename => $lines) {
-        expect($filename)->toBe('filename.php');
-        expect($lines)->toBe([34, 44]);
+        foreach ($references as $filename => $lines) {
+            $this->assertSame('filename.php', $filename);
+            $this->assertSame([34, 44], $lines);
+        }
     }
-});
 
-it('merges references', function (): void {
-    $references1 = new References();
-    $references2 = new References();
+    public function testMergesReferences(): void
+    {
+        $references1 = new References();
+        $references2 = new References();
 
-    $references1
-        ->add('filename.php', 34)
-        ->add('filename.php', 56)
-        ->add('filename3.php')
-        ->add('filename2.php', 10);
+        $references1
+            ->add('filename.php', 34)
+            ->add('filename.php', 56)
+            ->add('filename3.php')
+            ->add('filename2.php', 10);
 
-    $references2
-        ->add('filename.php', 34)
-        ->add('filename.php', 44)
-        ->add('filename2.php')
-        ->add('filename4.php')
-        ->add('filename3.php', 10)
-        ->add('5', 10)
-        ->add('6');
+        $references2
+            ->add('filename.php', 34)
+            ->add('filename.php', 44)
+            ->add('filename2.php')
+            ->add('filename4.php')
+            ->add('filename3.php', 10)
+            ->add('5', 10)
+            ->add('6');
 
-    $merged = $references1->mergeWith($references2);
+        $merged = $references1->mergeWith($references2);
 
-    expect($merged)->toHaveCount(8);
-    expect($merged->toArray())->toBe([
-        'filename.php' => [34, 56, 44],
-        'filename3.php' => [10],
-        'filename2.php' => [10],
-        'filename4.php' => [],
-        '5' => [10],
-        '6' => [],
-    ]);
+        $this->assertCount(8, $merged);
+        $this->assertSame([
+            'filename.php' => [34, 56, 44],
+            'filename3.php' => [10],
+            'filename2.php' => [10],
+            'filename4.php' => [],
+            '5' => [10],
+            '6' => [],
+        ], $merged->toArray());
 
-    expect($merged)->not->toBe($references1);
-    expect($merged)->not->toBe($references2);
-});
+        $this->assertNotSame($references1, $merged);
+        $this->assertNotSame($references2, $merged);
+    }
 
-it('creates a references collection from state', function (): void {
-    $state = [
-        'references' => [
-            'filename.php' => [1, 2, 3],
-        ],
-    ];
-    $references = References::__set_state($state);
+    public function testCreatesAReferencesCollectionFromState(): void
+    {
+        $state = [
+            'references' => [
+                'filename.php' => [1, 2, 3],
+            ],
+        ];
+        $references = References::__set_state($state);
 
-    expect($references)->toHaveCount(3);
-    expect($references->toArray())->toBe($state['references']);
-});
+        $this->assertCount(3, $references);
+        $this->assertSame($state['references'], $references->toArray());
+    }
+}
