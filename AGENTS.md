@@ -10,10 +10,11 @@ Run from this package directory. `composer` is the source of truth; the starter 
 denies `composer*`, so call the underlying binaries directly when blocked.
 
 ```bash
-composer test              # XDEBUG_MODE=coverage php vendor/bin/pest
-composer test-no-coverage  # XDEBUG_MODE=off php vendor/bin/pest --no-coverage
-composer type-coverage     # vendor/bin/pest --type-coverage
+composer test              # XDEBUG_MODE=coverage php vendor/bin/phpunit
+composer test-no-coverage  # XDEBUG_MODE=off php vendor/bin/phpunit --no-coverage
+composer type-coverage     # XDEBUG_MODE=off php vendor/bin/phpstan analyze --no-progress
 composer phpcs             # XDEBUG_MODE=off php vendor/bin/phpcs
+composer phpcbf            # XDEBUG_MODE=off php vendor/bin/phpcbf --standard=PSR12
 composer phpstan           # XDEBUG_MODE=off php vendor/bin/phpstan analyze -vvv
 ```
 
@@ -23,7 +24,7 @@ composer phpstan           # XDEBUG_MODE=off php vendor/bin/phpstan analyze -vvv
 
 ## Tests
 
-- **Pest 5**. The namespace is `Tests\Tests\` → `tests/Tests` (the doubled segment is intentional;
+- **PHPUnit 13**. The namespace is `Tests\Tests\` → `tests/Tests` (the doubled segment is intentional;
   `autoload-dev` maps it). Bootstrap is `tests/bootstrap.php`; `tests/constants.php` exists only for PHPStan.
 - Layout: `tests/Tests/Gettext/{Generator,Languages,Loader,Scanner}/`, plus `assets/` and `snapshots/`.
 - `phpunit.xml.dist`: strict coverage metadata (`requireCoverageMetadata`, `beStrictAboutCoverageMetadata`),
