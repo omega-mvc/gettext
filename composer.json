@@ -23,7 +23,7 @@
         "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^13.3",
         "tomasvotruba/type-coverage": "^2.5",
-        "phpunit/php-code-coverage": "dev-omega as 14.3.1"
+        "phpunit/php-code-coverage": "dev-omega-14.5.2 as 14.5.2"
     },
     "repositories": [
         {
